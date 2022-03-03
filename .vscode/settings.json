@@ -1,0 +1,10 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:node-test-site}/server/testdb",
+            "name": "testdb"
+        }
+    ]
+}
