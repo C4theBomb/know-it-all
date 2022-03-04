@@ -7,6 +7,7 @@ var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
 const Sequelize = require('sequelize');
+require('dotenv').config({ path: '../.env' });
 
 /**
  * Get port from environment and store in Express.
@@ -16,12 +17,17 @@ var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 async function sequelizeConnect() {
+    // const sequelize = new Sequelize({
+    //     database: process.env.DB_NAME,
+    //     username: process.env.DB_USERNAME,
+    //     password: process.env.DB_PASSWORD,
+    //     host: process.env.DB_HOST,
+    //     dialect: 'mysql',
+    // });
+
     const sequelize = new Sequelize({
-        database: 'NODE_TEST_SITE',
-        username: 'c4patino',
-        password: 'JW63^Hy4HcBh',
-        host: '45.79.52.230',
-        dialect: 'mysql',
+        dialect: 'sqlite',
+        storage: './test_db.sqlite',
     });
 
     try {
