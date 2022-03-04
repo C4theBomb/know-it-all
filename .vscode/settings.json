@@ -1,10 +1,17 @@
 {
     "sqltools.connections": [
         {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
             "previewLimit": 50,
-            "driver": "SQLite",
-            "database": "${workspaceFolder:node-test-site}/server/testdb",
-            "name": "testdb"
+            "server": "c4thebomb101.com",
+            "port": 3306,
+            "driver": "MySQL",
+            "name": "node-test-site",
+            "database": "NODE_TEST_SITE",
+            "username": "c4patino",
+            "password": "JW63^Hy4HcBh"
         }
     ]
 }

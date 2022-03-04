@@ -17,8 +17,11 @@ app.set('port', port);
 
 async function sequelizeConnect() {
     const sequelize = new Sequelize({
-        dialect: 'sqlite',
-        storage: 'testdb.sqlite',
+        database: 'NODE_TEST_SITE',
+        username: 'c4patino',
+        password: 'JW63^Hy4HcBh',
+        host: '45.79.52.230',
+        dialect: 'mysql',
     });
 
     try {
