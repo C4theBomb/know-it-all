@@ -25,7 +25,7 @@ async function ResetPassword(req, res, next) {
 
     const user = await result.getUser();
     await user.update({ password: hashedPassword });
-    res.status(200).send('Your password has been changed');
+    return res.send('Your password has been changed');
 }
 
 module.exports = ResetPassword;

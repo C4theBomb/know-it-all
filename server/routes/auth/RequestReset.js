@@ -36,11 +36,9 @@ async function RequestReset(req, res, next) {
 
         console.log(`${resetRequest.reqID}`);
 
-        return res
-            .status(200)
-            .send(
-                'Password reset request sent. If a user exists with this email, an email will be sent with the required information.'
-            );
+        return res.send(
+            'Password reset request sent. If a user exists with this email, an email will be sent with the required information.'
+        );
     } catch (e) {
         console.log(e);
         return res.status(500).send('Whoops, something went wrong.');
