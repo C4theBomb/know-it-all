@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
-router.get('/', (req, res, next) => {
-    return res.render('index', { title: 'Express' });
-});
+const tokenAuth = require('../middleware/tokenAuth');
+
+router.get();
 
 /*
 Organization
@@ -12,6 +11,7 @@ Organization
 - Create organization account
 - Add people to organization
 - Remove people from organization
+- Get organization members
 
 Groups
 - Create group
