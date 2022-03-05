@@ -1,25 +1,21 @@
 const { v4: uuidv4 } = require('uuid');
 const { DataTypes, Model } = require('sequelize');
 
-class Token extends Model {
+class ResetRequest extends Model {
     static initModel(sequelize) {
-        Token.init(
+        ResetRequest.init(
             {
-                tokenID: {
+                reqID: {
                     type: DataTypes.STRING,
                     primaryKey: true,
                     defaultValue: uuidv4,
-                },
-                expires: {
-                    type: DataTypes.BOOLEAN,
-                    defaultValue: true,
                 },
             },
             { sequelize }
         );
 
-        return Token;
+        return ResetRequest;
     }
 }
 
-module.exports = Token;
+module.exports = ResetRequest;
