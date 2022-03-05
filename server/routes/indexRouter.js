@@ -3,17 +3,10 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
-    res.render('index', { title: 'Express' });
+    return res.render('index', { title: 'Express' });
 });
 
-/* 
-User
-- Create user
-- Change password
-- User Login
-- User Profile
-- Modify user profile
-
+/*
 Organization
 - Create organization
 - Create organization account

@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const { DataTypes, Model } = require('sequelize');
 
 class Organization extends Model {
@@ -7,6 +8,7 @@ class Organization extends Model {
                 orgID: {
                     type: DataTypes.STRING,
                     primaryKey: true,
+                    defaultValue: uuidv4,
                 },
                 orgName: {
                     type: DataTypes.STRING,

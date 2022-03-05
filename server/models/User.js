@@ -1,3 +1,4 @@
+const { v4: uuidv4 } = require('uuid');
 const { DataTypes, Model } = require('sequelize');
 
 class User extends Model {
@@ -7,6 +8,7 @@ class User extends Model {
                 userID: {
                     type: DataTypes.STRING,
                     primaryKey: true,
+                    defaultValue: uuidv4,
                 },
                 firstName: {
                     type: DataTypes.STRING,
@@ -21,20 +23,18 @@ class User extends Model {
                     unique: true,
                     allowNull: false,
                 },
-                prounouns: {
+                password: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                },
+                pronouns: {
                     type: DataTypes.STRING,
                 },
                 gender: {
                     type: DataTypes.STRING,
                 },
-                race: {
-                    type: DataTypes.STRING,
-                },
                 ethnicity: {
                     type: DataTypes.STRING,
-                },
-                createdAt: {
-                    type: DataTypes.DATE,
                 },
             },
             { sequelize }

@@ -1,28 +1,21 @@
 const { v4: uuidv4 } = require('uuid');
 const { DataTypes, Model } = require('sequelize');
 
-class Group extends Model {
+class Token extends Model {
     static initModel(sequelize) {
-        Group.init(
+        Token.init(
             {
-                groupID: {
+                tokenID: {
                     type: DataTypes.STRING,
                     primaryKey: true,
                     defaultValue: uuidv4,
-                },
-                groupName: {
-                    type: DataTypes.STRING,
-                    allowNull: false,
-                },
-                createdAt: {
-                    type: DataTypes.DATE,
                 },
             },
             { sequelize }
         );
 
-        return Group;
+        return Token;
     }
 }
 
-module.exports = Group;
+module.exports = Token;
