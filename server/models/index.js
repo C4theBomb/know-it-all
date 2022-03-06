@@ -35,24 +35,16 @@ async function initModels(sequelize) {
     });
 
     Group.belongsTo(User, { as: 'userOwner', foreignKey: 'ownerID' });
-    Group.belongsTo(Organization, {
-        as: 'orgOwner',
-        foreignKey: 'ownerID',
-    });
     Group.belongsToMany(User, {
-        through: 'groupUsers',
+        as: 'groupMember',
+        through: 'groupMembers',
         foreignKey: 'groupID',
     });
 
     Organization.belongsTo(User, { as: 'orgOwner', foreignKey: 'ownerID' });
-    Organization.hasMany(Group, {
-        as: 'groupOwner',
-        foreignKey: 'ownerID',
-        onDelete: 'CASCADE',
-    });
     Organization.belongsToMany(User, {
-        as: 'orgMembers',
-        through: 'orgUsers',
+        as: 'orgMember',
+        through: 'orgMembers',
         uniqueKey: 'orgID',
     });
 
