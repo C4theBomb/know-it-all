@@ -9,7 +9,9 @@ async function basicAuth(req, res, next) {
         return res.status(400).send('Request lacking information');
     }
 
-    const result = await User.findOne({ where: { email: email } });
+    const result = await User.findOne({
+        where: { email: email },
+    });
 
     if (!result) {
         return res.status(400).send('Unauthorized user');

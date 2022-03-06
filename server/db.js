@@ -6,6 +6,7 @@ const config = configs[env];
 
 const db = new Sequelize({
     ...config,
+    logging: false,
     define: {
         underscored: true,
     },

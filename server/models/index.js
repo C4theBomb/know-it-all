@@ -61,12 +61,12 @@ async function initModels(sequelize) {
     ResetRequest.belongsTo(User, { foreignKey: 'userID' });
 
     if (process.env.NODE_ENV == 'development') {
-        await Organization.drop({ logging: false });
-        await Group.drop({ logging: false });
-        await ResetRequest.drop({ logging: false });
-        await sequelize.sync({ logging: false, alter: true });
+        await Organization.drop();
+        await Group.drop();
+        await ResetRequest.drop();
+        await sequelize.sync({ alter: true });
     } else {
-        await sequelize.sync({ logging: false, alter: true });
+        await sequelize.sync({ alter: true });
     }
 
     return { User, Group, Organization, Token, ResetRequest };

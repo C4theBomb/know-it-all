@@ -7,7 +7,9 @@ async function tokenAuth(req, res, next) {
         return res.status(403).send('Unauthorized user');
     }
 
-    const result = await Token.findOne({ where: { tokenID: token } });
+    const result = await Token.findOne({
+        where: { tokenID: token },
+    });
 
     const date = new Date();
     if (

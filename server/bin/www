@@ -85,7 +85,7 @@ function onError(error) {
 async function onListening() {
     initModels(db);
     try {
-        await db.authenticate({ logging: false });
+        await db.authenticate();
         console.log(
             `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
         );
