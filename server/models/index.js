@@ -36,22 +36,22 @@ async function initModels(sequelize) {
 
     Group.belongsTo(User, { as: 'userOwner', foreignKey: 'ownerID' });
     Group.belongsToMany(User, {
-        as: 'groupMember',
-        through: 'groupMembers',
+        as: 'groupMembers',
+        through: 'GroupMembers',
         foreignKey: 'groupID',
     });
 
     Organization.belongsTo(User, { as: 'orgOwner', foreignKey: 'ownerID' });
     Organization.belongsToMany(User, {
-        as: 'orgMember',
-        through: 'orgMembers',
+        as: 'orgMembers',
+        through: 'OrgMembers',
         uniqueKey: 'orgID',
     });
 
     Token.belongsTo(User, { foreignKey: 'userID' });
     ResetRequest.belongsTo(User, { foreignKey: 'userID' });
 
-    if (process.env.MIGRATE == 'true') {
+    if (process.env.NODE_ENV == 'development') {
         console.log('[INFO]: Formatting all tables');
         await sequelize.sync({ force: true });
     }

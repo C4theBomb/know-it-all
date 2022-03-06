@@ -10,7 +10,7 @@ async function AddOrgMember(req, res, next) {
         return res.status(500).send('No organization exists with that id.');
     }
 
-    await result.addOrgMember(user);
+    await result.removeOrgMember(user);
 
     return res.send('User removed from organization.');
 }

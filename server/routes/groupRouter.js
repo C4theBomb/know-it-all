@@ -16,6 +16,6 @@ router.delete('/:groupID/delete', tokenAuth, DeleteGroup);
 router.patch('/:groupID/update', tokenAuth, UpdateGroupDetails);
 router.get('/:groupID', tokenAuth, GetGroup);
 router.post('/:groupID/add', tokenAuth, checkKnownUser, AddGroupMember);
-router.post('/:orgID/remove', tokenAuth, RemoveGroupMember);
+router.post('/:groupID/remove', tokenAuth, RemoveGroupMember);
 
 module.exports = router;

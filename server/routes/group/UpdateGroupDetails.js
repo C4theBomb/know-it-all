@@ -8,9 +8,9 @@ async function UpdateOrgDetails(req, res, next) {
     }
 
     const result = await user.getOwnedGroups({ where: { groupID: groupID } });
-    result.update({ groupName: groupName });
+    await result[0].update({ groupName: groupName });
 
-    return res.send(result);
+    return res.send(result[0]);
 }
 
 module.exports = UpdateOrgDetails;
