@@ -14,7 +14,7 @@ async function initModels(sequelize) {
     User.hasOne(Token, { foreignKey: 'userID', onDelete: 'CASCADE' });
     User.hasOne(ResetRequest, { foreignKey: 'userID', onDelete: 'CASCADE' });
     User.hasMany(Group, {
-        as: 'ownedGroup',
+        as: 'ownedGroups',
         foreignKey: 'ownerID',
         onDelete: 'CASCADE',
     });
@@ -45,13 +45,11 @@ async function initModels(sequelize) {
     });
 
     Organization.belongsTo(User, { foreignKey: 'ownerID' });
-
     Organization.hasMany(Group, {
         as: 'groupOwner',
         foreignKey: 'ownerID',
         onDelete: 'CASCADE',
     });
-
     Organization.belongsToMany(User, {
         through: 'orgUsers',
         uniqueKey: 'orgID',
