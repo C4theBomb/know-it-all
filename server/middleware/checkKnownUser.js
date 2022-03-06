@@ -9,31 +9,25 @@ async function checkKnownUser(req, res, next) {
     }
 
     const result = await User.findOne({
-        where: { userID: userID },
+        where: { userID: user.userID },
         include: [
             {
-                model: Organization,
-                as: 'ownedOrg',
+                association: 'ownedOrg',
                 include: {
-                    model: User,
-                    as: 'orgMembers',
+                    association: 'orgMembers',
                     where: { userID: user.userID },
-                    required: false,
                 },
             },
             {
-                model: Organization,
-                as: 'memberOrgs',
+                association: 'memberOrgs',
                 include: [
                     {
-                        model: User,
-                        as: 'orgMembers',
+                        association: 'orgMembers',
                         where: { userID: user.userID },
                         required: false,
                     },
                     {
-                        model: User,
-                        as: 'orgOwner',
+                        association: 'orgOwner',
                         where: { userID: user.userID },
                         required: false,
                     },
@@ -50,7 +44,7 @@ async function checkKnownUser(req, res, next) {
         (org) => org.orgMembers.length != 0 || org_owner
     );
 
-    if (filteredResult.length == 0 && result.ownedOrg.orgMembers.length == 0) {
+    if (filteredResult.length == 0 && result.ownedOrg) {
         return res.status(403).send('You do not have contact with this user.');
     }
 
