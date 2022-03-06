@@ -1,24 +1,22 @@
-
-
 User:
-✔ Create group @started(22-03-05 16:09) @done(22-03-05 16:24) @lasted(15m4s)
-✔ Create organization @started(22-03-05 16:24) @done(22-03-05 16:51) @lasted(27m13s)
+✔ User logout @done(22-03-05 19:05)
 
 Organization:
-
+✔ Create organization @started(22-03-05 16:24) @done(22-03-05 16:51) @lasted(27m13s)
+✔ Delete organization @started(22-03-05 17:04) @done(22-03-05 17:16) @lasted(12m)
 ☐ Get organization members
-☐ Edit organization members
 ☐ Get organization details
+☐ Edit organization details
 ☐ Add people to organization
 ☐ Remove people from organization
 
 Groups:
-
+✔ Create group @started(22-03-05 16:09) @done(22-03-05 16:24) @lasted(15m4s)
+✔ Delete group @started(22-03-05 18:36) @done(22-03-05 18:53) @lasted(17m40s)
+☐ Get group members
 ☐ Get group details
 ☐ Edit group details
-☐ Get group members
 ☐ Add people to group
 ☐ Remove people from group
-☐ Delete group
 
     

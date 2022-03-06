@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const { User } = require('../../models/index');
 
-async function UpdateUser(req, res, next) {
+async function UpdateUserDetails(req, res, next) {
     const { token, ...body } = req.body;
 
     if (body.email) {
@@ -25,4 +25,4 @@ async function UpdateUser(req, res, next) {
     return res.send('Account details changed.');
 }
 
-module.exports = UpdateUser;
+module.exports = UpdateUserDetails;
