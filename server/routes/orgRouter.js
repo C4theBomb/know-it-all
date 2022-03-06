@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const tokenAuth = require('../middleware/tokenAuth');
+const checkKnownOrg = require('../middleware/checkKnownOrg');
 
 const CreateOrg = require('./org/CreateOrg');
 const DeleteOrg = require('./org/DeleteOrg');
@@ -13,7 +14,7 @@ const RemoveOrgMember = require('./org/RemoveOrgMember');
 router.post('/create', tokenAuth, CreateOrg);
 router.delete('/delete', tokenAuth, DeleteOrg);
 router.patch('/update', tokenAuth, UpdateOrgDetails);
-router.get('/:orgID', tokenAuth, GetOrg);
+router.get('/:orgID', tokenAuth, checkKnownOrg, GetOrg);
 router.post('/:orgID/add', tokenAuth, AddOrgMember);
 router.post('/:orgID/delete', tokenAuth, RemoveOrgMember);
 

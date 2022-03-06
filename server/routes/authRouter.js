@@ -3,6 +3,7 @@ var router = express.Router();
 
 const basicAuth = require('../middleware/basicAuth');
 const tokenAuth = require('../middleware/tokenAuth');
+const checkKnownUser = require('../middleware/checkKnownUser');
 
 const CreateUser = require('./auth/CreateUser');
 const UpdateUserDetails = require('./auth/UpdateUserDetails');
@@ -16,7 +17,7 @@ router.post('/register', CreateUser);
 router.patch('/update', tokenAuth, UpdateUserDetails);
 router.post('/login', basicAuth, Login);
 router.post('/logout', tokenAuth, Logout);
-router.get('/:userID', tokenAuth, GetUserDetails);
+router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 router.get('/reset-password', RequestReset);
 router.patch('/reset-password/:id', ResetPassword);
 
