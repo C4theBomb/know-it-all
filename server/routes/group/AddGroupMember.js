@@ -1,4 +1,4 @@
-async function GetGroup(req, res, next) {
+async function AddOrgMember(req, res, next) {
     const user = req.user;
     const groupID = req.params.groupID;
 
@@ -8,7 +8,9 @@ async function GetGroup(req, res, next) {
         return res.status(500).send('No group exists with that id.');
     }
 
-    return res.send(result[0]);
+    await result[0].addGroupMember(user);
+
+    return res.send('User added to group.');
 }
 
-module.exports = GetGroup;
+module.exports = AddOrgMember;

@@ -1,4 +1,4 @@
-const { User, Organization } = require('../../models/index');
+const { User, Organization } = require('../models/index');
 
 async function GetOrg(req, res, next) {
     const user = req.user;

@@ -1,8 +1,3 @@
-Middleware:
-☐ Check group owner
-☐ Check if known user
-
-
 User:
 ✔ Create user @done(22-03-06 13:02)
 ✔ Update user @done(22-03-06 13:04)
@@ -15,17 +10,17 @@ User:
 Organization:
 ✔ Create organization @started(22-03-05 16:24) @done(22-03-05 16:51) @lasted(27m13s)
 ✔ Delete organization @started(22-03-05 17:04) @done(22-03-05 17:16) @lasted(12m)
-✔ Get organization @done(22-03-05 22:52)
 ✔ Edit organization details @done(22-03-05 19:21)
+✔ Get organization @done(22-03-05 22:52)
 ✔ Add people to organization @started(22-03-06 12:18) @done(22-03-06 12:34) @lasted(16m6s)
 ✔ Remove people from organization @started(22-03-06 12:36) @done(22-03-06 12:37) @lasted(1m38s)
 
 Groups:
 ✔ Create group @started(22-03-05 16:09) @done(22-03-05 16:24) @lasted(15m4s)
 ✔ Delete group @started(22-03-05 18:36) @done(22-03-05 18:53) @lasted(17m40s)
-☐ Get group
-☐ Edit group details
-☐ Add people to group
-☐ Remove people from group
+✔ Edit group details @done(22-03-06 13:39)
+✔ Get group @done(22-03-06 13:39)
+✔ Add people to group @done(22-03-06 13:45)
+✔ Remove people from group @done(22-03-06 13:45)
 
     
