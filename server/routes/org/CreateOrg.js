@@ -7,7 +7,7 @@ async function CreateOrg(req, res, next) {
     }
 
     const existing = user.getOwnedOrg();
-    if (existing == {}) {
+    if (existing) {
         return res
             .status(500)
             .send(

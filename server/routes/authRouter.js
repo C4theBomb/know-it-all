@@ -15,7 +15,7 @@ const ResetPassword = require('./auth/ResetPassword');
 router.post('/register', CreateUser);
 router.post('/login', basicAuth, Login);
 router.post('/logout', tokenAuth, Logout);
-router.get('/', tokenAuth, GetUserDetails);
+router.get('/:userID', tokenAuth, GetUserDetails);
 router.patch('/update', tokenAuth, UpdateUserDetails);
 router.get('/reset-password', RequestReset);
 router.patch('/reset-password/:id', ResetPassword);
