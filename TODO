@@ -1,20 +1,29 @@
+Middleware:
+☐ Check group owner
+☐ Check if known user
+
+
 User:
+✔ Create user @done(22-03-06 13:02)
+✔ Update user @done(22-03-06 13:04)
+✔ User login @done(22-03-06 13:03)
 ✔ User logout @done(22-03-05 19:05)
+✔ Get user details @done(22-03-06 13:03)
+✔ Request password reset @done(22-03-06 13:03)
+✔ Reset password @done(22-03-06 13:04)
 
 Organization:
 ✔ Create organization @started(22-03-05 16:24) @done(22-03-05 16:51) @lasted(27m13s)
 ✔ Delete organization @started(22-03-05 17:04) @done(22-03-05 17:16) @lasted(12m)
-✔ Get organization members @done(22-03-05 22:52)
-✔ Get organization details @started(22-03-05 19:33) @done(22-03-05 20:08) @lasted(35m42s)
+✔ Get organization @done(22-03-05 22:52)
 ✔ Edit organization details @done(22-03-05 19:21)
 ✔ Add people to organization @started(22-03-06 12:18) @done(22-03-06 12:34) @lasted(16m6s)
-☐ Remove people from organization
+✔ Remove people from organization @started(22-03-06 12:36) @done(22-03-06 12:37) @lasted(1m38s)
 
 Groups:
 ✔ Create group @started(22-03-05 16:09) @done(22-03-05 16:24) @lasted(15m4s)
 ✔ Delete group @started(22-03-05 18:36) @done(22-03-05 18:53) @lasted(17m40s)
-☐ Get group members
-☐ Get group details
+☐ Get group
 ☐ Edit group details
 ☐ Add people to group
 ☐ Remove people from group
