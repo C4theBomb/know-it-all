@@ -1,4 +1,4 @@
-var { Sequelize, Options } = require('sequelize');
+var { Sequelize } = require('sequelize');
 var configs = require('./config/config.js');
 
 const env = process.env.NODE_ENV;

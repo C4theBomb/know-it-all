@@ -60,13 +60,8 @@ async function initModels(sequelize) {
     Token.belongsTo(User, { foreignKey: 'userID' });
     ResetRequest.belongsTo(User, { foreignKey: 'userID' });
 
-    if (process.env.NODE_ENV == 'development') {
-        await Organization.drop();
-        await Group.drop();
-        await ResetRequest.drop();
-        await sequelize.sync({ alter: true });
-    } else {
-        await sequelize.sync({ alter: true });
+    if (process.env.MIGRATE == 'true') {
+        await sequelize.sync({ force: true });
     }
 
     return { User, Group, Organization, Token, ResetRequest };
