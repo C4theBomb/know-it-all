@@ -44,13 +44,14 @@ async function initModels(sequelize) {
         foreignKey: 'groupID',
     });
 
-    Organization.belongsTo(User, { foreignKey: 'ownerID' });
+    Organization.belongsTo(User, { as: 'orgOwner', foreignKey: 'ownerID' });
     Organization.hasMany(Group, {
         as: 'groupOwner',
         foreignKey: 'ownerID',
         onDelete: 'CASCADE',
     });
     Organization.belongsToMany(User, {
+        as: 'orgMembers',
         through: 'orgUsers',
         uniqueKey: 'orgID',
     });
@@ -59,6 +60,7 @@ async function initModels(sequelize) {
     ResetRequest.belongsTo(User, { foreignKey: 'userID' });
 
     if (process.env.MIGRATE == 'true') {
+        console.log('[INFO]: Formatting all tables');
         await sequelize.sync({ force: true });
     }
 
