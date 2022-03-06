@@ -4,7 +4,7 @@ User:
 Organization:
 ✔ Create organization @started(22-03-05 16:24) @done(22-03-05 16:51) @lasted(27m13s)
 ✔ Delete organization @started(22-03-05 17:04) @done(22-03-05 17:16) @lasted(12m)
-☐ Get organization members
+✔ Get organization members @done(22-03-05 22:52)
 ✔ Get organization details @started(22-03-05 19:33) @done(22-03-05 20:08) @lasted(35m42s)
 ✔ Edit organization details @done(22-03-05 19:21)
 ☐ Add people to organization
