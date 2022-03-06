@@ -22,7 +22,7 @@ async function UpdateUserDetails(req, res, next) {
     }
 
     req.user.update({ ...body });
-    return res.send('Account details changed.');
+    return res.send(req.user);
 }
 
 module.exports = UpdateUserDetails;
