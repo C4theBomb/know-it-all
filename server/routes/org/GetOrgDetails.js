@@ -6,7 +6,8 @@ async function GetOrgDetails(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID;
 
-    const result = await Organization.findOne({
+    const result = await Organization.findOne({ where: { orgID: orgID } });
+    const check = await Organization.findOne({
         where: { orgID: orgID },
         include: [
             {
@@ -24,18 +25,17 @@ async function GetOrgDetails(req, res, next) {
         ],
     });
 
-    if (!result) {
+    if (!check) {
         return res.status(500).send('There is no organization with this id.');
     }
 
-    // if (!result.orgOwner && result.orgMembers.length == 0) {
-    //     return res
-    //         .status(500)
-    //         .send('You do not know any organizations with this id.');
-    // }
+    if (!check.orgOwner && check.orgMembers.length == 0) {
+        return res
+            .status(500)
+            .send('You do not know any organizations with this id.');
+    }
 
-    const { orgOwner, orgMembers, ...newResult } = result;
-    return res.send(newResult.dataValues);
+    return res.send(result);
 }
 
 module.exports = GetOrgDetails;

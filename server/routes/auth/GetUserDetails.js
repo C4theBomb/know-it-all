@@ -8,7 +8,9 @@ async function GetUserDetails(req, res, next) {
         return res.send(user);
     }
 
-    const result = await User.findOne({
+    const result = await User.findOne({ where: { userID: userID } });
+
+    const check = await User.findOne({
         where: { userID: userID },
         include: [
             {
@@ -42,20 +44,19 @@ async function GetUserDetails(req, res, next) {
         ],
     });
 
-    if (!result) {
+    if (!check) {
         return res.status(500).send('No user with that ID exists.');
     }
 
-    const filteredResult = result.memberOrgs.filter(
+    const filteredCheck = check.memberOrgs.filter(
         (org) => org.orgMembers.length != 0 || org_owner
     );
 
-    if (filteredResult.length == 0 && result.ownedOrg.orgMembers.length == 0) {
+    if (filteredCheck.length == 0 && check.ownedOrg.orgMembers.length == 0) {
         return res.status(403).send('You do not have contact with this user.');
     }
 
-    const { memberOrgs, ownedOrg, ...newResult } = result;
-    return res.send(newResult.dataValues);
+    return res.send(result);
 }
 
 module.exports = GetUserDetails;
