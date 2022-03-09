@@ -25,7 +25,7 @@ function Header() {
     });
 
     async function handleLogout() {
-        await axios.post(`http://localhost:3000/api/auth/logout`, {
+        await axios.post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
             token: Cookies.get('token'),
         });
         Cookies.remove('token');

@@ -16,7 +16,7 @@ function Reset() {
         const name = e.target.name;
         const value = e.target.value;
 
-        setForm(() => {
+        setForm((form) => {
             return { ...form, [name]: value };
         });
     }
@@ -24,7 +24,7 @@ function Reset() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .patch(`http://localhost:3000/api/auth/reset-password/${id}`, {
+            .patch(`${process.env.DOMAIN_ROOT}/auth/reset-password/${id}`, {
                 password: form.password,
             })
             .then(() => {

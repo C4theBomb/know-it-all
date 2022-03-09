@@ -13,7 +13,7 @@ function Recover() {
         const name = e.target.name;
         const value = e.target.value;
 
-        setForm(() => {
+        setForm((form) => {
             return { ...form, [name]: value };
         });
     }
@@ -21,7 +21,7 @@ function Recover() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .get(`http://localhost:3000/api/auth/reset-password?${form.email}`)
+            .get(`${process.env.DOMAIN_ROOT}/auth/reset-password?${form.email}`)
             .then((response) => {
                 setSuccess(() => response.data);
             })

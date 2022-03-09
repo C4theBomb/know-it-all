@@ -26,7 +26,7 @@ function Login() {
         if (Cookies.get('token')) {
             async function logout() {
                 await axios
-                    .post(`http://localhost:3000/api/auth/logout`, {
+                    .post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
                         token: Cookies.get('token'),
                     })
                     .catch((e) => console.log(e));
@@ -40,7 +40,7 @@ function Login() {
         const name = e.target.name;
         const value = e.target.value;
 
-        setForm(() => {
+        setForm((form) => {
             return { ...form, [name]: value };
         });
     }
@@ -57,7 +57,7 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .post('http://localhost:3000/api/auth/login', form)
+            .post(`${process.env.DOMAIN_ROOT}/auth/login`, form)
             .then((response) => {
                 Cookies.set('token', response.data, {
                     expires: form.remember ? 3650 : 1,

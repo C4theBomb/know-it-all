@@ -23,7 +23,7 @@ function Register() {
         const name = e.target.name;
         const value = e.target.value;
 
-        setForm(() => {
+        setForm((form) => {
             return { ...form, [name]: value };
         });
     }
@@ -33,7 +33,7 @@ function Register() {
 
         const { confirmPassword, ...filteredForm } = form;
         await axios
-            .post('http://localhost:3000/api/auth/register', filteredForm)
+            .post(`${process.env.DOMAIN_ROOT}/auth/register`, filteredForm)
             .then(() => {
                 navigate('/login');
             })

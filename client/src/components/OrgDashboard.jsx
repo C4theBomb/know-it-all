@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
+import Cookies from 'js-cookie';
 import {
     Typography,
     Grid,
@@ -12,33 +15,64 @@ import Dashboard from './Dashboard';
 
 function OrgDashboard() {
     const [org, setOrg] = useState({
-        orgID: '1234',
-        orgName: 'Org 1',
+        orgID: '',
+        orgName: '',
         orgOwner: {
-            firstName: 'C4',
-            lastName: 'Patino',
-            email: 'c4patino@gmail.com',
+            firstName: '',
+            lastName: '',
+            email: '',
         },
         orgMembers: [],
     });
+    const [rows, setRows] = useState([]);
+    const { orgID } = useParams();
 
-    const rows = useState([
-        {
-            id: 1,
-            firstName: 'Ceferino',
-            lastName: 'Patino',
-            nickname: 'C4',
-            namePronounciation: '',
-            pronouns: 'he/him',
-            email: 'c4patino@gmail.com',
-        },
-    ]);
+    useEffect(() => {
+        async function getData() {
+            await axios
+                .get(
+                    `${
+                        process.env.DOMAIN_ROOT
+                    }/org/${orgID}?token=${Cookies.get('token')}`
+                )
+                .then((response) => {
+                    const res = response.data;
+                    setOrg(() => {
+                        return {
+                            orgID: res.orgID,
+                            orgName: res.orgName,
+                            orgOwner: {
+                                firstName: res.orgOwner.firstName,
+                                lastName: res.orgOwner.lastName,
+                                email: res.orgOwner.email,
+                            },
+                            orgMembers: res.orgMembers,
+                        };
+                    });
+
+                    const orgMembers = res.orgMembers.map((member, index) => {
+                        return {
+                            id: index,
+                            firstName: member.firstName,
+                            lastName: member.lastName,
+                            nickname: member.nickname,
+                            namePronounciation: member.pronounciation,
+                            pronouns: member.pronouns,
+                            email: member.email,
+                        };
+                    });
+                    setRows(() => orgMembers);
+                });
+        }
+
+        getData();
+    });
 
     return (
         <Dashboard rows={rows}>
             <Typography variant='h6'>Organizations/{org.orgName}</Typography>
             <Box sx={{ marginTop: '1vh' }}>
-                <Grid container>
+                <Grid container columns={{ xs: 3, md: 12 }}>
                     <Grid item xs={3}>
                         <Stack spacing={2}>
                             <Typography variant='body1'>
