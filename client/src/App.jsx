@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -7,6 +7,7 @@ import Header from './components/Header';
 import Form from './components/Form';
 import Login from './components/Login';
 import Register from './components/Register';
+import EditUser from './components/EditUser';
 import Recover from './components/Recover';
 import Reset from './components/Reset';
 
@@ -25,9 +26,10 @@ function App() {
 
                         <Route path='login' element={<Login />} />
                         <Route path='register' element={<Register />} />
+                        <Route path='update' element={<EditUser />} />
                         <Route path='recover' element={<Form />}>
-                            <Route path=':id' element={<Reset />} />
                             <Route index element={<Recover />} />
+                            <Route path=':id' element={<Reset />} />
                         </Route>
 
                         <Route path='org'>

@@ -29,6 +29,7 @@ function Header() {
             token: Cookies.get('token'),
         });
         Cookies.remove('token');
+        Cookies.remove('userID');
     }
 
     useEffect(() => {

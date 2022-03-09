@@ -33,6 +33,7 @@ function Login() {
             }
             logout();
             Cookies.remove('token');
+            Cookies.remove('userID');
         }
     });
 
@@ -59,7 +60,10 @@ function Login() {
         await axios
             .post(`${process.env.DOMAIN_ROOT}/auth/login`, form)
             .then((response) => {
-                Cookies.set('token', response.data, {
+                Cookies.set('token', response.data.token, {
+                    expires: form.remember ? 3650 : 1,
+                });
+                Cookies.set('userID', response.data.userID, {
                     expires: form.remember ? 3650 : 1,
                 });
                 navigate('/');

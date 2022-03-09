@@ -18,5 +18,8 @@
         "express-generator": "^4.2.0",
         "js-cookie": "^3.0.1",
         "sqlite3": "^4.2.0"
+    },
+    "devDependencies": {
+        "sequelize-cli": "^6.4.1"
     }
 }
