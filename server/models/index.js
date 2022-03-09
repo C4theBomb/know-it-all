@@ -34,7 +34,7 @@ async function initModels(sequelize) {
         foreignKey: 'userID',
     });
 
-    Group.belongsTo(User, { as: 'userOwner', foreignKey: 'ownerID' });
+    Group.belongsTo(User, { as: 'groupOwner', foreignKey: 'ownerID' });
     Group.belongsToMany(User, {
         as: 'groupMembers',
         through: 'GroupMembers',

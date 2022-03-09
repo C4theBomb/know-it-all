@@ -8,14 +8,12 @@ async function GetOrg(req, res, next) {
         where: { orgID: orgID },
         include: [
             {
-                model: User,
-                as: 'orgOwner',
+                association: 'orgOwner',
                 where: { userID: user.userID },
                 required: false,
             },
             {
-                model: User,
-                as: 'orgMembers',
+                association: 'orgMembers',
                 where: { userID: user.userID },
                 required: false,
             },

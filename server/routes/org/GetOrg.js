@@ -4,12 +4,16 @@ async function GetOrg(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID;
 
-    const result = await Organization.findOne({
-        where: { orgID: orgID },
-        include: { model: User, as: 'orgMembers', required: false },
+    const org = await Organization.findByPk(orgID, {
+        include: [
+            { association: 'orgOwner', required: false },
+            { association: 'orgMembers', required: false },
+        ],
     });
 
-    return res.send(result);
+    const status = org.orgOwner.userID == user.userID;
+
+    return res.send({ org, status });
 }
 
 module.exports = GetOrg;
