@@ -14,9 +14,6 @@ class Organization extends Model {
                     type: DataTypes.STRING,
                     allowNull: false,
                 },
-                createdAt: {
-                    type: DataTypes.DATE,
-                },
             },
             { sequelize }
         );
