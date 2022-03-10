@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import {
@@ -26,6 +26,7 @@ function OrgDashboard() {
     });
     const [rows, setRows] = useState([]);
     const { orgID } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         async function getData() {
@@ -62,6 +63,9 @@ function OrgDashboard() {
                         };
                     });
                     setRows(() => orgMembers);
+                })
+                .catch((error) => {
+                    navigate('/');
                 });
         }
 
