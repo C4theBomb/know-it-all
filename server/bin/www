@@ -8,8 +8,7 @@ var debug = require('debug')('server:server');
 var http = require('http');
 require('dotenv').config({ path: '../.env' });
 
-var db = require('../db');
-var { initModels } = require('../models/index');
+var { sequelize } = require('../models/index');
 
 /**
  * Get port from environment and store in Express.
@@ -83,12 +82,15 @@ function onError(error) {
  */
 
 async function onListening() {
-    initModels(db);
     try {
-        await db.authenticate();
+        await sequelize.authenticate();
         console.log(
             `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
         );
+        if (process.env.NODE_ENV === 'development') {
+            await sequelize.sync();
+            console.log('[INFO]: Wiping all tables on database');
+        }
     } catch (error) {
         console.error('Unable to connect to the database:', error);
     }

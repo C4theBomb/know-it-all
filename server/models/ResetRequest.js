@@ -1,21 +1,22 @@
-const { v4: uuidv4 } = require('uuid');
-const { DataTypes, Model } = require('sequelize');
+const { Model } = require('sequelize');
 
-class ResetRequest extends Model {
-    static initModel(sequelize) {
-        ResetRequest.init(
-            {
-                reqID: {
-                    type: DataTypes.STRING,
-                    primaryKey: true,
-                    defaultValue: uuidv4,
-                },
-            },
-            { sequelize }
-        );
-
-        return ResetRequest;
+module.exports = (sequelize, DataTypes) => {
+    class ResetRequest extends Model {
+        static associate(models) {
+            ResetRequest.belongsTo(models.User, { foreignKey: 'userID' });
+        }
     }
-}
 
-module.exports = ResetRequest;
+    ResetRequest.init(
+        {
+            reqID: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+            },
+        },
+        { sequelize }
+    );
+
+    return ResetRequest;
+};

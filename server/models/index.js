@@ -1,62 +1,39 @@
-const User = require('./User');
-const Group = require('./Group');
-const Organization = require('./Organization');
-const Token = require('./Token');
-const ResetRequest = require('./ResetRequest');
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const basename = path.basename(__filename);
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
+const db = {};
 
-async function initModels(sequelize) {
-    User.initModel(sequelize);
-    Organization.initModel(sequelize);
-    Group.initModel(sequelize);
-    Token.initModel(sequelize);
-    ResetRequest.initModel(sequelize);
+const sequelize = new Sequelize({
+    ...config,
+    logging: false,
+});
 
-    User.hasOne(Token, { foreignKey: 'userID', onDelete: 'CASCADE' });
-    User.hasOne(ResetRequest, { foreignKey: 'userID', onDelete: 'CASCADE' });
-    User.hasMany(Group, {
-        as: 'ownedGroups',
-        foreignKey: 'ownerID',
-        onDelete: 'CASCADE',
-    });
-    User.belongsToMany(Group, {
-        as: 'memberGroups',
-        through: 'groupUsers',
-        foreignKey: 'userID',
-    });
-    User.hasOne(Organization, {
-        as: 'ownedOrg',
-        foreignKey: 'ownerID',
-        onDelete: 'CASCADE',
-    });
-    User.belongsToMany(Organization, {
-        as: 'memberOrgs',
-        through: 'orgUsers',
-        foreignKey: 'userID',
+fs.readdirSync(__dirname)
+    .filter((file) => {
+        return (
+            file.indexOf('.') !== 0 &&
+            file !== basename &&
+            file.slice(-3) === '.js'
+        );
+    })
+    .forEach((file) => {
+        const model = require(path.join(__dirname, file))(
+            sequelize,
+            Sequelize.DataTypes
+        );
+        db[model.name] = model;
     });
 
-    Group.belongsTo(User, { as: 'groupOwner', foreignKey: 'ownerID' });
-    Group.belongsToMany(User, {
-        as: 'groupMembers',
-        through: 'GroupMembers',
-        foreignKey: 'groupID',
-    });
-
-    Organization.belongsTo(User, { as: 'orgOwner', foreignKey: 'ownerID' });
-    Organization.belongsToMany(User, {
-        as: 'orgMembers',
-        through: 'OrgMembers',
-        uniqueKey: 'orgID',
-    });
-
-    Token.belongsTo(User, { foreignKey: 'userID' });
-    ResetRequest.belongsTo(User, { foreignKey: 'userID' });
-
-    if (process.env.NODE_ENV == 'development') {
-        console.log('[INFO]: Formatting all tables');
-        await sequelize.sync({ force: true });
+Object.keys(db).forEach((modelName) => {
+    if (db[modelName].associate) {
+        db[modelName].associate(db);
     }
+});
 
-    return { User, Group, Organization, Token, ResetRequest };
-}
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
-module.exports = { User, Organization, Group, Token, ResetRequest, initModels };
+module.exports = db;

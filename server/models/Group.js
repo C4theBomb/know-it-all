@@ -1,28 +1,37 @@
-const { v4: uuidv4 } = require('uuid');
-const { DataTypes, Model } = require('sequelize');
+const { Model } = require('sequelize');
 
-class Group extends Model {
-    static initModel(sequelize) {
-        Group.init(
-            {
-                groupID: {
-                    type: DataTypes.STRING,
-                    primaryKey: true,
-                    defaultValue: uuidv4,
-                },
-                groupName: {
-                    type: DataTypes.STRING,
-                    allowNull: false,
-                },
-                createdAt: {
-                    type: DataTypes.DATE,
-                },
-            },
-            { sequelize }
-        );
-
-        return Group;
+module.exports = (sequelize, DataTypes) => {
+    class Group extends Model {
+        static associate(models) {
+            Group.belongsTo(models.User, {
+                as: 'groupOwner',
+                foreignKey: 'ownerID',
+            });
+            Group.belongsToMany(models.User, {
+                as: 'groupMembers',
+                through: 'GroupMembers',
+                foreignKey: 'groupID',
+            });
+        }
     }
-}
 
-module.exports = Group;
+    Group.init(
+        {
+            groupID: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            groupName: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+            createdAt: {
+                type: DataTypes.DATE,
+            },
+        },
+        { sequelize }
+    );
+
+    return Group;
+};

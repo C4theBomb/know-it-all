@@ -1,25 +1,34 @@
-const { v4: uuidv4 } = require('uuid');
-const { DataTypes, Model } = require('sequelize');
+const { Model } = require('sequelize');
 
-class Organization extends Model {
-    static initModel(sequelize) {
-        Organization.init(
-            {
-                orgID: {
-                    type: DataTypes.STRING,
-                    primaryKey: true,
-                    defaultValue: uuidv4,
-                },
-                orgName: {
-                    type: DataTypes.STRING,
-                    allowNull: false,
-                },
-            },
-            { sequelize }
-        );
-
-        return Organization;
+module.exports = (sequelize, DataTypes) => {
+    class Organization extends Model {
+        static associate(models) {
+            Organization.belongsTo(models.User, {
+                as: 'orgOwner',
+                foreignKey: 'ownerID',
+            });
+            Organization.belongsToMany(models.User, {
+                as: 'orgMembers',
+                through: 'OrgMembers',
+                uniqueKey: 'orgID',
+            });
+        }
     }
-}
 
-module.exports = Organization;
+    Organization.init(
+        {
+            orgID: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            orgName: {
+                type: DataTypes.STRING,
+                allowNull: false,
+            },
+        },
+        { sequelize }
+    );
+
+    return Organization;
+};

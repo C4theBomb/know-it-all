@@ -1,25 +1,26 @@
-const { v4: uuidv4 } = require('uuid');
-const { DataTypes, Model } = require('sequelize');
+const { Model } = require('sequelize');
 
-class Token extends Model {
-    static initModel(sequelize) {
-        Token.init(
-            {
-                tokenID: {
-                    type: DataTypes.STRING,
-                    primaryKey: true,
-                    defaultValue: uuidv4,
-                },
-                expires: {
-                    type: DataTypes.BOOLEAN,
-                    defaultValue: true,
-                },
-            },
-            { sequelize }
-        );
-
-        return Token;
+module.exports = (sequelize, DataTypes) => {
+    class Token extends Model {
+        static associate(models) {
+            Token.belongsTo(models.User, { foreignKey: 'userID' });
+        }
     }
-}
 
-module.exports = Token;
+    Token.init(
+        {
+            tokenID: {
+                type: DataTypes.UUID,
+                primaryKey: true,
+                defaultValue: DataTypes.UUIDV4,
+            },
+            expires: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true,
+            },
+        },
+        { sequelize }
+    );
+
+    return Token;
+};
