@@ -13,6 +13,7 @@ const RequestReset = require('./auth/RequestReset');
 const ResetPassword = require('./auth/ResetPassword');
 const GetUserDetails = require('./auth/GetUserDetails');
 const GetKnownOrgs = require('./auth/GetKnownOrgs');
+const GetOwnedGroups = require('./auth/GetOwnedGroups');
 
 router.post('/register', CreateUser);
 router.patch('/update', tokenAuth, UpdateUserDetails);
@@ -23,5 +24,6 @@ router.patch('/reset-password/:id', ResetPassword);
 
 router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 router.get('/orgs', tokenAuth, GetKnownOrgs);
+router.get('/groups', tokenAuth, GetOwnedGroups);
 
 module.exports = router;
