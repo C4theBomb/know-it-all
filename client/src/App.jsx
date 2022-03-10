@@ -14,6 +14,8 @@ import Reset from './components/Reset';
 import JoinedOrgs from './components/JoinedOrgs';
 import OrgDashboard from './components/OrgDashboard';
 
+import OwnedGroups from './components/OwnedGroups';
+
 import NotFound from './components/NotFound';
 
 function App() {
@@ -34,13 +36,11 @@ function App() {
 
                         <Route path='org'>
                             <Route index element={<JoinedOrgs />} />
-                            <Route path=':id'>
-                                <Route index element={<OrgDashboard />} />
-                            </Route>
+                            <Route path=':id' element={<OrgDashboard />} />
                         </Route>
 
                         <Route path='group'>
-                            <Route index />
+                            <Route index element={<OwnedGroups />} />
                             <Route path=':id' />
                         </Route>
 

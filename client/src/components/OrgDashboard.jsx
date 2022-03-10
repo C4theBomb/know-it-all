@@ -23,6 +23,7 @@ function OrgDashboard() {
             email: '',
         },
         orgMembers: [],
+        createdAt: '',
     });
     const [rows, setRows] = useState([]);
     const { orgID } = useParams();
@@ -48,6 +49,7 @@ function OrgDashboard() {
                                 email: res.orgOwner.email,
                             },
                             orgMembers: res.orgMembers,
+                            createdAt: res.createdAt,
                         };
                     });
 
@@ -83,7 +85,7 @@ function OrgDashboard() {
                                 Organization ID: {org.orgID}
                             </Typography>
                             <Typography variant='body1'>
-                                Members: {org.orgMembers}
+                                Members: {org.orgMembers.length}
                             </Typography>
                             <Typography variant='body1'>
                                 Created On: {org.createdAt}
