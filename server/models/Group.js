@@ -6,11 +6,13 @@ module.exports = (sequelize, DataTypes) => {
             Group.belongsTo(models.User, {
                 as: 'groupOwner',
                 foreignKey: 'ownerID',
+                onDelete: 'CASCADE',
             });
             Group.belongsToMany(models.User, {
                 as: 'groupMembers',
                 through: 'GroupMembers',
                 foreignKey: 'groupID',
+                onDelete: 'CASCADE',
             });
         }
     }

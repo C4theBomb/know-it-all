@@ -6,11 +6,13 @@ module.exports = (sequelize, DataTypes) => {
             Organization.belongsTo(models.User, {
                 as: 'orgOwner',
                 foreignKey: 'ownerID',
+                onDelete: 'CASCADE',
             });
             Organization.belongsToMany(models.User, {
                 as: 'orgMembers',
                 through: 'OrgMembers',
                 uniqueKey: 'orgID',
+                onDelete: 'CASCADE',
             });
         }
     }

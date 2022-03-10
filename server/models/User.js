@@ -30,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
                 as: 'memberOrgs',
                 through: 'orgUsers',
                 foreignKey: 'userID',
+                onDelete: 'CASCADE',
             });
         }
     }
