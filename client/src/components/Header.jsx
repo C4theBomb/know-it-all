@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Outlet, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import {
     AppBar,
     Button,
@@ -24,6 +26,10 @@ function Header() {
         },
     });
 
+    useEffect(() => {
+        setToken(() => Cookies.get('token'));
+    }, [navigate]);
+
     async function handleLogout() {
         await axios.post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
             token: Cookies.get('token'),
@@ -31,10 +37,6 @@ function Header() {
         Cookies.remove('token');
         Cookies.remove('userID');
     }
-
-    useEffect(() => {
-        setToken(() => Cookies.get('token'));
-    }, [navigate]);
 
     return (
         <React.Fragment>

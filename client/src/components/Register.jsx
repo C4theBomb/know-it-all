@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
+
 import { Box, Typography, TextField, Button } from '@mui/material';
 
 import Form from './Form';
 
 function Register() {
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
@@ -17,7 +21,6 @@ function Register() {
         confirmPassword: '',
     });
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     function handleChange(e) {
         const name = e.target.name;

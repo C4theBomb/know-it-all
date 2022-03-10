@@ -1,5 +1,6 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+
 import { Box, Grid, Paper } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 

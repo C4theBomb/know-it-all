@@ -1,11 +1,14 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+
 import { Paper, Box, IconButton } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
 import { useTheme } from '@mui/material/styles';
+import { DataGrid } from '@mui/x-data-grid';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 function Dashboard({ children, rows }) {
+    const theme = useTheme();
+
     const columns = [
         { field: 'id', headerName: 'ID', flex: 1 },
         { field: 'firstName', headerName: 'First Name', flex: 3 },
@@ -31,7 +34,6 @@ function Dashboard({ children, rows }) {
         { field: 'pronouns', headerName: 'Pronouns', flex: 2 },
         { field: 'email', headerName: 'Email', flex: 10, sortable: false },
     ];
-    const theme = useTheme();
 
     return (
         <React.Fragment>

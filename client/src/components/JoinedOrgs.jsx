@@ -1,14 +1,36 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Paper, Typography, Box } from '@mui/material';
+
+import { Paper, Typography, Box, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import OrgUnit from './OrgUnit';
+function OrgUnit({ org }) {
+    const { orgID, orgName, memberCount, orgCreatedAt } = org;
+
+    return (
+        <React.Fragment>
+            <Link to={orgID}>Name: {orgName}</Link>
+            <Box>
+                <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
+                    <Typography variant='body1'>
+                        Members: {memberCount}
+                    </Typography>
+                    <Typography variant='body1'>
+                        Created On: {orgCreatedAt}
+                    </Typography>
+                </Stack>
+            </Box>
+        </React.Fragment>
+    );
+}
 
 function JoinedOrgs() {
-    const [orgs, setOrgs] = useState([]);
     const theme = useTheme();
+
+    const [orgs, setOrgs] = useState([]);
 
     useEffect(() => {
         async function getOrgs() {

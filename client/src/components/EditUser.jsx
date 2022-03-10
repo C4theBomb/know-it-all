@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import { Box, Typography, TextField, Button } from '@mui/material';
 
 import Form from './Form';
 
 function EditUser() {
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
@@ -16,7 +20,6 @@ function EditUser() {
         ethnicity: '',
     });
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 

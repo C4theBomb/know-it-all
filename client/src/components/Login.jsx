@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import {
     Box,
     Typography,
@@ -14,13 +16,14 @@ import {
 import Form from './Form';
 
 function Login() {
+    const navigate = useNavigate();
+
     const [form, setForm] = useState({
         email: '',
         password: '',
         remember: false,
     });
     const [error, setError] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (Cookies.get('token')) {

@@ -1,10 +1,31 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { Paper, Typography, Box } from '@mui/material';
+
+import { Paper, Typography, Box, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import GroupUnit from './GroupUnit';
+function GroupUnit({ group }) {
+    const { groupID, groupName, memberCount, groupCreatedAt } = group;
+
+    return (
+        <React.Fragment>
+            <Link to={groupID}>Name: {groupName}</Link>
+            <Box>
+                <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
+                    <Typography variant='body1'>
+                        Members: {memberCount}
+                    </Typography>
+                    <Typography variant='body1'>
+                        Created On: {groupCreatedAt}
+                    </Typography>
+                </Stack>
+            </Box>
+        </React.Fragment>
+    );
+}
 
 function JoinedOrgs() {
     const [groups, setGroups] = useState([]);

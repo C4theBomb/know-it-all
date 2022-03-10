@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import { Typography, Grid, Stack, Box } from '@mui/material';
 
 import Dashboard from './Dashboard';
 
-function OrgDashboard() {
+function GroupDashboard() {
     const navigate = useNavigate();
     const { groupID } = useParams();
+
     const [group, setGroup] = useState({
         groupID: '',
         groupName: '',
@@ -82,4 +85,4 @@ function OrgDashboard() {
     );
 }
 
-export default OrgDashboard;
+export default GroupDashboard;

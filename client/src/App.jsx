@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -15,6 +14,7 @@ import JoinedOrgs from './components/JoinedOrgs';
 import OrgDashboard from './components/OrgDashboard';
 
 import OwnedGroups from './components/OwnedGroups';
+import GroupDashboard from './componenets/GroupDashboard';
 
 import NotFound from './components/NotFound';
 
@@ -41,7 +41,7 @@ function App() {
 
                         <Route path='group'>
                             <Route index element={<OwnedGroups />} />
-                            <Route path=':id' />
+                            <Route path=':id' element={<GroupDashboard />} />
                         </Route>
 
                         <Route path='*' element={<NotFound />} />

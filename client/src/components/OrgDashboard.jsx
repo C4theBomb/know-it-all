@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 import {
     Typography,
     Grid,
@@ -14,6 +16,9 @@ import {
 import Dashboard from './Dashboard';
 
 function OrgDashboard() {
+    const { orgID } = useParams();
+    const navigate = useNavigate();
+
     const [org, setOrg] = useState({
         orgID: '',
         orgName: '',
@@ -26,8 +31,6 @@ function OrgDashboard() {
         createdAt: '',
     });
     const [rows, setRows] = useState([]);
-    const { orgID } = useParams();
-    const navigate = useNavigate();
 
     useEffect(() => {
         async function getData() {

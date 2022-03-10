@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
 import axios from 'axios';
+
 import { Box, Typography, TextField, Button } from '@mui/material';
 
 function Reset() {
+    const navigate = useNavigate();
+    const { id } = useParams();
+
     const [form, setForm] = useState({
         password: '',
         confirmPassword: '',
     });
     const [error, setError] = useState('');
-    const navigate = useNavigate();
-    const { id } = useParams();
 
     function handleChange(e) {
         const name = e.target.name;
