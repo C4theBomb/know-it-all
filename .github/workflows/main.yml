@@ -28,11 +28,11 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           key: ${{secrets.SSH_KEY}}
           script: |
-            cd ~/node-test-site/
+            cd /home/c4patino/node-test-site/
             git pull
             npm run install-all
             npm run build
-            cd ~
+            cd ..
             chmod -R c4patino:www-data
             chown -R 775
             pm2 restart node-test-site
