@@ -27,6 +27,7 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
+          debug: true
           script: |
             cd /home/c4patino/node-test-site/
             git pull
