@@ -5,8 +5,8 @@ name: Deploy node-test-site
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the production branch
-#   push:
-#     branches: [ production ]
+  push:
+    branches: [ production ]
 #   pull_request:
 #     branches: [ production ]
 
