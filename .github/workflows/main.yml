@@ -1,12 +1,12 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Deploy node-test-site
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the production branch
-#   push:
-#     branches: [ production ]
+  push:
+    branches: [ production ]
 #   pull_request:
 #     branches: [ production ]
 
@@ -28,11 +28,11 @@ jobs:
           username: ${{secrets.SSH_USERNAME}}
           key: ${{secrets.SSH_KEY}}
           script: |
-            cd ~/node-test-site/
+            cd /home/c4patino/node-test-site/
             git pull
             npm run install-all
             npm run build
-            cd ~
+            cd ..
             chmod -R c4patino:www-data
             chown -R 775
             pm2 restart node-test-site
