@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Header from './components/Header';
+import MainPage from './components/MainPage';
 
 import Form from './components/Form';
 import Login from './components/Login';
@@ -13,9 +14,6 @@ import Reset from './components/Reset';
 import JoinedOrgs from './components/JoinedOrgs';
 import OrgDashboard from './components/OrgDashboard';
 
-import OwnedGroups from './components/OwnedGroups';
-import GroupDashboard from './componenets/GroupDashboard';
-
 import NotFound from './components/NotFound';
 
 function App() {
@@ -24,7 +22,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='' element={<Header />}>
-                        <Route index />
+                        <Route index element={<MainPage />} />
 
                         <Route path='login' element={<Login />} />
                         <Route path='register' element={<Register />} />
@@ -34,14 +32,9 @@ function App() {
                             <Route path=':id' element={<Reset />} />
                         </Route>
 
-                        <Route path='org'>
+                        <Route path=''>
                             <Route index element={<JoinedOrgs />} />
                             <Route path=':id' element={<OrgDashboard />} />
-                        </Route>
-
-                        <Route path='group'>
-                            <Route index element={<OwnedGroups />} />
-                            <Route path=':id' element={<GroupDashboard />} />
                         </Route>
 
                         <Route path='*' element={<NotFound />} />

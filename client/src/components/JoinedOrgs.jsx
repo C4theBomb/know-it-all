@@ -8,18 +8,20 @@ import { Paper, Typography, Box, Stack } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 function OrgUnit({ org }) {
-    const { orgID, orgName, memberCount, orgCreatedAt } = org;
+    const { orgID, orgName, memberCount, createdAt } = org;
 
     return (
         <React.Fragment>
-            <Link to={orgID}>Name: {orgName}</Link>
+            <Typography variant='h6'>
+                <Link to={orgID}>Name: {orgName}</Link>
+            </Typography>
             <Box>
                 <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
                     <Typography variant='body1'>
                         Members: {memberCount}
                     </Typography>
                     <Typography variant='body1'>
-                        Created On: {orgCreatedAt}
+                        Created On: {createdAt}
                     </Typography>
                 </Stack>
             </Box>
@@ -47,7 +49,7 @@ function JoinedOrgs() {
                                 orgID: org.orgID,
                                 orgName: org.orgName,
                                 memberCount: org.memberCount,
-                                orgCreatedAt: org.createdAt,
+                                createdAt: org.createdAt,
                             };
                         })
                     );

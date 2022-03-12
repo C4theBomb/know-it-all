@@ -11,16 +11,6 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'userID',
                 onDelete: 'CASCADE',
             });
-            User.hasMany(models.Group, {
-                as: 'ownedGroups',
-                foreignKey: 'ownerID',
-                onDelete: 'CASCADE',
-            });
-            User.belongsToMany(models.Group, {
-                as: 'memberGroups',
-                through: 'groupUsers',
-                foreignKey: 'userID',
-            });
             User.hasOne(models.Organization, {
                 as: 'ownedOrg',
                 foreignKey: 'ownerID',

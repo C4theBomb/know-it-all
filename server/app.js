@@ -23,7 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/api/auth', authRouter);
-app.use('/api/group', groupRouter);
 app.use('/api/org', orgRouter);
 
 app.use(express.static(path.join(__dirname, '../client/build')));
