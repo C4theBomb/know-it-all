@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
                 foreignKey: 'userID',
                 onDelete: 'CASCADE',
             });
-            User.hasOne(models.Organization, {
-                as: 'ownedOrg',
+            User.hasMany(models.Organization, {
+                as: 'ownedOrgs',
                 foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
@@ -50,12 +50,6 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
             pronouns: {
-                type: DataTypes.STRING,
-            },
-            gender: {
-                type: DataTypes.STRING,
-            },
-            ethnicity: {
                 type: DataTypes.STRING,
             },
         },

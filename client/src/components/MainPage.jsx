@@ -2,62 +2,184 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-import { Paper, Button, Typography, Stack, Box } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import {
+    Button,
+    Typography,
+    Box,
+    Grid,
+    Stack,
+    TextField,
+    FormGroup,
+} from '@mui/material';
+
+import OrgUnit from './utils/OrgUnit';
+import StackItem from './utils/StackItem';
 
 function MainPage() {
-    const theme = useTheme();
-
-    const [org, setOrg] = useState({});
+    const [ownedOrgs, setOwnedOrgs] = useState([]);
+    const [orgs, setOrgs] = useState([]);
+    const [form, setForm] = useState({
+        name: '',
+        value: '',
+    });
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
+    useEffect(() => {
+        async function getOwnedOrgs() {
+            await axios
+                .get(
+                    `${process.env.DOMAIN_ROOT}/auth?token=${Cookies.get(
+                        'token'
+                    )}`
+                )
+                .then((response) => {
+                    setOwnedOrgs(() =>
+                        response.data.map((org) => {
+                            return {
+                                orgID: org.orgID,
+                                orgName: org.orgName,
+                                memberCount: org.memberCount,
+                                createdAt: org.createdAt,
+                            };
+                        })
+                    );
+                });
+        }
+        getOwnedOrgs();
+    });
+
+    useEffect(() => {
+        async function getOrgs() {
+            await axios
+                .get(
+                    `${process.env.DOMAIN_ROOT}/auth/orgs?token=${Cookies.get(
+                        'token'
+                    )}`
+                )
+                .then((response) => {
+                    setOrgs(() =>
+                        response.data.map((org) => {
+                            return {
+                                orgID: org.orgID,
+                                orgName: org.orgName,
+                                memberCount: org.memberCount,
+                                createdAt: org.createdAt,
+                            };
+                        })
+                    );
+                });
+        }
+        getOrgs();
+    });
+
+    function handleChange(e) {
+        const name = e.target.name;
+        const value = e.target.value;
+
+        setForm((form) => {
+            return { ...form, [name]: value };
+        });
+    }
+
     return (
         <React.Fragment>
-            <Paper
-                sx={{
-                    ...theme.typography.body2,
-                    padding: '2vh',
-                    color: theme.palette.text.secondary,
-                    flexGrow: 1,
-                    height: '30vh',
-                    margin: '2vh',
-                    overflow: 'auto',
-                }}
-            >
-                {org && (
-                    <React.Fragment>
-                        <Typography variant='h6'>
-                            <Link to={`orgs/${org.orgID}`} style={linkStyle}>
-                                Your Organization: {org.orgName}
-                            </Link>
-                        </Typography>
-                        <Box margin={2}>
-                            <Stack spacing={2}>
-                                <Typography variant='body1'>
-                                    Members: {org.memberCount}
+            <Box sx={{ flexGrow: 1 }}>
+                <Grid
+                    container
+                    spacing={2}
+                    alignItems='center'
+                    style={{ height: '95vh' }}
+                >
+                    <Grid item xs={1} sm={3} md={3.5} />
+                    <Grid item xs={10} sm={6} md={5}>
+                        <Stack spacing={2}>
+                            <StackItem text='Join an Organization'>
+                                <form>
+                                    <FormGroup row>
+                                        <TextField
+                                            id='standard-name'
+                                            label='Organization ID'
+                                            name='orgID'
+                                            value={form.orgID}
+                                            onChange={handleChange}
+                                            sx={{ width: '75%' }}
+                                        />
+                                        <Button
+                                            type='submit'
+                                            variant='outlined'
+                                            color='primary'
+                                            disableElevation
+                                            sx={{ width: '25%' }}
+                                        >
+                                            Join Organization
+                                        </Button>
+                                    </FormGroup>
+                                </form>
+                            </StackItem>
+                            <StackItem text='Create an Organization'>
+                                <form>
+                                    <FormGroup row>
+                                        <TextField
+                                            id='standard-name'
+                                            label='Organization Name'
+                                            name='orgName'
+                                            value={form.orgName}
+                                            onChange={handleChange}
+                                            sx={{ width: '70%' }}
+                                        />
+                                        <Button
+                                            type='submit'
+                                            variant='outlined'
+                                            color='primary'
+                                            disableElevation
+                                            sx={{ width: '30%' }}
+                                        >
+                                            Create Organization
+                                        </Button>
+                                    </FormGroup>
+                                </form>
+                            </StackItem>
+                            <StackItem>
+                                <Typography variant='h6'>
+                                    <Link to='org' style={linkStyle}>
+                                        Your Organizations
+                                    </Link>
                                 </Typography>
-                                <Typography variant='body1'>
-                                    Created On: {org.createdAt}
+                                {ownedOrgs.length === 0 && (
+                                    <Typography variant='body2'>
+                                        You do own any organizations
+                                    </Typography>
+                                )}
+
+                                {ownedOrgs.map((org) => (
+                                    <OrgUnit org={org} />
+                                ))}
+                            </StackItem>
+                            <StackItem>
+                                <Typography variant='h6'>
+                                    <Link to='joined' style={linkStyle}>
+                                        Joined Organizations
+                                    </Link>
                                 </Typography>
-                            </Stack>
-                        </Box>
-                    </React.Fragment>
-                )}
-            </Paper>
-            <Paper
-                sx={{
-                    ...theme.typography.body2,
-                    padding: '2vh',
-                    textAlign: 'center',
-                    color: theme.palette.text.secondary,
-                    flexGrow: 1,
-                    height: '57vh',
-                    margin: '2vh',
-                    overflow: 'auto',
-                }}
-            ></Paper>
+                                {orgs.length === 0 && (
+                                    <Typography variant='body2'>
+                                        You are not a member in any
+                                        organizations
+                                    </Typography>
+                                )}
+
+                                {orgs.map((org) => (
+                                    <OrgUnit org={org} />
+                                ))}
+                            </StackItem>
+                        </Stack>
+                    </Grid>
+                    <Grid item xs={1} sm={3} md={3.5} />
+                </Grid>
+            </Box>
         </React.Fragment>
     );
 }

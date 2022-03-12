@@ -13,7 +13,7 @@ import {
     Button,
 } from '@mui/material';
 
-import Dashboard from './Dashboard';
+import Dashboard from '../utils/Dashboard';
 
 function OrgDashboard() {
     const { orgID } = useParams();
@@ -30,6 +30,7 @@ function OrgDashboard() {
         orgMembers: [],
         createdAt: '',
     });
+
     const [rows, setRows] = useState([]);
 
     useEffect(() => {

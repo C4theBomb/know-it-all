@@ -1,27 +1,25 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
-import Header from './components/Header';
+import Navbar from './components/Navbar';
 import MainPage from './components/MainPage';
 
-import Form from './components/Form';
-import Login from './components/Login';
-import Register from './components/Register';
-import EditUser from './components/EditUser';
-import Recover from './components/Recover';
-import Reset from './components/Reset';
+import Form from './components/utils/Form';
+import Login from './components/forms/Login';
+import Register from './components/forms/Register';
+import EditUser from './components/forms/EditUser';
+import Recover from './components/forms/Recover';
+import Reset from './components/forms/Reset';
 
-import JoinedOrgs from './components/JoinedOrgs';
-import OrgDashboard from './components/OrgDashboard';
-
-import NotFound from './components/NotFound';
+import JoinedOrgs from './components/orgs/JoinedOrgs';
+import OrgDashboard from './components/orgs/OrgDashboard';
 
 function App() {
     return (
         <React.Fragment>
             <BrowserRouter>
                 <Routes>
-                    <Route path='' element={<Header />}>
+                    <Route path='' element={<Navbar />}>
                         <Route index element={<MainPage />} />
 
                         <Route path='login' element={<Login />} />
@@ -32,12 +30,13 @@ function App() {
                             <Route path=':id' element={<Reset />} />
                         </Route>
 
-                        <Route path=''>
+                        <Route path='org' element={<JoinedOrgs />} />
+                        <Route path='joined'>
                             <Route index element={<JoinedOrgs />} />
                             <Route path=':id' element={<OrgDashboard />} />
                         </Route>
 
-                        <Route path='*' element={<NotFound />} />
+                        <Route path='*' element={<Navigate to='' />} />
                     </Route>
                 </Routes>
             </BrowserRouter>

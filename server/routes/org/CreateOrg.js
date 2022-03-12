@@ -6,12 +6,12 @@ async function CreateOrg(req, res, next) {
         return res.status(400).send('Form missing necessary fields');
     }
 
-    const existing = await user.getOwnedOrg();
-    if (existing) {
+    const existing = await user.getOwnedOrgs();
+    if (existing.map((org) => org.orgName).includes(orgName)) {
         return res
             .status(500)
             .send(
-                'This user already owns an organization, delete it to create another.'
+                'This user already has an organization with this name, please pick another.'
             );
     }
 

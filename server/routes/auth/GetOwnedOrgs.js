@@ -1,7 +1,7 @@
 async function GetOwnedGroups(req, res, next) {
     const user = req.user;
 
-    const result = await user.getOwnedGroups();
+    const result = await user.getOwnedOrgs();
     return res.send(result);
 }
 

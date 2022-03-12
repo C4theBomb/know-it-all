@@ -15,7 +15,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function Header() {
+function Navbar() {
     const navigate = useNavigate();
     const [token, setToken] = useState('');
 
@@ -28,7 +28,10 @@ function Header() {
 
     useEffect(() => {
         setToken(() => Cookies.get('token'));
-    }, [navigate]);
+        if (!token) {
+            navigate('login');
+        }
+    }, [navigate, token]);
 
     async function handleLogout() {
         await axios.post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
@@ -51,7 +54,9 @@ function Header() {
                             aria-label='menu'
                             sx={{ mr: 2 }}
                         >
-                            <MenuIcon />
+                            <Link to='/' style={linkStyle}>
+                                <MenuIcon />
+                            </Link>
                         </IconButton>
                         <Typography
                             variant='h6'
@@ -90,4 +95,4 @@ function Header() {
     );
 }
 
-export default Header;
+export default Navbar;

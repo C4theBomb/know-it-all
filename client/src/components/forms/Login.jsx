@@ -13,7 +13,7 @@ import {
     Checkbox,
 } from '@mui/material';
 
-import Form from './Form';
+import Form from '../utils/Form';
 
 function Login() {
     const navigate = useNavigate();

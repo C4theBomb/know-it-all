@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import { Box, Typography, TextField, Button } from '@mui/material';
 
-import Form from './Form';
+import Form from '../utils/Form';
 
-function Register() {
+function EditUser() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -17,10 +18,34 @@ function Register() {
         gender: '',
         pronouns: '',
         ethnicity: '',
-        password: '',
-        confirmPassword: '',
     });
     const [error, setError] = useState('');
+
+    const linkStyle = { textDecoration: 'none', color: 'inherit' };
+
+    useEffect(() => {
+        async function getInfo() {
+            axios
+                .get(
+                    `${process.env.DOMAIN_ROOT}/auth/${Cookies.get(
+                        'userID'
+                    )}?token=${Cookies.get('token')}`
+                )
+                .then((response) => {
+                    const user = response.data;
+
+                    setForm(() => {
+                        return {
+                            firstName: user.firstName,
+                            lastName: user.lastName,
+                            email: user.email,
+                            pronouns: user.pronouns,
+                        };
+                    });
+                });
+        }
+        getInfo();
+    });
 
     function handleChange(e) {
         const name = e.target.name;
@@ -47,7 +72,7 @@ function Register() {
         <Form>
             <form onSubmit={handleSubmit}>
                 <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
-                    Create an Account
+                    Update Account Details
                 </Typography>
                 <TextField
                     required
@@ -112,30 +137,6 @@ function Register() {
                     value={form.pronouns}
                     sx={{ margin: '1vh 0vh' }}
                 />
-                <TextField
-                    required
-                    fullWidth
-                    id='outlined-password-input'
-                    label='Password'
-                    name='password'
-                    type='password'
-                    variant='outlined'
-                    onChange={handleChange}
-                    value={form.password}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                <TextField
-                    required
-                    fullWidth
-                    id='outlined-password-input'
-                    label='Confirm Password'
-                    name='confirmPassword'
-                    type='password'
-                    variant='outlined'
-                    onChange={handleChange}
-                    value={form.confirmPassword}
-                    sx={{ margin: '1vh 0vh' }}
-                />
                 {error && (
                     <Box textAlign='right'>
                         <Typography variant='body2' color='secondary'>
@@ -149,16 +150,22 @@ function Register() {
                     sx={{ margin: '1vh 0vh' }}
                     type='submit'
                     fullWidth
-                    disabled={form.password !== form.confirmPassword}
                 >
-                    Create an Account
+                    Update Details
                 </Button>
-                <Typography variant='body1'>
-                    Already have an account? <Link to='/login'>Login</Link>
-                </Typography>
+                <Button
+                    variant='contained'
+                    color='error'
+                    sx={{ margin: '1vh 0vh' }}
+                    fullWidth
+                >
+                    <Link to='/recover' style={linkStyle}>
+                        Reset Your Password
+                    </Link>
+                </Button>
             </form>
         </Form>
     );
 }
 
-export default Register;
+export default EditUser;
