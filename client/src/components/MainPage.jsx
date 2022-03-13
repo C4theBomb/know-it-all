@@ -54,10 +54,13 @@ function MainPage() {
                             };
                         })
                     );
+                })
+                .catch((e) => {
+                    console.log(e);
                 });
         }
         getOwnedOrgs();
-    });
+    }, []);
 
     useEffect(() => {
         async function getOrgs() {
@@ -81,7 +84,7 @@ function MainPage() {
                 });
         }
         getOrgs();
-    });
+    }, []);
 
     function handleChange(e) {
         const name = e.target.name;
