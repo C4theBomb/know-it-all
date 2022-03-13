@@ -29,7 +29,7 @@ function Login() {
         if (Cookies.get('token')) {
             async function logout() {
                 await axios
-                    .post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
+                    .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
                         token: Cookies.get('token'),
                     })
                     .catch((e) => console.log(e));
@@ -38,7 +38,7 @@ function Login() {
             Cookies.remove('token');
             Cookies.remove('userID');
         }
-    });
+    }, []);
 
     function handleChange(e) {
         const name = e.target.name;
@@ -61,7 +61,7 @@ function Login() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .post(`${process.env.DOMAIN_ROOT}/auth/login`, form)
+            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/login`, form)
             .then((response) => {
                 Cookies.set('token', response.data.token, {
                     expires: form.remember ? 3650 : 1,

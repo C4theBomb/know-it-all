@@ -29,9 +29,12 @@ function Reset() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .patch(`${process.env.DOMAIN_ROOT}/auth/reset-password/${id}`, {
-                password: form.password,
-            })
+            .patch(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/reset-password/${id}`,
+                {
+                    password: form.password,
+                }
+            )
             .then(() => {
                 navigate('/login');
             })

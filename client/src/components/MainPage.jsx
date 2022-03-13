@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -18,22 +18,30 @@ import OrgUnit from './utils/OrgUnit';
 import StackItem from './utils/StackItem';
 
 function MainPage() {
+    const navigate = useNavigate();
+
     const [ownedOrgs, setOwnedOrgs] = useState([]);
     const [orgs, setOrgs] = useState([]);
     const [form, setForm] = useState({
         name: '',
-        value: '',
+        id: '',
     });
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
     useEffect(() => {
+        if (!Cookies.get('token')) {
+            navigate('/login');
+        }
+    });
+
+    useEffect(() => {
         async function getOwnedOrgs() {
             await axios
                 .get(
-                    `${process.env.DOMAIN_ROOT}/auth?token=${Cookies.get(
-                        'token'
-                    )}`
+                    `${
+                        process.env.REACT_APP_DOMAIN_ROOT
+                    }/auth?token=${Cookies.get('token')}`
                 )
                 .then((response) => {
                     setOwnedOrgs(() =>
@@ -55,9 +63,9 @@ function MainPage() {
         async function getOrgs() {
             await axios
                 .get(
-                    `${process.env.DOMAIN_ROOT}/auth/orgs?token=${Cookies.get(
-                        'token'
-                    )}`
+                    `${
+                        process.env.REACT_APP_DOMAIN_ROOT
+                    }/auth/orgs?token=${Cookies.get('token')}`
                 )
                 .then((response) => {
                     setOrgs(() =>
@@ -84,6 +92,26 @@ function MainPage() {
         });
     }
 
+    async function joinOrg(e) {
+        e.preventDefault();
+
+        await axios.post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/create`, {
+            token: Cookies.get('token'),
+            orgName: form.name,
+        });
+    }
+
+    async function createOrg(e) {
+        e.preventDefault();
+
+        await axios.post(
+            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${form.id}`,
+            {
+                token: Cookies.get('token'),
+            }
+        );
+    }
+
     return (
         <React.Fragment>
             <Box sx={{ flexGrow: 1 }}>
@@ -97,13 +125,13 @@ function MainPage() {
                     <Grid item xs={10} sm={6} md={5}>
                         <Stack spacing={2}>
                             <StackItem text='Join an Organization'>
-                                <form>
+                                <form onSubmit={joinOrg}>
                                     <FormGroup row>
                                         <TextField
                                             id='standard-name'
                                             label='Organization ID'
-                                            name='orgID'
-                                            value={form.orgID}
+                                            name='id'
+                                            value={form.id}
                                             onChange={handleChange}
                                             sx={{ width: '75%' }}
                                         />
@@ -120,7 +148,7 @@ function MainPage() {
                                 </form>
                             </StackItem>
                             <StackItem text='Create an Organization'>
-                                <form>
+                                <form onSubmit={createOrg}>
                                     <FormGroup row>
                                         <TextField
                                             id='standard-name'

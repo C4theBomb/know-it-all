@@ -1,18 +1,31 @@
 const { Organization } = require('../../models/index');
 
-async function AddOrgMember(req, res, next) {
+async function RemoveOrgMember(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID;
+    const doomedUserIDs = req.body.doomedUsers;
 
-    const result = await Organization.findOne({ where: { orgID: orgID } });
+    const result = await Organization.findByPk(orgID, {
+        include: { association: 'orgOwner' },
+    });
 
     if (!result) {
         return res.status(500).send('No organization exists with that id.');
     }
 
-    await result.removeOrgMember(user);
+    if (!doomedUserIDs) {
+        await result.removeOrgMember({ where: { userID: user.userID } });
+    } else {
+        if (user.userID == result.orgOwner.userID) {
+            await result.removeOrgMembers({
+                where: { userID: { [Op.in]: doomedUserIDs } },
+            });
+        } else {
+            res.status(403).send('You do not have permission to do that.');
+        }
+    }
 
-    return res.send('User removed from organization.');
+    return res.send('User(s) removed from organization.');
 }
 
-module.exports = AddOrgMember;
+module.exports = RemoveOrgMember;

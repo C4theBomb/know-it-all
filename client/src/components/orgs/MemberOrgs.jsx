@@ -9,9 +9,9 @@ function JoinedOrgs() {
     async function getOrgs(setOrgs) {
         axios
             .get(
-                `${process.env.DOMAIN_ROOT}/auth/orgs?token=${Cookies.get(
-                    'token'
-                )}`
+                `${
+                    process.env.REACT_APP_DOMAIN_ROOT
+                }/auth/orgs?token=${Cookies.get('token')}`
             )
             .then((response) => {
                 setOrgs(() =>

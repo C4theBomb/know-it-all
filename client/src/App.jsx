@@ -11,8 +11,10 @@ import EditUser from './components/forms/EditUser';
 import Recover from './components/forms/Recover';
 import Reset from './components/forms/Reset';
 
-import JoinedOrgs from './components/orgs/JoinedOrgs';
+import OwnedOrgs from './components/orgs/OwnedOrgs';
+import MemberOrgs from './components/orgs/MemberOrgs';
 import OrgDashboard from './components/orgs/OrgDashboard';
+import UpdateOrganization from './components/forms/UpdateOrganization';
 
 function App() {
     return (
@@ -30,10 +32,16 @@ function App() {
                             <Route path=':id' element={<Reset />} />
                         </Route>
 
-                        <Route path='org' element={<JoinedOrgs />} />
+                        <Route path='org' element={<OwnedOrgs />} />
                         <Route path='joined'>
-                            <Route index element={<JoinedOrgs />} />
-                            <Route path=':id' element={<OrgDashboard />} />
+                            <Route index element={<MemberOrgs />} />
+                            <Route path=':id'>
+                                <Route index element={<OrgDashboard />} />
+                                <Route
+                                    path='update'
+                                    element={<UpdateOrganization />}
+                                />
+                            </Route>
                         </Route>
 
                         <Route path='*' element={<Navigate to='' />} />

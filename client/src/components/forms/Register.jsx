@@ -34,7 +34,10 @@ function Register() {
 
         const { confirmPassword, ...filteredForm } = form;
         await axios
-            .post(`${process.env.DOMAIN_ROOT}/auth/register`, filteredForm)
+            .post(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/register`,
+                filteredForm
+            )
             .then(() => {
                 navigate('/login');
             })

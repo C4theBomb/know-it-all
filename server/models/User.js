@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'CASCADE',
             });
             User.hasMany(models.Organization, {
-                as: 'ownedOrgs',
+                as: 'ownedOrg',
                 foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
             User.belongsToMany(models.Organization, {
-                as: 'memberOrgs',
+                as: 'memberOrg',
                 through: 'orgUsers',
                 foreignKey: 'userID',
                 onDelete: 'CASCADE',

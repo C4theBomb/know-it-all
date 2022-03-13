@@ -25,7 +25,7 @@ function EditUser() {
         async function getInfo() {
             axios
                 .get(
-                    `${process.env.DOMAIN_ROOT}/auth/${Cookies.get(
+                    `${process.env.REACT_APP_DOMAIN_ROOT}/auth/${Cookies.get(
                         'userID'
                     )}?token=${Cookies.get('token')}`
                 )
@@ -59,7 +59,10 @@ function EditUser() {
 
         const { confirmPassword, ...filteredForm } = form;
         await axios
-            .post(`${process.env.DOMAIN_ROOT}/auth/register`, filteredForm)
+            .post(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/register`,
+                filteredForm
+            )
             .then(() => {
                 navigate('/login');
             })

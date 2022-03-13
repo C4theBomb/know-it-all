@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, Link } from 'react-router-dom';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -19,26 +19,19 @@ function OrgDashboard() {
     const { orgID } = useParams();
     const navigate = useNavigate();
 
-    const [org, setOrg] = useState({
-        orgID: '',
-        orgName: '',
-        orgOwner: {
-            firstName: '',
-            lastName: '',
-            email: '',
-        },
-        orgMembers: [],
-        createdAt: '',
-    });
-
+    const [org, setOrg] = useState({});
     const [rows, setRows] = useState([]);
+    const [status, setStatus] = useState('');
+    const [selection, setSelection] = useState();
+
+    const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
     useEffect(() => {
         async function getData() {
             await axios
                 .get(
                     `${
-                        process.env.DOMAIN_ROOT
+                        process.env.REACT_APP_DOMAIN_ROOT
                     }/org/${orgID}?token=${Cookies.get('token')}`
                 )
                 .then((response) => {
@@ -59,18 +52,15 @@ function OrgDashboard() {
 
                     const orgMembers = res.orgMembers.map((member, index) => {
                         return {
-                            id: index,
-                            firstName: member.firstName,
-                            lastName: member.lastName,
-                            nickname: member.nickname,
-                            namePronounciation: member.pronounciation,
-                            pronouns: member.pronouns,
-                            email: member.email,
+                            id: member.userID,
+                            ...member,
                         };
                     });
                     setRows(() => orgMembers);
+
+                    setStatus(() => res.status);
                 })
-                .catch((error) => {
+                .catch(() => {
                     navigate('/');
                 });
         }
@@ -78,8 +68,46 @@ function OrgDashboard() {
         getData();
     });
 
+    async function handleDelete() {
+        await axios
+            .delete(`${process.env.REACT_APP_DOMAIN_ROOT}/org/delete`, {
+                params: {
+                    token: Cookies.get('token'),
+                    orgID,
+                },
+            })
+            .then(navigate(''));
+    }
+
+    function copyID() {
+        navigator.clipboard.writeText(orgID);
+    }
+
+    async function removeSelected() {
+        const doomedUserIDs = selection.map((row) => row.id);
+
+        await axios.post(
+            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`,
+            {
+                token: Cookies.get('token'),
+                orgID,
+                doomedUserIDs,
+            }
+        );
+    }
+
+    async function leaveOrg() {
+        await axios.post(
+            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`,
+            {
+                token: Cookies.get('token'),
+                orgID,
+            }
+        );
+    }
+
     return (
-        <Dashboard rows={rows}>
+        <Dashboard rows={rows} setSelection={setSelection}>
             <Typography variant='h6'>Organizations/{org.orgName}</Typography>
             <Box sx={{ marginTop: '1vh' }}>
                 <Grid container columns={{ xs: 3, md: 12 }}>
@@ -116,25 +144,48 @@ function OrgDashboard() {
                         xs
                     >
                         <Stack spacing={2} alignItems='flex-end'>
-                            <ButtonGroup
-                                variant='outlined'
-                                aria-label='outlined button group'
-                            >
-                                <Button color='warning'>
-                                    Edit {org.orgName}
+                            {status && (
+                                <React.Fragment>
+                                    <ButtonGroup
+                                        variant='outlined'
+                                        aria-label='outlined button group'
+                                    >
+                                        <Button color='warning'>
+                                            <Link to='update' style={linkStyle}>
+                                                Edit {org.orgName}
+                                            </Link>
+                                        </Button>
+                                        <Button
+                                            color='error'
+                                            onClick={handleDelete}
+                                        >
+                                            Delete {org.orgName}
+                                        </Button>
+                                    </ButtonGroup>
+                                    <ButtonGroup
+                                        variant='outlined'
+                                        aria-label='outlined button group'
+                                    >
+                                        <Button
+                                            color='success'
+                                            onClick={copyID}
+                                        >
+                                            Copy Org ID
+                                        </Button>
+                                        <Button
+                                            color='error'
+                                            onClick={removeSelected}
+                                        >
+                                            Remove People
+                                        </Button>
+                                    </ButtonGroup>
+                                </React.Fragment>
+                            )}
+                            {!status && (
+                                <Button color='error' onClick={leaveOrg}>
+                                    Leave Org
                                 </Button>
-                                <Button color='error'>
-                                    Delete {org.orgName}
-                                </Button>
-                            </ButtonGroup>
-                            <ButtonGroup
-                                variant='outlined'
-                                aria-label='outlined button group'
-                            >
-                                <Button color='primary'>Refresh</Button>
-                                <Button color='success'>Add People</Button>
-                                <Button color='error'>Remove People</Button>
-                            </ButtonGroup>
+                            )}
                         </Stack>
                     </Grid>
                 </Grid>

@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-function Dashboard({ children, rows }) {
+function Dashboard({ children, rows, setSelection }) {
     const theme = useTheme();
 
     const columns = [
@@ -69,6 +69,9 @@ function Dashboard({ children, rows }) {
                         columns={columns}
                         pageSize={5}
                         rowsPerPageOptions={[5]}
+                        onSelectionModelChange={(newSelection) => {
+                            setSelection(newSelection.rows);
+                        }}
                         checkboxSelection
                     />
                 </Box>

@@ -9,11 +9,15 @@ async function GetOrg(req, res, next) {
         include: [
             {
                 association: 'orgOwner',
-                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+                attributes: {
+                    exclude: ['userID', 'password', 'createdAt', 'updatedAt'],
+                },
             },
             {
                 association: 'orgMembers',
-                attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+                attributes: {
+                    exclude: ['password', 'createdAt', 'updatedAt'],
+                },
                 required: false,
             },
         ],

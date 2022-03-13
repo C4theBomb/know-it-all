@@ -1,8 +1,8 @@
 async function DeleteOrg(req, res, next) {
     const user = req.user;
+    const orgID = req.query.orgID;
 
-    const result = await user.getOwnedOrg();
-    await result.destroy();
+    await user.removeOwnedOrg({ where: { orgID: orgID } });
 
     return res.send('Organization deleted');
 }

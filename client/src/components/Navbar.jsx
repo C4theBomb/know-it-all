@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Link, Outlet } from 'react-router-dom';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -16,7 +16,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function Navbar() {
-    const navigate = useNavigate();
     const [token, setToken] = useState('');
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
@@ -28,17 +27,15 @@ function Navbar() {
 
     useEffect(() => {
         setToken(() => Cookies.get('token'));
-        if (!token) {
-            navigate('login');
-        }
-    }, [navigate, token]);
+    }, []);
 
     async function handleLogout() {
-        await axios.post(`${process.env.DOMAIN_ROOT}/auth/logout`, {
+        await axios.post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
             token: Cookies.get('token'),
         });
         Cookies.remove('token');
         Cookies.remove('userID');
+        setToken(() => '');
     }
 
     return (
