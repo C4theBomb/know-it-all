@@ -4,10 +4,10 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "client": "npm run start --prefix client",
-        "server": "npm run start --prefix server",
+        "client": "npm start --prefix client",
+        "server": "npm start --prefix server",
         "build": "npm run build --prefix client",
-        "dev": "npm run build --prefix client && npm run server",
+        "dev": "npm run build && npm run server",
         "install-all": "npm i && npm i --prefix client && npm i --prefix server",
         "audit-all": "npm audit fix && npm audit fix --prefix client && npm audit fix --prefix server"
     },

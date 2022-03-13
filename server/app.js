@@ -6,7 +6,6 @@ var logger = require('morgan');
 var cors = require('cors');
 
 var authRouter = require('./routes/authRouter');
-var groupRouter = require('./routes/groupRouter');
 var orgRouter = require('./routes/orgRouter');
 
 var app = express();

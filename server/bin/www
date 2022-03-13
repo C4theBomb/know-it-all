@@ -88,12 +88,8 @@ async function onListening() {
             `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
         );
         if (process.env.NODE_ENV == 'development') {
-            if (process.env.TABLE_WIPE == 'true') {
-                await sequelize.sync({ force: 'true' });
-                console.log('[INFO]: Wiping all tables on database');
-            } else {
-                await sequelize.sync();
-            }
+            await sequelize.sync({ force: 'true' });
+            console.log('[INFO]: Wiping all tables on database');
         }
     } catch (error) {
         console.error('Unable to connect to the database:', error);
