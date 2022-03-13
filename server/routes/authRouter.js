@@ -12,8 +12,8 @@ const Logout = require('./auth/Logout');
 const RequestReset = require('./auth/RequestReset');
 const ResetPassword = require('./auth/ResetPassword');
 const GetUserDetails = require('./auth/GetUserDetails');
-const GetKnownOrgs = require('./auth/GetKnownOrgs');
-const GetOwnedORgs = require('./auth/GetOwnedOrgs');
+const GetOwnedOrgs = require('./auth/GetOwnedOrgs');
+const GetMemberOrgs = require('./auth/GetMemberOrgs');
 
 router.post('/register', CreateUser);
 router.patch('/update', tokenAuth, UpdateUserDetails);
@@ -25,6 +25,6 @@ router.patch('/reset-password/:id', ResetPassword);
 router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 
 router.get('/', tokenAuth, GetOwnedOrgs);
-router.get('/orgs', tokenAuth, GetKnownOrgs);
+router.get('/orgs', tokenAuth, GetMemberOrgs);
 
 module.exports = router;

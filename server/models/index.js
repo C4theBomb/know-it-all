@@ -2,12 +2,12 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-const config = require(__dirname + '/../config/databaseConfig.js');
-const env = config[process.env.NODE_ENV];
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/databaseConfig.js')[env];
 const db = {};
 
 const sequelize = new Sequelize({
-    ...env,
+    ...config,
     logging: false,
 });
 
