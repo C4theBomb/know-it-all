@@ -15,9 +15,7 @@ function EditUser() {
         firstName: '',
         lastName: '',
         email: '',
-        gender: '',
         pronouns: '',
-        ethnicity: '',
     });
     const [error, setError] = useState('');
 
@@ -105,26 +103,6 @@ function EditUser() {
                     variant='outlined'
                     onChange={handleChange}
                     value={form.email}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                <TextField
-                    fullWidth
-                    id='outline-required'
-                    label='Ethnicity'
-                    name='ethnicity'
-                    variant='outlined'
-                    onChange={handleChange}
-                    value={form.ethnicity}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                <TextField
-                    fullWidth
-                    id='outline-required'
-                    label='Gender'
-                    name='gender'
-                    variant='outlined'
-                    onChange={handleChange}
-                    value={form.gender}
                     sx={{ margin: '1vh 0vh' }}
                 />
                 <TextField
