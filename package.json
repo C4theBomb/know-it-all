@@ -7,7 +7,7 @@
         "client": "npm start --prefix client",
         "server": "npm start --prefix server",
         "build": "npm run build --prefix client",
-        "dev": "npm run build && npm run server",
+        "test": "npm run build && npm run server",
         "install-all": "npm i && npm i --prefix client && npm i --prefix server",
         "audit-all": "npm audit fix && npm audit fix --prefix client && npm audit fix --prefix server"
     },
@@ -18,8 +18,7 @@
         "create-react-app": "^5.0.0",
         "dotenv": "^16.0.0",
         "express-generator": "^4.2.0",
-        "js-cookie": "^3.0.1",
-        "sqlite3": "^4.2.0"
+        "js-cookie": "^3.0.1"
     },
     "devDependencies": {
         "sequelize-cli": "^6.4.1"
