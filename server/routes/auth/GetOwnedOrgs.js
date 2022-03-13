@@ -1,10 +1,10 @@
-async function GetOwnedGroups(req, res, next) {
+async function GetOwnedOrgs(req, res, next) {
     const user = req.user;
 
-    const result = await user.getOwnedOrgs({
+    const result = await user.getOwnedOrg({
         attributes: { exclude: ['updatedAt'] },
     });
     return res.send(result);
 }
 
-module.exports = GetOwnedGroups;
+module.exports = GetOwnedOrgs;

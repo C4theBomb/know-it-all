@@ -22,9 +22,8 @@ router.post('/logout', tokenAuth, Logout);
 router.get('/reset-password', RequestReset);
 router.patch('/reset-password/:id', ResetPassword);
 
-router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
-
 router.get('/', tokenAuth, GetOwnedOrgs);
 router.get('/orgs', tokenAuth, GetMemberOrgs);
 
+router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 module.exports = router;

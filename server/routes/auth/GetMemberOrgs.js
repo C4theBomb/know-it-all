@@ -4,7 +4,8 @@ async function GetMemberOrgs(req, res, next) {
     const result = await user.getMemberOrgs({
         attributes: { exclude: ['updatedAt'] },
     });
-    return res.send(result);
+
+    return res.status(200).send(result);
 }
 
 module.exports = GetMemberOrgs;
