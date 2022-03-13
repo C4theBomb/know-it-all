@@ -1,4 +1,3 @@
-const forge = require('node-forge');
 const { Token } = require('../../models/index');
 
 async function Login(req, res, next) {
@@ -11,7 +10,7 @@ async function Login(req, res, next) {
         expires: remember,
     });
 
-    res.send({ userID: user.userID, token: newToken.tokenID });
+    return res.send({ userID: user.userID, token: newToken.tokenID });
 }
 
 module.exports = Login;

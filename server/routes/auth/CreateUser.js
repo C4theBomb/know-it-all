@@ -9,13 +9,13 @@ async function CreateUser(req, res, next) {
         return res.status(400).send('The request is missing required fields.');
     }
 
-    const existingUsers = await User.findAll({
+    const existingUsers = await User.count({
         where: {
             email: req.body.email,
         },
     });
 
-    if (existingUsers.length !== 0) {
+    if (existingUsers > 0) {
         return res.status(500).send('A user with that email already exists.');
     }
 

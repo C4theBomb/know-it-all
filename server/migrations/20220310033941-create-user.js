@@ -27,12 +27,6 @@ module.exports = {
             pronouns: {
                 type: Sequelize.STRING,
             },
-            gender: {
-                type: Sequelize.STRING,
-            },
-            ethnicity: {
-                type: Sequelize.STRING,
-            },
             createdAt: {
                 type: Sequelize.DATE,
             },

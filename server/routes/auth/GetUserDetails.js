@@ -8,7 +8,10 @@ async function GetUserDetails(req, res, next) {
         return res.send(user);
     }
 
-    const result = await User.findOne({ where: { userID: userID } });
+    const result = await User.findOne({
+        where: { userID: userID },
+        attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
+    });
     return res.send(result);
 }
 
