@@ -12,7 +12,7 @@ async function GetOrg(req, res, next) {
                 required: false,
             },
             {
-                association: 'orgMembers',
+                association: 'orgMember',
                 where: { userID: user.userID },
                 required: false,
             },
@@ -23,7 +23,7 @@ async function GetOrg(req, res, next) {
         return res.status(500).send('There is no organization with this id.');
     }
 
-    if (!result.orgOwner && result.orgMembers.length == 0) {
+    if (!result.orgOwner && result.orgMember.length == 0) {
         return res
             .status(500)
             .send('You do not know any organizations with this id.');

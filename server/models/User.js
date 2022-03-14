@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             });
             User.belongsToMany(models.Organization, {
                 as: 'memberOrgs',
-                through: 'orgUsers',
+                through: 'OrgMembers',
                 foreignKey: 'userID',
                 onDelete: 'CASCADE',
             });

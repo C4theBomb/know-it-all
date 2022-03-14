@@ -1,3 +1,5 @@
+const { User } = require('../../models/index');
+
 async function GetMemberOrgs(req, res, next) {
     const user = req.user;
 
@@ -5,9 +7,7 @@ async function GetMemberOrgs(req, res, next) {
         attributes: { exclude: ['updatedAt'] },
     });
 
-    console.log(result);
-
-    return res.status(200).send(result);
+    return res.send(result);
 }
 
 module.exports = GetMemberOrgs;

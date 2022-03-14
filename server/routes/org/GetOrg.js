@@ -14,7 +14,7 @@ async function GetOrg(req, res, next) {
                 },
             },
             {
-                association: 'orgMembers',
+                association: 'orgMember',
                 attributes: {
                     exclude: ['password', 'createdAt', 'updatedAt'],
                 },
@@ -27,7 +27,7 @@ async function GetOrg(req, res, next) {
 
     return res.send({
         org,
-        memberCount: org.orgMembers.length,
+        memberCount: org.orgMember.length,
         status,
     });
 }

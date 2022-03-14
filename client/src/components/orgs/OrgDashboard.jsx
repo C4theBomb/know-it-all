@@ -47,6 +47,7 @@ function OrgDashboard() {
                 )
                 .then((response) => {
                     const res = response.data;
+                    console.log(res);
 
                     setOrg(() => {
                         return {
@@ -57,13 +58,13 @@ function OrgDashboard() {
                                 lastName: res.org.orgOwner.lastName,
                                 email: res.org.orgOwner.email,
                             },
-                            orgMembers: res.org.orgMembers,
+                            orgMembers: res.org.orgMember,
                             createdAt: res.org.createdAt,
                             memberCount: res.memberCount,
                         };
                     });
 
-                    const orgMembers = res.org.orgMembers.map((member) => {
+                    const orgMembers = res.org.orgMember.map((member) => {
                         return {
                             id: member.userID,
                             ...member,
@@ -112,13 +113,16 @@ function OrgDashboard() {
     }
 
     async function leaveOrg() {
-        await axios.post(
-            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`,
-            {
+        await axios
+            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`, {
                 token: Cookies.get('token'),
                 orgID,
-            }
-        );
+            })
+            .then(() => navigate('/'))
+            .catch((e) => {
+                console.log(e);
+                navigate('/');
+            });
     }
 
     return (
@@ -159,7 +163,7 @@ function OrgDashboard() {
                         xs
                     >
                         <Stack spacing={2} alignItems='flex-end'>
-                            {status && (
+                            {status ? (
                                 <React.Fragment>
                                     <ButtonGroup
                                         variant='outlined'
@@ -195,8 +199,7 @@ function OrgDashboard() {
                                         </Button>
                                     </ButtonGroup>
                                 </React.Fragment>
-                            )}
-                            {!status && (
+                            ) : (
                                 <Button color='error' onClick={leaveOrg}>
                                     Leave Org
                                 </Button>
