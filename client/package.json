@@ -20,7 +20,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "cp ${ENV:-'../.env'} .env && rm -rf build && react-scripts build",
+        "build": "cp ${ENV:-'../.env'} .env && react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject"
     },
