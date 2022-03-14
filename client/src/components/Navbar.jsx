@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React from 'react';
+import { Link, Outlet, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -15,8 +15,10 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function Navbar() {
-    const [token, setToken] = useState('');
+function Navbar({ tokenState }) {
+    const navigate = useNavigate();
+
+    const { token, setToken } = tokenState;
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
     const darkTheme = createTheme({
@@ -25,17 +27,48 @@ function Navbar() {
         },
     });
 
-    useEffect(() => {
-        setToken(() => Cookies.get('token'));
-    }, []);
+    function ButtonGroup({ token }) {
+        if (token) {
+            return (
+                <Button onClick={handleLogout} color='inherit'>
+                    <Link to='/login' style={linkStyle}>
+                        Logout
+                    </Link>
+                </Button>
+            );
+        } else {
+            return (
+                <React.Fragment>
+                    <Button color='inherit'>
+                        <Link to='/login' style={linkStyle}>
+                            Login
+                        </Link>
+                    </Button>
+                    <Button color='inherit'>
+                        <Link to='/register' style={linkStyle}>
+                            Register
+                        </Link>
+                    </Button>
+                </React.Fragment>
+            );
+        }
+    }
 
     async function handleLogout() {
-        await axios.post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
-            token: Cookies.get('token'),
-        });
+        await axios
+            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
+                token: Cookies.get('token'),
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+
         Cookies.remove('token');
         Cookies.remove('userID');
-        setToken(() => '');
+
+        setToken(() => false);
+
+        navigate('login');
     }
 
     return (
@@ -63,27 +96,7 @@ function Navbar() {
                             KnowItAll
                         </Typography>
 
-                        {token && (
-                            <Button onClick={handleLogout} color='inherit'>
-                                <Link to='/login' style={linkStyle}>
-                                    Logout
-                                </Link>
-                            </Button>
-                        )}
-                        {!token && (
-                            <React.Fragment>
-                                <Button color='inherit'>
-                                    <Link to='/login' style={linkStyle}>
-                                        Login
-                                    </Link>
-                                </Button>
-                                <Button color='inherit'>
-                                    <Link to='/register' style={linkStyle}>
-                                        Register
-                                    </Link>
-                                </Button>
-                            </React.Fragment>
-                        )}
+                        <ButtonGroup token={token} />
                     </Toolbar>
                 </AppBar>
                 <Outlet />

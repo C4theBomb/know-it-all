@@ -9,7 +9,7 @@ function OrgUnit({ org }) {
     return (
         <React.Fragment>
             <Typography variant='h6'>
-                <Link to={orgID}>Name: {orgName}</Link>
+                <Link to={`org/${orgID}`}>Name: {orgName}</Link>
             </Typography>
             <Box>
                 <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>

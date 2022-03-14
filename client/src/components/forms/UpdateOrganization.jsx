@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 import { Typography, TextField, Button } from '@mui/material';
 
@@ -9,6 +10,7 @@ import Form from '../utils/Form';
 
 function UpdateOrganization() {
     const { orgID } = useParams();
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
 
@@ -20,10 +22,15 @@ function UpdateOrganization() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await axios.patch(`${process.env.REACT_APP_DOMAIN_ROOT}/org/update`, {
-            orgName: name,
-            orgID,
-        });
+        await axios
+            .patch(`${process.env.REACT_APP_DOMAIN_ROOT}/org/update`, {
+                token: Cookies.get('token'),
+                orgName: name,
+                orgID,
+            })
+            .then(() => {
+                navigate(`/org/${orgID}`);
+            });
     }
 
     return (
@@ -35,8 +42,7 @@ function UpdateOrganization() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
-                    label='name'
+                    label='Name'
                     name='name'
                     variant='outlined'
                     onChange={handleChange}

@@ -23,13 +23,29 @@ app.set('port', port);
 
 var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+async function connectDatabase() {
+    try {
+        await sequelize.authenticate();
+        console.log(
+            `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
+        );
+        if (process.env.NODE_ENV == 'development') {
+            await sequelize.sync({ force: 'true' });
+            console.log('[INFO]: Wiping all tables on database');
+        }
+    } catch (error) {
+        console.log('[ERROR]: Unable to connect to the database;', error);
+    }
+}
+connectDatabase().then(() => {
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -82,19 +98,6 @@ function onError(error) {
  */
 
 async function onListening() {
-    try {
-        await sequelize.authenticate();
-        console.log(
-            `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
-        );
-        if (process.env.NODE_ENV == 'development') {
-            await sequelize.sync({ force: 'true' });
-            console.log('[INFO]: Wiping all tables on database');
-        }
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);

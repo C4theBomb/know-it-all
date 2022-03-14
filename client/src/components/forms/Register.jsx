@@ -53,7 +53,6 @@ function Register() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='First Name'
                     name='firstName'
                     variant='outlined'
@@ -64,7 +63,6 @@ function Register() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='Last Name'
                     name='lastName'
                     variant='outlined'
@@ -75,7 +73,6 @@ function Register() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='Email'
                     name='email'
                     variant='outlined'
@@ -85,7 +82,6 @@ function Register() {
                 />
                 <TextField
                     fullWidth
-                    id='outline-required'
                     label='Pronouns'
                     name='pronouns'
                     variant='outlined'
@@ -96,7 +92,6 @@ function Register() {
                 <TextField
                     required
                     fullWidth
-                    id='outlined-password-input'
                     label='Password'
                     name='password'
                     type='password'
@@ -108,7 +103,6 @@ function Register() {
                 <TextField
                     required
                     fullWidth
-                    id='outlined-password-input'
                     label='Confirm Password'
                     name='confirmPassword'
                     type='password'

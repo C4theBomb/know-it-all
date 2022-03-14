@@ -5,8 +5,6 @@ import axios from 'axios';
 
 import { Box, Typography, TextField, Button } from '@mui/material';
 
-import Form from '../utils/Form';
-
 function Reset() {
     const navigate = useNavigate();
     const { id } = useParams();
@@ -42,54 +40,50 @@ function Reset() {
     }
 
     return (
-        <Form>
-            <form onSubmit={handleSubmit}>
-                <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
-                    Reset my Password
-                </Typography>
-                <TextField
-                    required
-                    fullWidth
-                    id='outline-required'
-                    label='Password'
-                    name='password'
-                    variant='outlined'
-                    type='password'
-                    onChange={handleChange}
-                    value={form.password}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                <TextField
-                    required
-                    fullWidth
-                    id='outline-required'
-                    label='Confirm Password'
-                    name='confirmPassword'
-                    variant='outlined'
-                    type='password'
-                    onChange={handleChange}
-                    value={form.confirmPassword}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                {error && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='error'>
-                            {error}
-                        </Typography>
-                    </Box>
-                )}
-                <Button
-                    variant='contained'
-                    color='primary'
-                    sx={{ margin: '1vh 0vh' }}
-                    type='submit'
-                    fullWidth
-                    disabled={form.password !== form.confirmPassword}
-                >
-                    Reset my Password
-                </Button>
-            </form>
-        </Form>
+        <form onSubmit={handleSubmit}>
+            <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
+                Reset my Password
+            </Typography>
+            <TextField
+                required
+                fullWidth
+                label='Password'
+                name='password'
+                variant='outlined'
+                type='password'
+                onChange={handleChange}
+                value={form.password}
+                sx={{ margin: '1vh 0vh' }}
+            />
+            <TextField
+                required
+                fullWidth
+                label='Confirm Password'
+                name='confirmPassword'
+                variant='outlined'
+                type='password'
+                onChange={handleChange}
+                value={form.confirmPassword}
+                sx={{ margin: '1vh 0vh' }}
+            />
+            {error && (
+                <Box textAlign='right'>
+                    <Typography variant='body2' color='error'>
+                        {error}
+                    </Typography>
+                </Box>
+            )}
+            <Button
+                variant='contained'
+                color='primary'
+                sx={{ margin: '1vh 0vh' }}
+                type='submit'
+                fullWidth
+                disabled={form.password !== form.confirmPassword}
+            >
+                Reset my Password
+            </Button>
+        </form>
     );
 }
 

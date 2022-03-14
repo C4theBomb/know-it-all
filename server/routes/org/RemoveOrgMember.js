@@ -14,12 +14,10 @@ async function RemoveOrgMember(req, res, next) {
     }
 
     if (!doomedUserIDs) {
-        await result.removeOrgMember({ where: { userID: user.userID } });
+        await result.removeOrgMember(user.userID);
     } else {
         if (user.userID == result.orgOwner.userID) {
-            await result.removeOrgMembers({
-                where: { userID: { [Op.in]: doomedUserIDs } },
-            });
+            await result.removeOrgMembers(doomedUserIDs);
         } else {
             res.status(403).send('You do not have permission to do that.');
         }

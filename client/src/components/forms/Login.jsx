@@ -15,7 +15,7 @@ import {
 
 import Form from '../utils/Form';
 
-function Login() {
+function Login({ setToken }) {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -26,19 +26,22 @@ function Login() {
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (Cookies.get('token')) {
-            async function logout() {
-                await axios
-                    .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
-                        token: Cookies.get('token'),
-                    })
-                    .catch((e) => console.log(e));
-            }
-            logout();
+        async function logout() {
+            await axios
+                .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
+                    token: Cookies.get('token'),
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+
             Cookies.remove('token');
             Cookies.remove('userID');
+
+            setToken(() => false);
         }
-    }, []);
+        logout();
+    }, [setToken]);
 
     function handleChange(e) {
         const name = e.target.name;
@@ -69,6 +72,7 @@ function Login() {
                 Cookies.set('userID', response.data.userID, {
                     expires: form.remember ? 3650 : 1,
                 });
+                setToken(true);
                 navigate('/');
             })
             .catch((e) => setError(() => e.response.data));
@@ -83,7 +87,6 @@ function Login() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='Email'
                     name='email'
                     variant='outlined'
@@ -94,7 +97,6 @@ function Login() {
                 <TextField
                     required
                     fullWidth
-                    id='outlined-password-input'
                     label='Password'
                     name='password'
                     type='password'

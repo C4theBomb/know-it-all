@@ -3,8 +3,6 @@ import axios from 'axios';
 
 import { Box, Typography, TextField, Button } from '@mui/material';
 
-import Form from '../utils/Form';
-
 function Recover() {
     const [form, setForm] = useState({
         email: '',
@@ -34,47 +32,44 @@ function Recover() {
     }
 
     return (
-        <Form>
-            <form onSubmit={handleSubmit}>
-                <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
-                    Recover my Password
-                </Typography>
-                <TextField
-                    required
-                    fullWidth
-                    id='outline-required'
-                    label='Email'
-                    name='email'
-                    variant='outlined'
-                    onChange={handleChange}
-                    value={form.email}
-                    sx={{ margin: '1vh 0vh' }}
-                />
-                {error && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='error'>
-                            {error}
-                        </Typography>
-                    </Box>
-                )}
-                {success && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='primary'>
-                            {success}
-                        </Typography>
-                    </Box>
-                )}
-                <Button
-                    variant='contained'
-                    color='primary'
-                    sx={{ margin: '1vh 0vh' }}
-                    type='submit'
-                    fullWidth
-                >
-                    Recover my password
-                </Button>
-            </form>
-        </Form>
+        <form onSubmit={handleSubmit}>
+            <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
+                Recover my Password
+            </Typography>
+            <TextField
+                required
+                fullWidth
+                label='Email'
+                name='email'
+                variant='outlined'
+                onChange={handleChange}
+                value={form.email}
+                sx={{ margin: '1vh 0vh' }}
+            />
+            {error && (
+                <Box textAlign='right'>
+                    <Typography variant='body2' color='error'>
+                        {error}
+                    </Typography>
+                </Box>
+            )}
+            {success && (
+                <Box textAlign='right'>
+                    <Typography variant='body2' color='primary'>
+                        {success}
+                    </Typography>
+                </Box>
+            )}
+            <Button
+                variant='contained'
+                color='primary'
+                sx={{ margin: '1vh 0vh' }}
+                type='submit'
+                fullWidth
+            >
+                Recover my password
+            </Button>
+        </form>
     );
 }
 

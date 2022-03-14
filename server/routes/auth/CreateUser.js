@@ -5,7 +5,6 @@ async function CreateUser(req, res, next) {
     const body = req.body;
 
     if (!body.firstName || !body.lastName || !body.email || !body.password) {
-        console.log(body);
         return res.status(400).send('The request is missing required fields.');
     }
 

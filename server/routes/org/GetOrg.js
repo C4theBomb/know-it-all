@@ -23,10 +23,11 @@ async function GetOrg(req, res, next) {
         ],
     });
 
-    const status = org.orgOwner.userID == user.userID;
+    const status = org.ownerID == user.userID;
 
     return res.send({
-        org: { ...org, memberCount: org.orgMembers.length },
+        org,
+        memberCount: org.orgMembers.length,
         status,
     });
 }

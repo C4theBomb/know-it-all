@@ -35,55 +35,11 @@ function MainPage() {
         }
     });
 
-    useEffect(() => {
-        async function getOwnedOrgs() {
-            await axios
-                .get(
-                    `${
-                        process.env.REACT_APP_DOMAIN_ROOT
-                    }/auth?token=${Cookies.get('token')}`
-                )
-                .then((response) => {
-                    setOwnedOrgs(() =>
-                        response.data.map((org) => {
-                            return {
-                                orgID: org.orgID,
-                                orgName: org.orgName,
-                                memberCount: org.memberCount,
-                                createdAt: org.createdAt,
-                            };
-                        })
-                    );
-                })
-                .catch((e) => {
-                    console.log(e);
-                });
-        }
-        getOwnedOrgs();
-    }, []);
+    useEffect(() => {}, []);
 
     useEffect(() => {
-        async function getOrgs() {
-            await axios
-                .get(
-                    `${
-                        process.env.REACT_APP_DOMAIN_ROOT
-                    }/auth/orgs?token=${Cookies.get('token')}`
-                )
-                .then((response) => {
-                    setOrgs(() =>
-                        response.data.map((org) => {
-                            return {
-                                orgID: org.orgID,
-                                orgName: org.orgName,
-                                memberCount: org.memberCount,
-                                createdAt: org.createdAt,
-                            };
-                        })
-                    );
-                });
-        }
-        getOrgs();
+        getMemberOrgs();
+        getOwnedOrgs();
     }, []);
 
     function handleChange(e) {
@@ -95,24 +51,76 @@ function MainPage() {
         });
     }
 
-    async function joinOrg(e) {
-        e.preventDefault();
+    async function getOwnedOrgs() {
+        await axios
+            .get(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/auth?token=${Cookies.get(
+                    'token'
+                )}`
+            )
+            .then((response) => {
+                setOwnedOrgs(() =>
+                    response.data.map((org) => {
+                        return {
+                            orgID: org.orgID,
+                            orgName: org.orgName,
+                            memberCount: org.memberCount,
+                            createdAt: org.createdAt,
+                        };
+                    })
+                );
+            })
+            .catch((e) => {
+                console.log(e);
+            });
+    }
 
-        await axios.post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/create`, {
-            token: Cookies.get('token'),
-            orgName: form.name,
-        });
+    async function getMemberOrgs() {
+        await axios
+            .get(
+                `${
+                    process.env.REACT_APP_DOMAIN_ROOT
+                }/auth/orgs?token=${Cookies.get('token')}`
+            )
+            .then((response) => {
+                setOrgs(() =>
+                    response.data.map((org) => {
+                        return {
+                            orgID: org.orgID,
+                            orgName: org.orgName,
+                            memberCount: org.memberCount,
+                            createdAt: org.createdAt,
+                        };
+                    })
+                );
+            });
     }
 
     async function createOrg(e) {
         e.preventDefault();
+        console.log('create');
 
-        await axios.post(
-            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${form.id}`,
-            {
+        await axios
+            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/create`, {
                 token: Cookies.get('token'),
-            }
-        );
+                orgName: form.name,
+            })
+            .then(() => {
+                navigate('');
+                getOwnedOrgs();
+            });
+    }
+
+    async function joinOrg(e) {
+        e.preventDefault();
+
+        await axios
+            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/${form.id}/add`, {
+                token: Cookies.get('token'),
+            })
+            .then(() => {
+                getMemberOrgs();
+            });
     }
 
     return (
@@ -131,7 +139,6 @@ function MainPage() {
                                 <form onSubmit={joinOrg}>
                                     <FormGroup row>
                                         <TextField
-                                            id='standard-name'
                                             label='Organization ID'
                                             name='id'
                                             value={form.id}
@@ -154,10 +161,9 @@ function MainPage() {
                                 <form onSubmit={createOrg}>
                                     <FormGroup row>
                                         <TextField
-                                            id='standard-name'
                                             label='Organization Name'
-                                            name='orgName'
-                                            value={form.orgName}
+                                            name='name'
+                                            value={form.name}
                                             onChange={handleChange}
                                             sx={{ width: '70%' }}
                                         />
@@ -191,7 +197,7 @@ function MainPage() {
                             </StackItem>
                             <StackItem>
                                 <Typography variant='h6'>
-                                    <Link to='joined' style={linkStyle}>
+                                    <Link to='org/joined' style={linkStyle}>
                                         Joined Organizations
                                     </Link>
                                 </Typography>

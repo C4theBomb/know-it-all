@@ -1,11 +1,10 @@
-const { User, Organization } = require('../models/index');
+const { Organization } = require('../models/index');
 
 async function GetOrg(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID || req.query.orgID || req.body.orgID;
 
-    const verify = await Organization.findOne({
-        where: { orgID: orgID },
+    const result = await Organization.findByPk(orgID, {
         include: [
             {
                 association: 'orgOwner',
@@ -20,11 +19,11 @@ async function GetOrg(req, res, next) {
         ],
     });
 
-    if (!verify) {
+    if (!result) {
         return res.status(500).send('There is no organization with this id.');
     }
 
-    if (!verify.orgOwner && verify.orgMembers.length == 0) {
+    if (!result.orgOwner && result.orgMembers.length == 0) {
         return res
             .status(500)
             .send('You do not know any organizations with this id.');

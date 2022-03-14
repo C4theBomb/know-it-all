@@ -1,8 +1,9 @@
+const { Organization } = require('../../models/index');
+
 async function DeleteOrg(req, res, next) {
-    const user = req.user;
     const orgID = req.query.orgID;
 
-    await user.removeOwnedOrg({ where: { orgID: orgID } });
+    await Organization.destroy({ where: { orgID: orgID } });
 
     return res.send('Organization deleted');
 }

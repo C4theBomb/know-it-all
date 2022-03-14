@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
@@ -17,14 +17,22 @@ import OrgDashboard from './components/orgs/OrgDashboard';
 import UpdateOrganization from './components/forms/UpdateOrganization';
 
 function App() {
+    const [token, setToken] = useState(false);
+
     return (
         <React.Fragment>
             <BrowserRouter>
                 <Routes>
-                    <Route path='' element={<Navbar />}>
+                    <Route
+                        path=''
+                        element={<Navbar tokenState={{ token, setToken }} />}
+                    >
                         <Route index element={<MainPage />} />
 
-                        <Route path='login' element={<Login />} />
+                        <Route
+                            path='login'
+                            element={<Login setToken={setToken} />}
+                        />
                         <Route path='register' element={<Register />} />
                         <Route path='update' element={<EditUser />} />
                         <Route path='recover' element={<Form />}>
@@ -32,10 +40,10 @@ function App() {
                             <Route path=':id' element={<Reset />} />
                         </Route>
 
-                        <Route path='org' element={<OwnedOrgs />} />
-                        <Route path='joined'>
-                            <Route index element={<MemberOrgs />} />
-                            <Route path=':id'>
+                        <Route path='org'>
+                            <Route index element={<OwnedOrgs />} />
+                            <Route path='joined' element={<MemberOrgs />} />
+                            <Route path=':orgID'>
                                 <Route index element={<OrgDashboard />} />
                                 <Route
                                     path='update'

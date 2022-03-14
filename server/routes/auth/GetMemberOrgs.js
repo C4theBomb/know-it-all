@@ -5,6 +5,8 @@ async function GetMemberOrgs(req, res, next) {
         attributes: { exclude: ['updatedAt'] },
     });
 
+    console.log(result);
+
     return res.status(200).send(result);
 }
 

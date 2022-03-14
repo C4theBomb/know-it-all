@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'CASCADE',
             });
             Organization.belongsToMany(models.User, {
-                as: 'orgMembers',
+                as: 'orgMember',
                 through: 'OrgMembers',
                 uniqueKey: 'orgID',
                 onDelete: 'CASCADE',

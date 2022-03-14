@@ -6,7 +6,6 @@ async function CreateOrg(req, res, next) {
         return res.status(400).send('Form missing necessary fields');
     }
 
-    console.log(user);
     const existing = await user.countOwnedOrg({
         where: { orgName: orgName },
     });

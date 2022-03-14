@@ -19,7 +19,18 @@ function OrgDashboard() {
     const { orgID } = useParams();
     const navigate = useNavigate();
 
-    const [org, setOrg] = useState({});
+    const [org, setOrg] = useState({
+        orgID: '',
+        orgName: '',
+        orgOwner: {
+            firstName: '',
+            lastName: '',
+            email: '',
+        },
+        orgMembers: [],
+        createdAt: '',
+        memberCount: 0,
+    });
     const [rows, setRows] = useState([]);
     const [status, setStatus] = useState('');
     const [selection, setSelection] = useState();
@@ -36,37 +47,41 @@ function OrgDashboard() {
                 )
                 .then((response) => {
                     const res = response.data;
+
                     setOrg(() => {
                         return {
-                            orgID: res.orgID,
-                            orgName: res.orgName,
+                            orgID: res.org.orgID,
+                            orgName: res.org.orgName,
                             orgOwner: {
-                                firstName: res.orgOwner.firstName,
-                                lastName: res.orgOwner.lastName,
-                                email: res.orgOwner.email,
+                                firstName: res.org.orgOwner.firstName,
+                                lastName: res.org.orgOwner.lastName,
+                                email: res.org.orgOwner.email,
                             },
-                            orgMembers: res.orgMembers,
-                            createdAt: res.createdAt,
+                            orgMembers: res.org.orgMembers,
+                            createdAt: res.org.createdAt,
+                            memberCount: res.memberCount,
                         };
                     });
 
-                    const orgMembers = res.orgMembers.map((member, index) => {
+                    const orgMembers = res.org.orgMembers.map((member) => {
                         return {
                             id: member.userID,
                             ...member,
                         };
                     });
+
                     setRows(() => orgMembers);
 
                     setStatus(() => res.status);
                 })
-                .catch(() => {
+                .catch((e) => {
+                    console.log(e);
                     navigate('/');
                 });
         }
 
         getData();
-    });
+    }, [navigate, orgID]);
 
     async function handleDelete() {
         await axios
@@ -76,7 +91,7 @@ function OrgDashboard() {
                     orgID,
                 },
             })
-            .then(navigate(''));
+            .then(navigate('/'));
     }
 
     function copyID() {
@@ -117,7 +132,7 @@ function OrgDashboard() {
                                 Organization ID: {org.orgID}
                             </Typography>
                             <Typography variant='body1'>
-                                Members: {org.orgMembers.length}
+                                Members: {org.memberCount}
                             </Typography>
                             <Typography variant='body1'>
                                 Created On: {org.createdAt}

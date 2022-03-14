@@ -78,7 +78,6 @@ function EditUser() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='First Name'
                     name='firstName'
                     variant='outlined'
@@ -89,7 +88,6 @@ function EditUser() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='Last Name'
                     name='lastName'
                     variant='outlined'
@@ -100,7 +98,6 @@ function EditUser() {
                 <TextField
                     required
                     fullWidth
-                    id='outline-required'
                     label='Email'
                     name='email'
                     variant='outlined'
@@ -110,7 +107,6 @@ function EditUser() {
                 />
                 <TextField
                     fullWidth
-                    id='outline-required'
                     label='Pronouns'
                     name='pronouns'
                     variant='outlined'
