@@ -6,8 +6,9 @@
 var app = require('../app');
 var debug = require('debug')('server:server');
 var http = require('http');
-const Sequelize = require('sequelize');
 require('dotenv').config({ path: '../.env' });
+
+var { sequelize } = require('../models/index');
 
 /**
  * Get port from environment and store in Express.
@@ -16,42 +17,35 @@ require('dotenv').config({ path: '../.env' });
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-async function sequelizeConnect() {
-    // const sequelize = new Sequelize({
-    //     database: process.env.DB_NAME,
-    //     username: process.env.DB_USERNAME,
-    //     password: process.env.DB_PASSWORD,
-    //     host: process.env.DB_HOST,
-    //     dialect: 'mysql',
-    // });
-
-    const sequelize = new Sequelize({
-        dialect: 'sqlite',
-        storage: './test_db.sqlite',
-    });
-
-    try {
-        await sequelize.authenticate();
-        console.log('Connection has been established successfully.');
-    } catch (error) {
-        console.error('Unable to connect to the database:', error);
-    }
-}
-
 /**
  * Create HTTP server.
  */
 
 var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+async function connectDatabase() {
+    try {
+        await sequelize.authenticate();
+        console.log(
+            `[INFO]: Database connection to ${process.env.NODE_ENV} has been established successfully.`
+        );
+        if (process.env.NODE_ENV == 'development') {
+            await sequelize.sync({ force: 'true' });
+            console.log('[INFO]: Wiping all tables on database');
+        }
+    } catch (error) {
+        console.log('[ERROR]: Unable to connect to the database;', error);
+    }
+}
+connectDatabase().then(() => {
+    /**
+     * Listen on provided port, on all network interfaces.
+     */
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', sequelizeConnect);
-server.on('listening', onListening);
+    server.listen(port);
+    server.on('error', onError);
+    server.on('listening', onListening);
+});
 
 /**
  * Normalize a port into a number, string, or false.
@@ -103,7 +97,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+async function onListening() {
     var addr = server.address();
     var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
     debug('Listening on ' + bind);

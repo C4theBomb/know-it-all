@@ -4,18 +4,23 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "client": "npm run start --prefix client",
-        "server": "npm run start --prefix server",
+        "client": "npm start --prefix client",
+        "server": "npm start --prefix server",
         "build": "npm run build --prefix client",
-        "test-dev": "npm run build --prefix client && npm run server",
-        "dev": "concurrently \"npm run start --prefix server\" \"npm run start --prefix client\""
+        "test": "npm run build && npm run server",
+        "install-all": "npm i && npm i --prefix client && npm i --prefix server",
+        "audit-all": "npm audit fix && npm audit fix --prefix client && npm audit fix --prefix server"
     },
     "author": "C4 Patino",
     "license": "ISC",
     "dependencies": {
-        "concurrently": "^7.0.0",
+        "build": "^0.1.4",
         "create-react-app": "^5.0.0",
         "dotenv": "^16.0.0",
-        "express-generator": "^4.2.0"
+        "express-generator": "^4.2.0",
+        "js-cookie": "^3.0.1"
+    },
+    "devDependencies": {
+        "sequelize-cli": "^6.4.1"
     }
 }

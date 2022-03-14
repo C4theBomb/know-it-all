@@ -2,7 +2,13 @@
 # Created by https://www.toptal.com/developers/gitignore/api/node,react,git,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,react,git,visualstudiocode
 
-### SQLITE3 ###
+### Express ###
+**/public/
+
+### TODO ###
+TODO
+
+### Sqlite ###
 *.sqlite3
 
 ### Git ###
