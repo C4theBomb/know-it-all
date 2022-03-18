@@ -16,6 +16,8 @@ import MemberOrgs from './components/orgs/MemberOrgs';
 import OrgDashboard from './components/orgs/OrgDashboard';
 import UpdateOrganization from './components/forms/UpdateOrganization';
 
+import RecordMp3 from './components/RecordMp3';
+
 function App() {
     const [token, setToken] = useState(false);
 
@@ -27,6 +29,7 @@ function App() {
                         path=''
                         element={<Navbar tokenState={{ token, setToken }} />}
                     >
+                        <Route path='record' element={<RecordMp3 />} />
                         <Route index element={<MainPage />} />
 
                         <Route
