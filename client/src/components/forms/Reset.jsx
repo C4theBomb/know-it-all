@@ -28,7 +28,7 @@ function Reset() {
         e.preventDefault();
         await axios
             .patch(
-                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/reset-password/${id}`,
+                `${process.env.REACT_APP_API_ROOT}/auth/reset-password/${id}`,
                 {
                     password: form.password,
                 }

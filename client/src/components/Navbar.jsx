@@ -56,7 +56,7 @@ function Navbar({ tokenState }) {
 
     async function handleLogout() {
         await axios
-            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
+            .post(`${process.env.REACT_APP_API_ROOT}/auth/logout`, {
                 token: Cookies.get('token'),
             })
             .catch((e) => {

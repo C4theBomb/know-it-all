@@ -6,7 +6,7 @@ import { useTheme } from '@mui/material/styles';
 import { DataGrid } from '@mui/x-data-grid';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
-function Dashboard({ children, rows, setSelection }) {
+function Dashboard({ children, rows, setSelection, onClick }) {
     const theme = useTheme();
 
     const columns = [
@@ -19,13 +19,14 @@ function Dashboard({ children, rows, setSelection }) {
             headerName: 'Pronounciation',
             flex: 2,
             sortable: false,
-            renderCell: () => (
+            renderCell: (params) => (
                 <IconButton
                     size='large'
                     edge='start'
                     color='inherit'
                     aria-label='menu'
                     sx={{ mr: 2 }}
+                    onClick={() => onClick(params.id)}
                 >
                     <PlayArrowIcon />
                 </IconButton>

@@ -23,7 +23,7 @@ function UpdateOrganization() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .patch(`${process.env.REACT_APP_DOMAIN_ROOT}/org/update`, {
+            .patch(`${process.env.REACT_APP_API_ROOT}/org/update`, {
                 token: Cookies.get('token'),
                 orgName: name,
                 orgID,

@@ -28,7 +28,7 @@ function Login({ setToken }) {
     useEffect(() => {
         async function logout() {
             await axios
-                .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/logout`, {
+                .post(`${process.env.REACT_APP_API_ROOT}/auth/logout`, {
                     token: Cookies.get('token'),
                 })
                 .catch((e) => {
@@ -64,7 +64,7 @@ function Login({ setToken }) {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/auth/login`, form)
+            .post(`${process.env.REACT_APP_API_ROOT}/auth/login`, form)
             .then((response) => {
                 Cookies.set('token', response.data.token, {
                     expires: form.remember ? 3650 : 1,
