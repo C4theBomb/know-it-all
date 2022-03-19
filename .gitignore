@@ -10,6 +10,7 @@ TODO
 
 ### Sqlite ###
 *.sqlite3
+**/config/
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
