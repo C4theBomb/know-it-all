@@ -10,7 +10,7 @@ function JoinedOrgs() {
         axios
             .get(
                 `${
-                    process.env.REACT_APP_DOMAIN_ROOT
+                    process.env.REACT_APP_API_ROOT
                 }/auth/orgs?token=${Cookies.get('token')}`
             )
             .then((response) => {

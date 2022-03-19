@@ -7,6 +7,7 @@ import Cookies from 'js-cookie';
 import { Box, Typography, TextField, Button } from '@mui/material';
 
 import Form from '../utils/Form';
+import RecordMp3 from '../utils/RecordMp3';
 
 function EditUser() {
     const navigate = useNavigate();
@@ -25,7 +26,7 @@ function EditUser() {
         async function getInfo() {
             axios
                 .get(
-                    `${process.env.REACT_APP_DOMAIN_ROOT}/auth/${Cookies.get(
+                    `${process.env.REACT_APP_API_ROOT}/auth/${Cookies.get(
                         'userID'
                     )}?token=${Cookies.get('token')}`
                 )
@@ -60,7 +61,7 @@ function EditUser() {
         const { confirmPassword, ...filteredForm } = form;
         await axios
             .post(
-                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/register`,
+                `${process.env.REACT_APP_API_ROOT}/auth/register`,
                 filteredForm
             )
             .then(() => {
@@ -141,6 +142,7 @@ function EditUser() {
                     </Link>
                 </Button>
             </form>
+            <RecordMp3 />
         </Form>
     );
 }

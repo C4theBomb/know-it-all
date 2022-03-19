@@ -42,7 +42,7 @@ function OrgDashboard() {
             await axios
                 .get(
                     `${
-                        process.env.REACT_APP_DOMAIN_ROOT
+                        process.env.REACT_APP_API_ROOT
                     }/org/${orgID}?token=${Cookies.get('token')}`
                 )
                 .then((response) => {
@@ -86,7 +86,7 @@ function OrgDashboard() {
 
     async function handleDelete() {
         await axios
-            .delete(`${process.env.REACT_APP_DOMAIN_ROOT}/org/delete`, {
+            .delete(`${process.env.REACT_APP_API_ROOT}/org/delete`, {
                 params: {
                     token: Cookies.get('token'),
                     orgID,
@@ -103,7 +103,7 @@ function OrgDashboard() {
         const doomedUserIDs = selection.map((row) => row.id);
 
         await axios.post(
-            `${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`,
+            `${process.env.REACT_APP_API_ROOT}/org/${orgID}/delete`,
             {
                 token: Cookies.get('token'),
                 orgID,
@@ -114,7 +114,7 @@ function OrgDashboard() {
 
     async function leaveOrg() {
         await axios
-            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/${orgID}/delete`, {
+            .post(`${process.env.REACT_APP_API_ROOT}/org/${orgID}/delete`, {
                 token: Cookies.get('token'),
                 orgID,
             })
@@ -125,8 +125,26 @@ function OrgDashboard() {
             });
     }
 
+    async function play(id) {
+        axios
+            .get(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${id}.mp3`,
+                {
+                    responseType: 'blob',
+                }
+            )
+            .then((res) => {
+                const uploadedFile = new File([res.data], 'userAudio.mp3', {
+                    type: res.data.type,
+                    lastModified: Date.now(),
+                });
+                const audioFile = new Audio(URL.createObjectURL(uploadedFile));
+                audioFile.play();
+            });
+    }
+
     return (
-        <Dashboard rows={rows} setSelection={setSelection}>
+        <Dashboard rows={rows} setSelection={setSelection} onClick={play}>
             <Typography variant='h6'>Organizations/{org.orgName}</Typography>
             <Box sx={{ marginTop: '1vh' }}>
                 <Grid container columns={{ xs: 3, md: 12 }}>

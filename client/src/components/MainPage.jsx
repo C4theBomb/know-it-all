@@ -54,7 +54,7 @@ function MainPage() {
     async function getOwnedOrgs() {
         await axios
             .get(
-                `${process.env.REACT_APP_DOMAIN_ROOT}/auth?token=${Cookies.get(
+                `${process.env.REACT_APP_API_ROOT}/auth?token=${Cookies.get(
                     'token'
                 )}`
             )
@@ -79,7 +79,7 @@ function MainPage() {
         await axios
             .get(
                 `${
-                    process.env.REACT_APP_DOMAIN_ROOT
+                    process.env.REACT_APP_API_ROOT
                 }/auth/orgs?token=${Cookies.get('token')}`
             )
             .then((response) => {
@@ -101,7 +101,7 @@ function MainPage() {
         console.log('create');
 
         await axios
-            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/create`, {
+            .post(`${process.env.REACT_APP_API_ROOT}/org/create`, {
                 token: Cookies.get('token'),
                 orgName: form.name,
             })
@@ -115,7 +115,7 @@ function MainPage() {
         e.preventDefault();
 
         await axios
-            .post(`${process.env.REACT_APP_DOMAIN_ROOT}/org/${form.id}/add`, {
+            .post(`${process.env.REACT_APP_API_ROOT}/org/${form.id}/add`, {
                 token: Cookies.get('token'),
             })
             .then(() => {

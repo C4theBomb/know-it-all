@@ -23,7 +23,7 @@ function Recover() {
         e.preventDefault();
         await axios
             .get(
-                `${process.env.REACT_APP_DOMAIN_ROOT}/auth/reset-password?${form.email}`
+                `${process.env.REACT_APP_API_ROOT}/auth/reset-password?${form.email}`
             )
             .then((response) => {
                 setSuccess(() => response.data);
