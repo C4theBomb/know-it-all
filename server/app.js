@@ -8,7 +8,6 @@ var cors = require('cors');
 
 var authRouter = require('./routes/authRouter');
 var orgRouter = require('./routes/orgRouter');
-var audioRouter = require('./routes/audioRouter');
 
 var app = express();
 
@@ -32,7 +31,6 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/api/auth', authRouter);
 app.use('/api/org', orgRouter);
-app.use('/api/audio', audioRouter);
 
 app.use(express.static(path.join(__dirname, 'public/build')));
 app.get('*', (req, res) => {
