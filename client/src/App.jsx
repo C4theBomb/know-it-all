@@ -27,7 +27,6 @@ function App() {
                         path=''
                         element={<Navbar tokenState={{ token, setToken }} />}
                     >
-                        <Route path='record' element={<RecordMp3 />} />
                         <Route index element={<MainPage />} />
 
                         <Route
