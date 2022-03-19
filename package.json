@@ -6,10 +6,10 @@
     "scripts": {
         "client": "npm start --prefix client",
         "server": "npm start --prefix server",
-        "build": "npm run build --prefix client",
+        "build": "npm run env-dist && npm run build --prefix client",
         "test": "npm run build && npm run server",
         "install-all": "npm i && npm i --prefix client && npm i --prefix server",
-        "audit-all": "npm audit fix && npm audit fix --prefix client && npm audit fix --prefix server"
+        "env-dist": "cp .env ./server/.env && cp .env ./client/.env"
     },
     "author": "C4 Patino",
     "license": "ISC",
