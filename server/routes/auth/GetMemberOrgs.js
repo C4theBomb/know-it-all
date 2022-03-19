@@ -1,5 +1,3 @@
-const { User } = require('../../models/index');
-
 async function GetMemberOrgs(req, res, next) {
     const user = req.user;
 
