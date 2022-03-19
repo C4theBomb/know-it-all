@@ -24,7 +24,7 @@ router.post('/logout', tokenAuth, Logout);
 router.get('/reset-password', RequestReset);
 router.patch('/reset-password/:id', ResetPassword);
 
-router.set('/audio', parseFormData, tokenAuth, SetAudio);
+router.post('/audio', parseFormData, tokenAuth, SetAudio);
 
 router.get('/', tokenAuth, GetOwnedOrgs);
 router.get('/orgs', tokenAuth, GetMemberOrgs);
