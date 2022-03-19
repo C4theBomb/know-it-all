@@ -3,7 +3,7 @@
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.createTable('OrgMembers', {
-            OrganizationOrgId: {
+            OrganizationOrgID: {
                 type: Sequelize.UUID,
                 primaryKey: true,
             },
