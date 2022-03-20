@@ -58,7 +58,7 @@ function EditUser() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .post(`${process.env.REACT_APP_API_ROOT}/auth/register`, {
+            .patch(`${process.env.REACT_APP_API_ROOT}/auth/update`, {
                 ...form,
                 token: Cookies.get('token'),
             })
