@@ -1,8 +1,5 @@
 import React from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
-import Cookies from 'js-cookie';
+import { Link, Outlet } from 'react-router-dom';
 
 import {
     AppBar,
@@ -15,11 +12,7 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-function Navbar({ tokenState }) {
-    const navigate = useNavigate();
-
-    const { token, setToken } = tokenState;
-
+function Navbar({ token }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
     const darkTheme = createTheme({
         palette: {
@@ -30,11 +23,18 @@ function Navbar({ tokenState }) {
     function ButtonGroup({ token }) {
         if (token) {
             return (
-                <Button onClick={handleLogout} color='inherit'>
-                    <Link to='/login' style={linkStyle}>
-                        Logout
-                    </Link>
-                </Button>
+                <React.Fragment>
+                    <Button color='inherit'>
+                        <Link to='/update' style={linkStyle}>
+                            Account
+                        </Link>
+                    </Button>
+                    <Button color='inherit'>
+                        <Link to='/login' style={linkStyle}>
+                            Logout
+                        </Link>
+                    </Button>
+                </React.Fragment>
             );
         } else {
             return (
@@ -52,23 +52,6 @@ function Navbar({ tokenState }) {
                 </React.Fragment>
             );
         }
-    }
-
-    async function handleLogout() {
-        await axios
-            .post(`${process.env.REACT_APP_API_ROOT}/auth/logout`, {
-                token: Cookies.get('token'),
-            })
-            .catch((e) => {
-                console.log(e);
-            });
-
-        Cookies.remove('token');
-        Cookies.remove('userID');
-
-        setToken(() => false);
-
-        navigate('login');
     }
 
     return (
