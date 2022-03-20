@@ -6,15 +6,16 @@
     "scripts": {
         "client": "npm start --prefix client",
         "server": "npm start --prefix server",
-        "build": "npm run env-dist && npm run build --prefix client",
+        "build": "npm run env && npm run build --prefix client",
         "test": "npm run build && npm run server",
-        "install-all": "npm i && npm i --prefix client && npm i --prefix server",
-        "env-dist": "cp .env ./server/.env && cp .env ./client/.env"
+        "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
+        "env": "cp .env ./server/.env && cp .env ./client/.env",
+        "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
+        "dist": "npm run install-all && npm run build && npm run package"
     },
     "author": "C4 Patino",
     "license": "ISC",
     "dependencies": {
-        "build": "^0.1.4",
         "create-react-app": "^5.0.0",
         "dotenv": "^16.0.0",
         "express-generator": "^4.2.0",

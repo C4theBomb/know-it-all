@@ -23,10 +23,7 @@ function App() {
         <React.Fragment>
             <BrowserRouter>
                 <Routes>
-                    <Route
-                        path=''
-                        element={<Navbar tokenState={{ token, setToken }} />}
-                    >
+                    <Route path='' element={<Navbar token={token} />}>
                         <Route index element={<MainPage />} />
 
                         <Route
