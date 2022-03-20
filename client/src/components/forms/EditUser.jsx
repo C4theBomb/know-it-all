@@ -44,7 +44,7 @@ function EditUser() {
                 });
         }
         getInfo();
-    });
+    }, []);
 
     function handleChange(e) {
         const name = e.target.name;
@@ -57,13 +57,11 @@ function EditUser() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        const { confirmPassword, ...filteredForm } = form;
         await axios
-            .post(
-                `${process.env.REACT_APP_API_ROOT}/auth/register`,
-                filteredForm
-            )
+            .post(`${process.env.REACT_APP_API_ROOT}/auth/register`, {
+                ...form,
+                token: Cookies.get('token'),
+            })
             .then(() => {
                 navigate('/login');
             })
