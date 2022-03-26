@@ -16,12 +16,12 @@ jobs:
             - uses: actions/checkout@v2
             - name: Write .env to build
               run: |
-                cat ${{ secrets.BUILD_PATH }} > .env
-                cat ${{ secrets.COURIER_AUTH_TOKEN }} >> .env
-                cat ${{ secrets.NODE_ENV }} >> .env
-                cat ${{ secrets.PORT }} >> .env
-                cat ${{ secrets.REACT_APP_API_ROOT }} >> .env
-                cat ${{ secrets.REACT_APP_DOMAIN_ROOT }} >> .env
+                echo ${{ secrets.BUILD_PATH }} > .env
+                echo ${{ secrets.COURIER_AUTH_TOKEN }} >> .env
+                echo ${{ secrets.NODE_ENV }} >> .env
+                echo ${{ secrets.PORT }} >> .env
+                echo ${{ secrets.REACT_APP_API_ROOT }} >> .env
+                echo ${{ secrets.REACT_APP_DOMAIN_ROOT }} >> .env
                 cat .env
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
