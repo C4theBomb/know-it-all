@@ -9,19 +9,19 @@ on:
 
 jobs:
     build:
-        runs-on: ubuntu-latest
         environment: production
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v2
             - name: Write .env to build
               env:
-                  BUILD_PATH: '${{ secrets.BUILD_PATH }}'
-                  COURIER_AUTH_TOKEN: '${{ secrets.COURIER_AUTH_TOKEN }}'
-                  NODE_ENV: '${{ secrets.NODE_ENV }}'
-                  PORT: '${{ secrets.PORT }}'
-                  REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
-                  REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
+                  BUILD_PATH: '${{ env.BUILD_PATH }}'
+                  COURIER_AUTH_TOKEN: '${{ env.COURIER_AUTH_TOKEN }}'
+                  NODE_ENV: '${{ env.NODE_ENV }}'
+                  PORT: '${{ env.PORT }}'
+                  REACT_APP_API_ROOT: '${{ env.REACT_APP_API_ROOT }}'
+                  REACT_APP_DOMAIN_ROOT: '${{ env.REACT_APP_DOMAIN_ROOT }}'
 
               run: |
                   echo $BUILD_PATH > .env
