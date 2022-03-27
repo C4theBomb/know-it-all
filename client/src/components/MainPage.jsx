@@ -33,9 +33,7 @@ function MainPage() {
         if (!Cookies.get('token')) {
             navigate('/login');
         }
-    });
-
-    useEffect(() => {}, []);
+    }, [navigate]);
 
     useEffect(() => {
         getMemberOrgs();

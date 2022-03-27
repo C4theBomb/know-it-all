@@ -22,9 +22,11 @@ function Recover() {
     async function handleSubmit(e) {
         e.preventDefault();
         await axios
-            .get(
-                `${process.env.REACT_APP_API_ROOT}/auth/reset-password?${form.email}`
-            )
+            .get(`${process.env.REACT_APP_API_ROOT}/auth/reset-password`, {
+                params: {
+                    email: form.email,
+                },
+            })
             .then((response) => {
                 setSuccess(() => response.data);
             })

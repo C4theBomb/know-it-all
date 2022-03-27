@@ -30,6 +30,7 @@ async function RequestReset(req, res, next) {
                 data: {
                     email: result.email,
                     resetRequest: resetRequest.reqID,
+                    apiDomainRoot: process.env.REACT_APP_DOMAIN_ROOT,
                 },
             },
         });

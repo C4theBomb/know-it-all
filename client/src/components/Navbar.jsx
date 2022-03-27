@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, Outlet, useLocation } from 'react-router-dom';
 
 import {
     AppBar,
@@ -14,11 +14,17 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function Navbar({ token }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
+    const { pathname } = useLocation();
+
     const darkTheme = createTheme({
         palette: {
             mode: 'dark',
         },
     });
+
+    useEffect(() => {
+        console.log(pathname);
+    }, [pathname]);
 
     function ButtonGroup({ token }) {
         if (token) {
