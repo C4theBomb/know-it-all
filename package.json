@@ -4,11 +4,11 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
         "client": "npm start --prefix client",
         "server": "npm start --prefix server",
-        "dev": "npm run build && npm run server",
         "build": "npm run env && npm run build --prefix client",
+        "test": "npm run build && npm run server",
+        "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
         "env": "cp .env ./server/.env && cp .env ./client/.env",
         "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
         "dist": "npm run install-all && npm run build && npm run package"
