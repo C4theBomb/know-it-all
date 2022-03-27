@@ -15,6 +15,26 @@ describe('Create User', function () {
         }
     });
 
+    test('[200] User successfully created', async () => {
+        const user = {
+            firstName: 'Test',
+            lastName: 'User',
+            email: 'test.user@test.com',
+            pronouns: 'they/them',
+        };
+        const password = 'password';
+
+        await supertest(app)
+            .post('/api/auth/register')
+            .send({ ...user, password })
+            .expect(200)
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .then((response) => {
+                expect(response.body).toEqual(expect.objectContaining(user));
+            });
+    });
+
     test('[500] Request missing fields', async () => {
         await supertest(app)
             .post('/api/auth/register')
@@ -40,26 +60,6 @@ describe('Create User', function () {
             .expect(500, 'A user with that email already exists.')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/);
-    });
-
-    test('[200] User successfully created', async () => {
-        const user = {
-            firstName: 'Test',
-            lastName: 'User',
-            email: 'test.user@test.com',
-            pronouns: 'they/them',
-        };
-        const password = 'password';
-
-        await supertest(app)
-            .post('/api/auth/register')
-            .send({ ...user, password })
-            .expect(200)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .then((response) => {
-                expect(response.body).toEqual(expect.objectContaining(user));
-            });
     });
 
     test('[200] Created with organization', async () => {
