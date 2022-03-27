@@ -39,7 +39,7 @@ jobs:
             - uses: release-drafter/release-drafter@v5
               id: release-draft
               with:
-                  config-name: build-release.js.yml
+                  config-name: ./workflows/build-release.js.yml
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             - name: Upload Release Asset
