@@ -17,7 +17,7 @@ import {
 import OrgUnit from './utils/OrgUnit';
 import StackItem from './utils/StackItem';
 
-function MainPage() {
+function MainPage({ setToken }) {
     const navigate = useNavigate();
 
     const [ownedOrgs, setOwnedOrgs] = useState([]);
@@ -33,7 +33,7 @@ function MainPage() {
         if (!Cookies.get('token')) {
             navigate('/login');
         }
-    }, [navigate]);
+    }, [navigate, setToken]);
 
     useEffect(() => {
         getMemberOrgs();
@@ -69,7 +69,13 @@ function MainPage() {
                 );
             })
             .catch((e) => {
-                console.log(e);
+                if (e.response.status === 511) {
+                    console.log(e.response);
+                    Cookies.remove('token');
+                    Cookies.remove('userID');
+
+                    setToken(() => false);
+                }
             });
     }
 
@@ -91,6 +97,15 @@ function MainPage() {
                         };
                     })
                 );
+            })
+            .catch((e) => {
+                if (e.response.status === 511) {
+                    console.log(e.response);
+                    Cookies.remove('token');
+                    Cookies.remove('userID');
+
+                    setToken(() => false);
+                }
             });
     }
 
