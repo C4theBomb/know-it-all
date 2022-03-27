@@ -10,7 +10,7 @@
         "test": "npm run build && npm run server",
         "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
         "env": "cp .env ./server/.env && cp .env ./client/.env",
-        "package": "tar -czf ./dist.tar.gz ./server ./client ./node_modules .env .gitignore LICENSE package-lock.json package.json README.md",
+        "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
         "dist": "npm run install-all && npm run build && npm run package"
     },
     "author": "C4 Patino",
