@@ -24,10 +24,7 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='' element={<Navbar token={token} />}>
-                        <Route
-                            index
-                            element={<MainPage setToken={setToken} />}
-                        />
+                        <Route index element={<MainPage />} />
 
                         <Route
                             path='login'
