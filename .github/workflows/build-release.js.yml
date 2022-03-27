@@ -40,12 +40,12 @@ jobs:
               id: release-draft
               with:
                   config-name: ./workflows/build-release.js.yml
+                  template: |
+                      ## What’s Changed
+
+                      $CHANGES
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              template: |
-                  ## What’s Changed
-
-                  $CHANGES
             - name: Upload Release Asset
               id: upload-release-asset
               uses: actions/upload-release-asset@v1
