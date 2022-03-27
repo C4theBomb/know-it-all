@@ -7,12 +7,12 @@ async function RequestReset(req, res, next) {
     try {
         const email = req.query.email;
         if (!email) {
-            return res.status(500).send('Request missing required fields');
+            return res.status(400).send('Request missing required fields');
         }
 
         const result = await User.findOne({ where: { email: email } });
         if (!result) {
-            return res.status(400).send('Whoops something went wrong');
+            return res.status(500).send('Whoops something went wrong');
         }
 
         const courier = CourierClient({
@@ -33,8 +33,6 @@ async function RequestReset(req, res, next) {
                 },
             },
         });
-
-        console.log(`${resetRequest.reqID}`);
 
         return res.send(
             'Password reset request sent. If a user exists with this email, an email will be sent with the required information.'
