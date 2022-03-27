@@ -1,12 +1,11 @@
 require('dotenv').config();
 const supertest = require('supertest');
-const forge = require('node-forge');
 
-var { sequelize, User, Organization } = require('../../models/index');
+var { sequelize, Organization } = require('../../models/index');
 const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 
-describe('Create User Endpoint', function () {
+describe('Create User', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
