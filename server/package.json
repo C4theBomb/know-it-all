@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
-        "test": "jest -i --verbose"
+        "test": "jest -i --verbose --detectOpenHandles"
     },
     "dependencies": {
         "@trycourier/courier": "^3.5.0",
