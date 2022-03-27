@@ -10,7 +10,8 @@
         "test": "npm run build && npm run server",
         "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
         "env": "cp .env ./server/.env && cp .env ./client/.env",
-        "dist": "npm run install-all && npm run build && tar -czf ./dist.tar.gz ./"
+        "package": "tar --exclude='./.git' --exclude='./client/.git' --exclude='./server/git' -czvf ./dist.tar.gz .",
+        "dist": "npm run install-all && npm run build && npm run package"
     },
     "author": "C4 Patino",
     "license": "ISC",
