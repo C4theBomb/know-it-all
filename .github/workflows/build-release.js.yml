@@ -9,10 +9,7 @@ on:
 
 jobs:
     build:
-<<<<<<< HEAD
-=======
         environment: production
->>>>>>> bab5e63d4da57a6b467e0151dff19cb622f24c21
         runs-on: ubuntu-latest
 
         steps:
