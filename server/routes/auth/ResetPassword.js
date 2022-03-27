@@ -13,7 +13,7 @@ async function ResetPassword(req, res, next) {
 
     if (!result) {
         return res
-            .status(404)
+            .status(500)
             .send('A reset request with this ID does not exist');
     }
 

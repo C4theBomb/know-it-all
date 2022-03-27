@@ -31,8 +31,6 @@ describe('Logout', function () {
     });
 
     test('[400] Request missing email', async () => {
-        const user = await createTestUser('Test', 'User', 'password');
-
         await supertest(app)
             .get('/api/auth/reset-password')
             .send()
@@ -42,7 +40,7 @@ describe('Logout', function () {
     });
 
     test('[500] No user with email', async () => {
-        const user = await createTestUser('Test', 'User', 'password');
+        await createTestUser('Test', 'User', 'password');
 
         await supertest(app)
             .get('/api/auth/reset-password')

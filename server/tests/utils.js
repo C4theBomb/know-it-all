@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { User, Organization, Token } = require('../models/index');
+const { User, Organization } = require('../models/index');
 
 async function createTestUser(firstName, lastName, password) {
     const hashedPassword = forge.md.sha512
@@ -46,4 +46,20 @@ async function createTestToken(owner) {
     });
 }
 
-module.exports = { createTestUser, createTestOrg, createTestToken };
+async function createTestResetRequest(owner) {
+    const user = await createTestUser(
+        owner.firstName,
+        owner.lastName,
+        owner.password
+    );
+    return await user.createResetRequest({
+        userID: user.userID,
+    });
+}
+
+module.exports = {
+    createTestUser,
+    createTestOrg,
+    createTestToken,
+    createTestResetRequest,
+};
