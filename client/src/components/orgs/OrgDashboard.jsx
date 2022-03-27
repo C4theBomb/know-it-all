@@ -99,6 +99,12 @@ function OrgDashboard() {
         navigator.clipboard.writeText(orgID);
     }
 
+    function copyJoinLink() {
+        navigator.clipboard.writeText(
+            `${process.env.REACT_APP_DOMAIN_ROOT}/regsiter?orgID=${orgID}`
+        );
+    }
+
     async function removeSelected() {
         const doomedUserIDs = selection.map((row) => row.id);
 
@@ -208,6 +214,12 @@ function OrgDashboard() {
                                             onClick={copyID}
                                         >
                                             Copy Org ID
+                                        </Button>
+                                        <Button
+                                            color='success'
+                                            onClick={copyJoinLink}
+                                        >
+                                            Copy Org Join Link
                                         </Button>
                                         <Button
                                             color='error'
