@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { User, Organization } = require('../models/index');
+const { User, Organization, Token } = require('../models/index');
 
 async function createTestUser(firstName, lastName, password) {
     const hashedPassword = forge.md.sha512
@@ -10,7 +10,7 @@ async function createTestUser(firstName, lastName, password) {
     const userInfo = {
         firstName: firstName,
         lastName: lastName,
-        email: `${firstName}.${lastName}@test.com`,
+        email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@test.com`,
         pronouns: 'they/them',
         password: hashedPassword,
     };
@@ -26,12 +26,24 @@ async function createTestOrg(orgName, owner) {
         .toHex();
     const userInfo = {
         ...owner,
-        email: `${owner.firstName}.${owner.lastName}@test.com`,
+        email: `${owner.firstName.toLowerCase()}.${owner.lastName.toLowerCase()}@test.com`,
         pronouns: 'they/them',
         password: hashedPassword,
     };
 
-    return await Organization.create({ orgName, userInfo });
+    return await Organization.create({ orgName, orgOwner: userInfo });
 }
 
-module.exports = { createTestUser, createTestOrg };
+async function createTestToken(owner) {
+    const user = await createTestUser(
+        owner.firstName,
+        owner.lastName,
+        owner.password
+    );
+    return await user.createToken({
+        userID: user.userID,
+        expires: true,
+    });
+}
+
+module.exports = { createTestUser, createTestOrg, createTestToken };
