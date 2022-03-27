@@ -3,7 +3,7 @@ const supertest = require('supertest');
 
 var { sequelize } = require('../../models/index');
 const app = require('../../app');
-const { createTestToken } = require('../utils');
+const { createTestToken, createTestUser } = require('../utils');
 
 describe('UpdateUserDetails', function () {
     beforeEach(async () => {
@@ -44,7 +44,23 @@ describe('UpdateUserDetails', function () {
             });
     });
 
-    test('[500] Pre-existing user with email', async () => {});
+    test('[500] Pre-existing user with email', async () => {
+        const token = await createTestToken({
+            firstName: 'Test',
+            lastName: 'User',
+            password: 'password',
+        });
+        await createTestUser('New', 'User', 'password');
+        await supertest(app)
+            .patch('/api/auth/update')
+            .send({
+                email: 'new.user@test.com',
+                token: token.tokenID,
+            })
+            .expect(500, 'A user with that email already exists.')
+            .set('Accept', 'text/html')
+            .expect('Content-Type', /text/);
+    });
 
     test('[403] Missing token', async () => {
         await supertest(app)
