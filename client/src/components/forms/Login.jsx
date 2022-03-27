@@ -67,10 +67,10 @@ function Login({ setToken }) {
             .post(`${process.env.REACT_APP_API_ROOT}/auth/login`, form)
             .then((response) => {
                 Cookies.set('token', response.data.token, {
-                    expires: form.remember ? 3650 : 1,
+                    expires: form.remember ? 3650 : null,
                 });
                 Cookies.set('userID', response.data.userID, {
-                    expires: form.remember ? 3650 : 1,
+                    expires: form.remember ? 3650 : null,
                 });
                 setToken(true);
                 navigate('/');

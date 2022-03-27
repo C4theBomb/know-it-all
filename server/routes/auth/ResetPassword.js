@@ -9,7 +9,7 @@ async function ResetPassword(req, res, next) {
         return res.status(400).send('Form missing required information.');
     }
 
-    const result = await ResetRequest.findOne({ where: { reqID: reqID } });
+    const result = await ResetRequest.findByPk(reqID);
 
     if (!result) {
         return res
