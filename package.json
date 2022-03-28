@@ -1,21 +1,37 @@
 {
-    "name": "test-site",
+    "name": "know-it-all",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "client": "npm start --prefix client",
-        "server": "npm start --prefix server",
-        "build": "npm run env && npm run build --prefix client",
-        "test": "npm run test --prefix server",
+        "client": "npm start --ws client",
+        "server": "npm start --ws server",
+
+        "prebuild": "npm run env",
+        "build": "npm run build --ws client",
+
+        "predev": "npm run build",
         "dev": "npm run build && npm run server",
+        
+        "preinstall-all": "npm run clean",
         "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
-        "env": "cp .env ./server/.env && cp .env ./client/.env",
+        
+        "predist": "npm run install-all && npm run build",
+        "dist": "npm run package",
+
+        "test": "npm run test --ws",
+
+        "env": "npm run env --ws",
+
         "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
-        "dist": "npm run install-all && npm run build && npm run package"
+        "clean": "npm run clean --ws && rm -rf node_modules/"
     },
     "author": "C4 Patino",
     "license": "ISC",
+    "workspaces": [
+        "server",
+        "client"
+    ],
     "dependencies": {
         "create-react-app": "^5.0.0",
         "dotenv": "^16.0.0",
