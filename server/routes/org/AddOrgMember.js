@@ -7,7 +7,7 @@ async function AddOrgMember(req, res, next) {
     const result = await Organization.findByPk(orgID);
 
     if (!result) {
-        return res.status(500).send('No organization exists with that id.');
+        return res.status(404).send('No organization exists with that id.');
     }
 
     await result.addOrgMember(user.userID);
