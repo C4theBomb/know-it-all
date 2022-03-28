@@ -3,7 +3,7 @@ const supertest = require('supertest');
 
 var { sequelize } = require('../../models/index');
 const app = require('../../app');
-const { createTestOrg, createTestUser } = require('../utils');
+const { createTestOrg, createTestUser, createTestToken } = require('../utils');
 
 describe('AddOrgMember', function () {
     beforeEach(async () => {
