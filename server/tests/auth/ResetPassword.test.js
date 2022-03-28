@@ -5,7 +5,7 @@ var { sequelize } = require('../../models/index');
 const app = require('../../app');
 const { createTestResetRequest } = require('../utils');
 
-describe('Logout', function () {
+describe('ResetPassword', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

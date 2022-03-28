@@ -5,7 +5,7 @@ var { sequelize, Organization } = require('../../models/index');
 const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 
-describe('Create User', function () {
+describe('CreateUser', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

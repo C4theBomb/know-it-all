@@ -31,7 +31,10 @@ async function createTestOrg(orgName, owner) {
         password: hashedPassword,
     };
 
-    return await Organization.create({ orgName, orgOwner: userInfo });
+    const user = await User.create(userInfo);
+    const org = await user.createOwnedOrg({ orgName });
+
+    return org;
 }
 
 async function createTestToken(owner) {
