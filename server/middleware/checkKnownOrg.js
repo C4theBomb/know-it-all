@@ -25,7 +25,7 @@ async function GetOrg(req, res, next) {
 
     if (!result.orgOwner && result.orgMember.length == 0) {
         return res
-            .status(500)
+            .status(403)
             .send('You do not know any organizations with this id.');
     }
 
