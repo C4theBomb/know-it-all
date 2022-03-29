@@ -23,7 +23,7 @@ describe('Logout', function () {
             .query({ email: user.email })
             .send()
             .expect(
-                200,
+                500,
                 'Password reset request sent. If a user exists with this email, an email will be sent with the required information.'
             )
             .set('Accept', 'text/html')

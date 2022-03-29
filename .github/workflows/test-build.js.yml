@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
     push:
-        branches: [development, main]
+        branches: [development, main, test]
     pull_request:
         branches: [development, main]
     workflow_dispatch:
@@ -45,6 +45,6 @@ jobs:
               with:
                   node-version: 16.x
             - name: Install dependencies and build
-              run: npm run dist
+              run: npm ci && npm run test
             - name: Test build and stability
               run: npm run test
