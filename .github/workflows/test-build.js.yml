@@ -27,7 +27,7 @@ jobs:
                   REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
                   REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
               run: |
-                  touch .env
+                  mkdir ./server/config
                   echo $BUILD_PATH > .env
                   echo $COURIER_AUTH_TOKEN >> .env
                   echo $NODE_ENV >> .env
