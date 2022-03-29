@@ -17,9 +17,11 @@ async function RemoveOrgMember(req, res, next) {
         await result.removeOrgMember(user.userID);
     } else {
         if (user.userID == result.orgOwner.userID) {
-            await result.removeOrgMembers(doomedUserIDs);
+            await result.removeOrgMember(doomedUserIDs);
         } else {
-            res.status(403).send('You do not have permission to do that.');
+            return res
+                .status(403)
+                .send('You do not have permission to do that.');
         }
     }
 

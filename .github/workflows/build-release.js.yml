@@ -19,6 +19,7 @@ jobs:
                   BUILD_PATH: '${{ secrets.BUILD_PATH }}'
                   COURIER_AUTH_TOKEN: '${{ secrets.COURIER_AUTH_TOKEN }}'
                   NODE_ENV: '${{ secrets.NODE_ENV }}'
+                  LOGGER: '${{ secrets.LOGGER }}'
                   PORT: '${{ secrets.PORT }}'
                   REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
                   REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
@@ -29,6 +30,7 @@ jobs:
                   echo $PORT >> .env
                   echo $REACT_APP_API_ROOT >> .env
                   echo $REACT_APP_DOMAIN_ROOT >> .env
+                  echo $LOGGER >> .env
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:

@@ -8,13 +8,12 @@ async function checkKnownUser(req, res, next) {
         return next();
     }
 
-    const result = await User.findOne({
-        where: { userID: user.userID },
+    const result = await User.findByPk(userID, {
         include: [
             {
                 association: 'ownedOrg',
                 include: {
-                    association: 'orgMembers',
+                    association: 'orgMember',
                     where: { userID: user.userID },
                 },
             },
@@ -22,7 +21,7 @@ async function checkKnownUser(req, res, next) {
                 association: 'memberOrgs',
                 include: [
                     {
-                        association: 'orgMembers',
+                        association: 'orgMember',
                         where: { userID: user.userID },
                         required: false,
                     },
