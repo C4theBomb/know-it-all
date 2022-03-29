@@ -26,6 +26,7 @@ jobs:
                   PORT: '${{ secrets.PORT }}'
                   REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
                   REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
+                  CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
               run: |
                   echo $BUILD_PATH > .env
                   echo $COURIER_AUTH_TOKEN >> .env
