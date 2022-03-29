@@ -36,6 +36,11 @@ jobs:
                   echo $REACT_APP_DOMAIN_ROOT >> .env
                   echo $LOGGER >> .env
                   echo $CONFIG_JSON > ./server/config/config.json
+            - name: Write config.json to config
+              env:
+                  CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+              run: |
+                  echo $CONFIG_JSON > ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
