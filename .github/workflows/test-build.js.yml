@@ -8,6 +8,7 @@ on:
         branches: [development, main]
     pull_request:
         branches: [development, main]
+    workflow_dispatch:
 
 jobs:
     build:
@@ -25,6 +26,7 @@ jobs:
                   PORT: '${{ secrets.PORT }}'
                   REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
                   REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
+                  CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
               run: |
                   echo $BUILD_PATH > .env
                   echo $COURIER_AUTH_TOKEN >> .env
@@ -33,6 +35,7 @@ jobs:
                   echo $REACT_APP_API_ROOT >> .env
                   echo $REACT_APP_DOMAIN_ROOT >> .env
                   echo $LOGGER >> .env
+                  echo $CONFIG_JSON > ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
