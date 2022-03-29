@@ -5,11 +5,13 @@ name: Node.js CI
 
 on:
     push:
-        branches: [main]
+        branches: [development, main]
+    pull_request:
+        branches: [development, main]
 
 jobs:
     build:
-        environment: production
+        environment: test
         runs-on: ubuntu-latest
 
         steps:
@@ -37,17 +39,5 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies and build
               run: npm run dist
-            - uses: release-drafter/release-drafter@v5
-              id: release-draft
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            - name: Upload Release Asset
-              id: upload-release-asset
-              uses: actions/upload-release-asset@v1
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              with:
-                  upload_url: ${{ steps.release-draft.outputs.upload_url }}
-                  asset_path: ./dist.tar.gz
-                  asset_name: dist.tar.gz
-                  asset_content_type: application/gzip
+            - name: Test build and stability
+              run: npm run test

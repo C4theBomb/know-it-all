@@ -27,6 +27,16 @@ async function CreateUser(req, res, next) {
     if (body.orgID) {
         try {
             const org = await Organization.findByPk(body.orgID);
+
+            if (!org) {
+                const result = await User.create({
+                    ...body,
+                    password: passwordHash,
+                });
+
+                return res.send(result);
+            }
+
             const { orgID, ...filteredBody } = body;
 
             const result = await org.createOrgMember({
@@ -34,7 +44,7 @@ async function CreateUser(req, res, next) {
                 password: passwordHash,
             });
 
-            return res.send(result);
+            return res.send({ user: result, orgID });
         } catch (e) {
             console.log(e);
 
