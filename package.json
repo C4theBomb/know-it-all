@@ -9,7 +9,7 @@
         "build": "npm run env && npm run build --prefix client",
         "test": "npm run build && npm run server",
         "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
-        "env": "cp .env ./server/.env && cp .env ./client/.env",
+        "env": "cp .env ./server/.env && cp .env ./client/.env && touch test_db.sqlite3",
         "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
         "dist": "npm run install-all && npm run build && npm run package"
     },
