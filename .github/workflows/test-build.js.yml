@@ -11,7 +11,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    build:
+    test:
         environment: test
         runs-on: ubuntu-latest
 
@@ -23,10 +23,10 @@ jobs:
               run: echo $DOTENV >> .env
             - name: Write config.json to config
               env:
-                  CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+                  CONFIG_JSON: '${{ secrets.CONFIG_JSON }}'
               run: |
                   mkdir ./server/config
-                  echo '$CONFIG_JSON' >> ./server/config/config.json
+                  echo $CONFIG_JSON >> ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
