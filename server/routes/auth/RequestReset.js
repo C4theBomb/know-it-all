@@ -15,7 +15,7 @@ async function RequestReset(req, res, next) {
             return res.status(500).send('Whoops something went wrong');
         }
 
-        console.log(procecss.env.COURIER_AUTH_TOKEN);
+        console.log(process.env.COURIER_AUTH_TOKEN);
 
         const courier = CourierClient({
             authorizationToken: process.env.COURIER_AUTH_TOKEN,
