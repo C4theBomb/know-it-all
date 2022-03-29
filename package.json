@@ -4,33 +4,22 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "client": "npm start --ws client",
-        "server": "npm start --ws server",
-
-        "prebuild": "npm run env",
-        "build": "npm run build --ws client",
-
-        "predev": "npm run build",
-        "dev": "npm run build && npm run server",
-        
-        "preinstall-all": "npm run clean",
-        "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
-        
-        "predist": "npm run install-all && npm run build",
+        "client": "npm start -w client",
+        "server": "npm start -w server",
+        "build": "npm run build -w client",
+        "dev": "npm run server",
         "dist": "npm run package",
-
-        "test": "npm run test --ws",
-
+        "test": "npm run test -w server",
         "env": "npm run env --ws",
-
         "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
-        "clean": "npm run clean --ws && rm -rf node_modules/"
+        "predev": "npm run build",
+        "predist": "npm ci && npm run build",
+        "prebuild": "npm run env"
     },
     "author": "C4 Patino",
     "license": "ISC",
     "workspaces": [
-        "server",
-        "client"
+        "*"
     ],
     "dependencies": {
         "create-react-app": "^5.0.0",

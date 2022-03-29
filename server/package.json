@@ -5,8 +5,7 @@
     "scripts": {
         "start": "nodemon ./bin/www",
         "test": "jest -i --verbose --detectOpenHandles",
-        "env": "cp ../.env .env",
-        "clean": "rm -rf node_modules/ .env public/build"
+        "env": "cp ../.env .env"
     },
     "dependencies": {
         "@trycourier/courier": "^3.5.0",
