@@ -34,7 +34,7 @@ jobs:
                   echo $REACT_APP_API_ROOT >> .env
                   echo $REACT_APP_DOMAIN_ROOT >> .env
                   echo $LOGGER >> .env
-                  echo $CONFIG_JSON >> ./server/config/config.json
+                  echo $CONFIG_JSON > ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
