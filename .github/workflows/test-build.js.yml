@@ -27,7 +27,7 @@ jobs:
                   REACT_APP_API_ROOT: '${{ secrets.REACT_APP_API_ROOT }}'
                   REACT_APP_DOMAIN_ROOT: '${{ secrets.REACT_APP_DOMAIN_ROOT }}'
               run: |
-                  echo $BUILD_PATH > .env
+                  echo $BUILD_PATH >> .env
                   echo $COURIER_AUTH_TOKEN >> .env
                   echo $NODE_ENV >> .env
                   echo $PORT >> .env
@@ -39,7 +39,7 @@ jobs:
                   CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
               run: |
                   mkdir ./server/config
-                  echo $CONFIG_JSON > ./server/config/config.json
+                  echo $CONFIG_JSON >> ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
