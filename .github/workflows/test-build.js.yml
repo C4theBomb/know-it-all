@@ -19,14 +19,14 @@ jobs:
             - uses: actions/checkout@v2
             - name: Write .env to build
               env:
-                  DOTENV: ${{ secrets.DOTENV }}
+                  DOTENV: '${{ secrets.DOTENV }}'
               run: echo $DOTENV >> .env
             - name: Write config.json to config
               env:
-                  CONFIG_JSON: ${{ secrets.CONFIG_JSON }}
+                  CONFIG_JSON: '${{ secrets.CONFIG_JSON }}'
               run: |
                   mkdir ./server/config
-                  echo $CONFIG_JSON >> ./server/config/config.json
+                  echo '$CONFIG_JSON' >> ./server/config/config.json
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
