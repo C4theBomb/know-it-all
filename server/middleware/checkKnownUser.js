@@ -1,4 +1,4 @@
-const { User } = require('../models/index');
+const { User } = require('../db/models/index');
 
 async function checkKnownUser(req, res, next) {
     const user = req.user;

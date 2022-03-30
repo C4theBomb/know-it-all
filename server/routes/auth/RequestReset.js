@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const { CourierClient } = require('@trycourier/courier');
 
-const { User, ResetRequest } = require('../../models/index');
+const { User, ResetRequest } = require('../../db/models/index');
 
 async function RequestReset(req, res, next) {
     try {

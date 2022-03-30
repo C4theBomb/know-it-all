@@ -1,7 +1,7 @@
 require('dotenv').config();
 const supertest = require('supertest');
 
-var { sequelize } = require('../../models/index');
+var { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 const { createTestToken, createTestUser } = require('../utils');
 

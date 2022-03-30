@@ -1,4 +1,4 @@
-const { Token } = require('../../models/index');
+const { Token } = require('../../db/models/index');
 
 async function Login(req, res, next) {
     const user = req.user;

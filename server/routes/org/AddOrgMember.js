@@ -1,4 +1,4 @@
-const { Organization } = require('../../models/index');
+const { Organization } = require('../../db/models/index');
 
 async function AddOrgMember(req, res, next) {
     const user = req.user;

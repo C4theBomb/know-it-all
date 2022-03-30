@@ -1,4 +1,4 @@
-const { Token } = require('../models/index');
+const { Token } = require('../db/models/index');
 
 async function tokenAuth(req, res, next) {
     const token = req.query.token || req.body.token;
