@@ -1,4 +1,3 @@
-require('dotenv').config();
 const supertest = require('supertest');
 
 var { sequelize, Organization } = require('../../db/models/index');

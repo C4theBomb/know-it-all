@@ -1,5 +1,5 @@
-const { v4: uuidv4 } = require('uuid');
 const { CourierClient } = require('@trycourier/courier');
+require('dotenv').config();
 
 const { User, ResetRequest } = require('../../db/models/index');
 
@@ -14,8 +14,6 @@ async function RequestReset(req, res, next) {
         if (!result) {
             return res.status(500).send('Whoops something went wrong');
         }
-
-        console.log(process.env.COURIER_AUTH_TOKEN);
 
         const courier = CourierClient({
             authorizationToken: process.env.COURIER_AUTH_TOKEN,
