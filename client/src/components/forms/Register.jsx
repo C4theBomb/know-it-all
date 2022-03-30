@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 
 import axios from 'axios';
 
@@ -9,6 +9,7 @@ import Form from '../utils/Form';
 
 function Register() {
     const navigate = useNavigate();
+    const [params] = useSearchParams();
 
     const [form, setForm] = useState({
         firstName: '',
@@ -34,10 +35,10 @@ function Register() {
 
         const { confirmPassword, ...filteredForm } = form;
         await axios
-            .post(
-                `${process.env.REACT_APP_API_ROOT}/auth/register`,
-                filteredForm
-            )
+            .post(`${process.env.REACT_APP_API_ROOT}/auth/register`, {
+                ...filteredForm,
+                orgID: params.orgID,
+            })
             .then(() => {
                 navigate('/login');
             })

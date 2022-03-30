@@ -16,7 +16,7 @@ async function UpdateUserDetails(req, res, next) {
 
         if (result) {
             return res
-                .status(400)
+                .status(500)
                 .send('A user with that email already exists.');
         }
     }

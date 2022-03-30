@@ -1,20 +1,26 @@
 {
-    "name": "test-site",
+    "name": "know-it-all",
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {
-        "client": "npm start --prefix client",
-        "server": "npm start --prefix server",
-        "build": "npm run env && npm run build --prefix client",
-        "test": "npm run build && npm run server",
-        "install-all": "npm ci && npm ci --prefix client && npm ci --prefix server",
-        "env": "cp .env ./server/.env && cp .env ./client/.env",
+        "client": "npm start -w client",
+        "server": "npm start -w server",
+        "build": "npm run build -w client",
+        "dev": "npm run server",
+        "dist": "npm run package",
+        "test": "npm run test -w server",
+        "env": "npm run env --ws && touch test_db.sqlite3",
         "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
-        "dist": "npm run install-all && npm run build && npm run package"
+        "predev": "npm run build",
+        "predist": "npm ci && npm run build",
+        "prebuild": "npm run env"
     },
     "author": "C4 Patino",
     "license": "ISC",
+    "workspaces": [
+        "*"
+    ],
     "dependencies": {
         "create-react-app": "^5.0.0",
         "dotenv": "^16.0.0",

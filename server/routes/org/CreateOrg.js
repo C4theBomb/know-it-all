@@ -12,9 +12,7 @@ async function CreateOrg(req, res, next) {
     if (existing > 0) {
         return res
             .status(500)
-            .send(
-                'This user already has an organization with this name, please pick another.'
-            );
+            .send('This user already has an organization with this name.');
     }
 
     const org = await user.createOwnedOrg({
