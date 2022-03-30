@@ -4,7 +4,11 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
+<<<<<<< HEAD
+        "test": "jest -i",
+=======
         "test": "jest -i --verbose --detectOpenHandles",
+>>>>>>> origin/main
         "env": "cp ../.env .env"
     },
     "dependencies": {
@@ -29,5 +33,8 @@
         "jest": "^27.5.1",
         "nodemon": "^2.0.15",
         "supertest": "^6.2.2"
+    },
+    "jest": {
+        "slowTestThreshold": 10
     }
 }

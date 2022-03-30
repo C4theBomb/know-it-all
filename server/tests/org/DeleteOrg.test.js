@@ -1,7 +1,6 @@
-require('dotenv').config();
 const supertest = require('supertest');
 
-var { sequelize, Organization } = require('../../models/index');
+var { sequelize, Organization } = require('../../db/models/index');
 const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 

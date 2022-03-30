@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { ResetRequest } = require('../../models/index');
+const { ResetRequest } = require('../../db/models/index');
 
 async function ResetPassword(req, res, next) {
     reqID = req.params.id;
