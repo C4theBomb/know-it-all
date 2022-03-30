@@ -19,6 +19,8 @@ jobs:
               env:
                   DOTENV: '${{ secrets.DOTENV }}'
               run: echo "$DOTENV" >> .env
+            - name: Create public assets
+              run: mkdir ./server/public ./server/public/audio ./server/public/images
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
