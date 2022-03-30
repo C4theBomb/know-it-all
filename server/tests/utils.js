@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { User, Organization } = require('../models/index');
+const { User, Organization } = require('../db/models/index');
 
 async function createTestUser(firstName, lastName, password) {
     const hashedPassword = forge.md.sha512

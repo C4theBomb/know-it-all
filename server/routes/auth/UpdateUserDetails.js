@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const { User } = require('../../models/index');
+const { User } = require('../../db/models/index');
 
 async function UpdateUserDetails(req, res, next) {
     const { token, ...body } = req.body;

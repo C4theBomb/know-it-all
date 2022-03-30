@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { User } = require('../models/index');
+const { User } = require('../db/models/index');
 
 async function basicAuth(req, res, next) {
     const email = req.body.email;

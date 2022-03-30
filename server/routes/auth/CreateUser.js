@@ -1,5 +1,5 @@
 const forge = require('node-forge');
-const { User, Organization } = require('../../models/index');
+const { User, Organization } = require('../../db/models/index');
 
 async function CreateUser(req, res, next) {
     const body = req.body;
