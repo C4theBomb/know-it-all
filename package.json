@@ -11,7 +11,7 @@
         "dist": "npm run package",
         "test": "npm run test -w server",
         "env": "npm run env --ws && touch db.sqlite3",
-        "package": "tar -czf ./dist.tar.gz ./.github ./.vscode ./client ./node_modules ./server .env .gitignore LICENSE package-lock.json package.json README.md",
+        "package": "tar -czf ./dist.tar.gz ./client ./node_modules ./server LICENSE package-lock.json package.json",
         "pretest": "npm run env",
         "predev": "npm run build",
         "predist": "npm ci && npm run build",
