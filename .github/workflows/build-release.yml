@@ -6,10 +6,12 @@ name: Build release assets
 on:
     push:
         branches: [main]
+        types: [closed]
     workflow_dispatch:
 
 jobs:
     build:
+        if: github.event.pull_request.merged == true
         environment: production
         runs-on: ubuntu-latest
 
