@@ -16,11 +16,7 @@ import {
     AccordionDetails,
     useMediaQuery,
 } from '@mui/material';
-<<<<<<< HEAD
 import { styled } from '@mui/material/styles';
-=======
-import { styled, useTheme } from '@mui/material/styles';
->>>>>>> main
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Dashboard from '../utils/Dashboard';
