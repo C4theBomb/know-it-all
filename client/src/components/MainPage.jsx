@@ -13,9 +13,30 @@ import {
     TextField,
     FormGroup,
 } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 import OrgUnit from './utils/OrgUnit';
 import StackItem from './utils/StackItem';
+
+const Form = styled(FormGroup)(({ theme }) => ({
+    [theme.breakpoints.only('xs')]: {
+        column: true,
+    },
+}));
+const FormField = styled(TextField)(({ theme }) => ({
+    [theme.breakpoints.only('xs')]: {
+        column: true,
+        width: '75%',
+    },
+}));
+const FormButton = styled(Button)(({ theme }) => ({
+    disableElevation: true,
+    color: theme.palette.primary.main,
+    [theme.breakpoints.only('xs')]: {
+        column: true,
+        width: '25%',
+    },
+}));
 
 function MainPage() {
     const navigate = useNavigate();
@@ -30,17 +51,13 @@ function MainPage() {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
     useEffect(() => {
-        if (!Cookies.get('token')) {
+        if (Cookies.get('token')) {
+            getMemberOrgs();
+            getOwnedOrgs();
+        } else {
             navigate('/login');
         }
-    });
-
-    useEffect(() => {}, []);
-
-    useEffect(() => {
-        getMemberOrgs();
-        getOwnedOrgs();
-    }, []);
+    }, [navigate]);
 
     function handleChange(e) {
         const name = e.target.name;
@@ -106,7 +123,6 @@ function MainPage() {
                 orgName: form.name,
             })
             .then(() => {
-                navigate('');
                 getOwnedOrgs();
             });
     }
@@ -132,51 +148,43 @@ function MainPage() {
                     alignItems='center'
                     style={{ height: '95vh' }}
                 >
-                    <Grid item xs={1} sm={3} md={3.5} />
-                    <Grid item xs={10} sm={6} md={5}>
+                    <Grid item xs={0.5} sm={2} md={4} />
+                    <Grid item xs={11} sm={8} md={4}>
                         <Stack spacing={2}>
                             <StackItem text='Join an Organization'>
                                 <form onSubmit={joinOrg}>
-                                    <FormGroup row>
-                                        <TextField
+                                    <Form>
+                                        <FormField
                                             label='Organization ID'
                                             name='id'
                                             value={form.id}
                                             onChange={handleChange}
-                                            sx={{ width: '75%' }}
                                         />
-                                        <Button
+                                        <FormButton
                                             type='submit'
                                             variant='outlined'
-                                            color='primary'
-                                            disableElevation
-                                            sx={{ width: '25%' }}
                                         >
                                             Join Organization
-                                        </Button>
-                                    </FormGroup>
+                                        </FormButton>
+                                    </Form>
                                 </form>
                             </StackItem>
                             <StackItem text='Create an Organization'>
                                 <form onSubmit={createOrg}>
-                                    <FormGroup row>
-                                        <TextField
+                                    <Form>
+                                        <FormField
                                             label='Organization Name'
                                             name='name'
                                             value={form.name}
                                             onChange={handleChange}
-                                            sx={{ width: '70%' }}
                                         />
-                                        <Button
+                                        <FormButton
                                             type='submit'
                                             variant='outlined'
-                                            color='primary'
-                                            disableElevation
-                                            sx={{ width: '30%' }}
                                         >
                                             Create Organization
-                                        </Button>
-                                    </FormGroup>
+                                        </FormButton>
+                                    </Form>
                                 </form>
                             </StackItem>
                             <StackItem>
@@ -214,7 +222,7 @@ function MainPage() {
                             </StackItem>
                         </Stack>
                     </Grid>
-                    <Grid item xs={1} sm={3} md={3.5} />
+                    <Grid item xs={0.5} sm={2} md={4} />
                 </Grid>
             </Box>
         </React.Fragment>

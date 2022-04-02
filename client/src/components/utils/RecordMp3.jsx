@@ -25,7 +25,7 @@ function RecordMp3() {
             .get(
                 `${
                     process.env.REACT_APP_DOMAIN_ROOT
-                }/public/audio/${Cookies.get('token')}.mp3`,
+                }/public/audio/${Cookies.get('userID')}.mp3`,
                 {
                     responseType: 'blob',
                 }
@@ -41,7 +41,6 @@ function RecordMp3() {
     }, []);
 
     function togglePlay() {
-        console.log(uploadedFile);
         if (audio && !audio.ended) {
             audio.pause();
             audio.currentTime = 0;
@@ -53,14 +52,13 @@ function RecordMp3() {
         }
     }
 
-    async function record() {
+    function record() {
         if (recording) {
-            console.log('Stopped Recording');
+            setRecording(() => false);
             recorder
                 .stop()
                 .getMp3()
                 .then(([buffer, blob]) => {
-                    setRecording(() => false);
                     setUploadedFile(() => {
                         return new File(buffer, 'userAudio.mp3', {
                             type: blob.type,
@@ -69,14 +67,10 @@ function RecordMp3() {
                     });
                 });
         } else {
-            recorder
-                .start()
-                .then(() => {
-                    setRecording(() => true);
-                })
-                .catch((e) => {
-                    console.error(e);
-                });
+            setRecording(() => true);
+            recorder.start().catch((e) => {
+                console.error(e);
+            });
         }
     }
 

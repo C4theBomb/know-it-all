@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 module.exports = {
     production: {
         username: process.env.DB_USERNAME,
@@ -8,10 +10,10 @@ module.exports = {
     },
     test: {
         dialect: 'sqlite',
-        storage: '../../db.sqlite3',
+        storage: '../db.sqlite3',
     },
     development: {
         dialect: 'sqlite',
-        storage: '../../db.sqlite3',
+        storage: '../db.sqlite3',
     },
 };
