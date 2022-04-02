@@ -8,14 +8,7 @@ import OrgUnit from './OrgUnit';
 function Organizations({ retrieveOrgs }) {
     const theme = useTheme();
 
-    const [orgs, setOrgs] = useState([
-        {
-            orgID: 12341234,
-            orgName: 'Org',
-            memberCount: 15,
-            createdAt: 15,
-        },
-    ]);
+    const [orgs, setOrgs] = useState([]);
 
     useEffect(() => {
         retrieveOrgs(setOrgs);

@@ -45,16 +45,7 @@ function OrgDashboard() {
         createdAt: '',
         memberCount: 0,
     });
-    const [rows, setRows] = useState([
-        {
-            id: 'asdf',
-            firstName: 'asdf',
-            lastName: 'asdf',
-            nickname: 'asdf',
-            pronouns: 'asdf',
-            email: 'asdf',
-        },
-    ]);
+    const [rows, setRows] = useState([]);
     const [status, setStatus] = useState(true);
     const [selection, setSelection] = useState(null);
     const [open, setOpen] = useState(false);
