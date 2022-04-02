@@ -16,7 +16,11 @@ import {
     AccordionDetails,
     useMediaQuery,
 } from '@mui/material';
+<<<<<<< HEAD
+import { styled } from '@mui/material/styles';
+=======
 import { styled, useTheme } from '@mui/material/styles';
+>>>>>>> main
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Dashboard from '../utils/Dashboard';
@@ -30,8 +34,6 @@ const DynamicStack = styled(Stack)(({ theme }) => ({
 
 function OrgDashboard() {
     const xs = useMediaQuery((theme) => theme.breakpoints.only('xs'));
-    const sm = useMediaQuery((theme) => theme.breakpoints.only('sm'));
-    const md = useMediaQuery((theme) => theme.breakpoints.only('md'));
     const { orgID } = useParams();
     const navigate = useNavigate();
 
@@ -47,16 +49,7 @@ function OrgDashboard() {
         createdAt: '',
         memberCount: 0,
     });
-    const [rows, setRows] = useState([
-        {
-            id: 'asdf',
-            firstName: 'asdf',
-            lastName: 'asdf',
-            nickname: 'asdf',
-            pronouns: 'asdf',
-            email: 'asdf',
-        },
-    ]);
+    const [rows, setRows] = useState([]);
     const [status, setStatus] = useState(true);
     const [selection, setSelection] = useState(null);
     const [open, setOpen] = useState(false);
