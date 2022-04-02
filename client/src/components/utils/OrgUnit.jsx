@@ -1,27 +1,33 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Stack, Box, Typography } from '@mui/material';
+import {
+    Typography,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function OrgUnit({ org }) {
     const { orgID, orgName, memberCount, createdAt } = org;
 
+    const linkStyle = { textDecoration: 'none', color: 'inherit' };
+
     return (
-        <React.Fragment>
-            <Typography variant='h6'>
-                <Link to={`org/${orgID}`}>Name: {orgName}</Link>
-            </Typography>
-            <Box>
-                <Stack spacing={2} direction={{ xs: 'column', md: 'row' }}>
-                    <Typography variant='body1'>
-                        Members: {memberCount}
-                    </Typography>
-                    <Typography variant='body1'>
-                        Created On: {createdAt}
-                    </Typography>
-                </Stack>
-            </Box>
-        </React.Fragment>
+        <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>
+                    <Link to={`/org/${orgID}`} style={linkStyle}>
+                        {orgName}
+                    </Link>
+                </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                <Typography variant='body1'>Members: {memberCount}</Typography>
+                <Typography variant='body1'>Created On: {createdAt}</Typography>
+            </AccordionDetails>
+        </Accordion>
     );
 }
 

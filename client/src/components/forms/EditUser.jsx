@@ -63,7 +63,7 @@ function EditUser() {
                 token: Cookies.get('token'),
             })
             .then(() => {
-                navigate('/login');
+                navigate('/');
             })
             .catch((e) => setError(() => e.response.data));
     }

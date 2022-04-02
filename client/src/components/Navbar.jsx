@@ -8,15 +8,25 @@ import {
     Typography,
     IconButton,
     CssBaseline,
+    useMediaQuery,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function Navbar({ token }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
+    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+
     const darkTheme = createTheme({
         palette: {
-            mode: 'dark',
+            mode: prefersDarkMode ? 'dark' : 'light',
+        },
+        breakpoints: {
+            values: {
+                xs: 0,
+                sm: 768,
+                md: 1024,
+            },
         },
     });
 
