@@ -16,7 +16,7 @@ import {
     AccordionDetails,
     useMediaQuery,
 } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Dashboard from '../utils/Dashboard';
@@ -30,8 +30,6 @@ const DynamicStack = styled(Stack)(({ theme }) => ({
 
 function OrgDashboard() {
     const xs = useMediaQuery((theme) => theme.breakpoints.only('xs'));
-    const sm = useMediaQuery((theme) => theme.breakpoints.only('sm'));
-    const md = useMediaQuery((theme) => theme.breakpoints.only('md'));
     const { orgID } = useParams();
     const navigate = useNavigate();
 
