@@ -5,7 +5,9 @@
     "scripts": {
         "start": "nodemon ./bin/www",
         "test": "jest -i",
-        "env": "cp ../.env .env"
+        "env": "cp ../.env .env",
+        "migrate": "sequelize db:migrate --env",
+        "undo-migrate": "sequelize db:migrate:undo:all --env"
     },
     "dependencies": {
         "@trycourier/courier": "^3.5.0",
