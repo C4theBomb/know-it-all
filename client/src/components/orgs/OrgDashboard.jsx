@@ -11,16 +11,32 @@ import {
     Box,
     ButtonGroup,
     Button,
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    useMediaQuery,
 } from '@mui/material';
+import { styled, useTheme } from '@mui/material/styles';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import Dashboard from '../utils/Dashboard';
 
+const DynamicStack = styled(Stack)(({ theme }) => ({
+    [theme.breakpoints.up('sm')]: {
+        spacing: 2,
+        alignItems: 'flex-end',
+    },
+}));
+
 function OrgDashboard() {
+    const xs = useMediaQuery((theme) => theme.breakpoints.only('xs'));
+    const sm = useMediaQuery((theme) => theme.breakpoints.only('sm'));
+    const md = useMediaQuery((theme) => theme.breakpoints.only('md'));
     const { orgID } = useParams();
     const navigate = useNavigate();
 
     const [org, setOrg] = useState({
-        orgID: '',
+        orgID: orgID,
         orgName: '',
         orgOwner: {
             firstName: '',
@@ -31,11 +47,24 @@ function OrgDashboard() {
         createdAt: '',
         memberCount: 0,
     });
-    const [rows, setRows] = useState([]);
-    const [status, setStatus] = useState('');
-    const [selection, setSelection] = useState();
+    const [rows, setRows] = useState([
+        {
+            id: 'asdf',
+            firstName: 'asdf',
+            lastName: 'asdf',
+            nickname: 'asdf',
+            pronouns: 'asdf',
+            email: 'asdf',
+        },
+    ]);
+    const [status, setStatus] = useState(true);
+    const [selection, setSelection] = useState(null);
+    const [open, setOpen] = useState(false);
 
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
+    const buttonGroupOrientation = () => {
+        if (xs) return 'vertical';
+    };
 
     useEffect(() => {
         async function getData() {
@@ -131,6 +160,10 @@ function OrgDashboard() {
             });
     }
 
+    function handleOpen() {
+        setOpen((initial) => (initial ? false : true));
+    }
+
     async function play(id) {
         axios
             .get(
@@ -150,94 +183,110 @@ function OrgDashboard() {
     }
 
     return (
-        <Dashboard rows={rows} setSelection={setSelection} onClick={play}>
-            <Typography variant='h6'>Organizations/{org.orgName}</Typography>
-            <Box sx={{ marginTop: '1vh' }}>
-                <Grid container columns={{ xs: 3, md: 12 }}>
-                    <Grid item xs={3}>
-                        <Stack spacing={2}>
-                            <Typography variant='body1'>
-                                Organization ID: {org.orgID}
-                            </Typography>
-                            <Typography variant='body1'>
-                                Members: {org.memberCount}
-                            </Typography>
-                            <Typography variant='body1'>
-                                Created On: {org.createdAt}
-                            </Typography>
-                        </Stack>
-                    </Grid>
-                    <Grid item xs>
-                        <Stack spacing={2}>
-                            <Typography variant='body1'>
-                                Owner:{' '}
-                                {`${org.orgOwner.firstName} ${org.orgOwner.lastName}`}
-                            </Typography>
-                            <Typography variant='body1'>
-                                Email: {org.orgOwner.email}
-                            </Typography>
-                        </Stack>
-                    </Grid>
-                    <Grid
-                        item
-                        container
-                        direction='row'
-                        justifyContent='flex-end'
-                        alignItems='flex-end'
-                        xs
-                    >
-                        <Stack spacing={2} alignItems='flex-end'>
-                            {status ? (
-                                <React.Fragment>
-                                    <ButtonGroup
-                                        variant='outlined'
-                                        aria-label='outlined button group'
-                                    >
-                                        <Button color='warning'>
-                                            <Link to='update' style={linkStyle}>
-                                                Edit {org.orgName}
-                                            </Link>
-                                        </Button>
+        <Dashboard
+            rows={rows}
+            setSelection={setSelection}
+            onClick={play}
+            open={open}
+        >
+            <Accordion expanded={open} onChange={handleOpen}>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Typography variant='h6'>
+                        Organizations/{org.orgName}
+                    </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                    <Box sx={{ marginTop: '1vh' }} fullWidth>
+                        <Grid
+                            container
+                            columns={{ xs: 3, sm: 12, md: 12 }}
+                            spacing={1}
+                        >
+                            <Grid item xs={3}>
+                                <Stack>
+                                    <Typography variant='body1'>
+                                        Organization ID: {org.orgID}
+                                    </Typography>
+                                    <Typography variant='body1'>
+                                        Members: {org.memberCount}
+                                    </Typography>
+                                    <Typography variant='body1'>
+                                        Created On: {org.createdAt}
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={3}>
+                                <Stack>
+                                    <Typography variant='body1'>
+                                        Owner:{' '}
+                                        {`${org.orgOwner.firstName} ${org.orgOwner.lastName}`}
+                                    </Typography>
+                                    <Typography variant='body1'>
+                                        Email: {org.orgOwner.email}
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={3} sm={6} md={6}>
+                                <DynamicStack spacing={1}>
+                                    {status ? (
+                                        <React.Fragment>
+                                            <ButtonGroup
+                                                variant='outlined'
+                                                orientation={buttonGroupOrientation()}
+                                            >
+                                                <Button color='warning'>
+                                                    <Link
+                                                        to='update'
+                                                        style={linkStyle}
+                                                    >
+                                                        Edit {org.orgName}
+                                                    </Link>
+                                                </Button>
+                                                <Button
+                                                    color='error'
+                                                    onClick={handleDelete}
+                                                >
+                                                    Delete {org.orgName}
+                                                </Button>
+                                            </ButtonGroup>
+                                            <ButtonGroup
+                                                variant='outlined'
+                                                orientation={buttonGroupOrientation()}
+                                            >
+                                                <Button
+                                                    color='success'
+                                                    onClick={copyID}
+                                                >
+                                                    Copy Org ID
+                                                </Button>
+                                                <Button
+                                                    color='success'
+                                                    onClick={copyJoinLink}
+                                                >
+                                                    Copy Org Join Link
+                                                </Button>
+                                                <Button
+                                                    color='error'
+                                                    onClick={removeSelected}
+                                                >
+                                                    Remove People
+                                                </Button>
+                                            </ButtonGroup>
+                                        </React.Fragment>
+                                    ) : (
                                         <Button
                                             color='error'
-                                            onClick={handleDelete}
+                                            onClick={leaveOrg}
                                         >
-                                            Delete {org.orgName}
+                                            Leave Org
                                         </Button>
-                                    </ButtonGroup>
-                                    <ButtonGroup
-                                        variant='outlined'
-                                        aria-label='outlined button group'
-                                    >
-                                        <Button
-                                            color='success'
-                                            onClick={copyID}
-                                        >
-                                            Copy Org ID
-                                        </Button>
-                                        <Button
-                                            color='success'
-                                            onClick={copyJoinLink}
-                                        >
-                                            Copy Org Join Link
-                                        </Button>
-                                        <Button
-                                            color='error'
-                                            onClick={removeSelected}
-                                        >
-                                            Remove People
-                                        </Button>
-                                    </ButtonGroup>
-                                </React.Fragment>
-                            ) : (
-                                <Button color='error' onClick={leaveOrg}>
-                                    Leave Org
-                                </Button>
-                            )}
-                        </Stack>
-                    </Grid>
-                </Grid>
-            </Box>
+                                    )}
+                                </DynamicStack>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </AccordionDetails>
+            </Accordion>
         </Dashboard>
     );
 }

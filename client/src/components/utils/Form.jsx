@@ -16,8 +16,8 @@ function Form({ children }) {
                     alignItems='center'
                     style={{ height: '95vh' }}
                 >
-                    <Grid item xs={1} sm={3} md={4} />
-                    <Grid item xs={10} sm={6} md={4}>
+                    <Grid item xs={0.5} sm={2} md={4} />
+                    <Grid item xs={11} sm={8} md={4}>
                         <Paper
                             sx={{
                                 ...theme.typography.body2,
@@ -30,7 +30,7 @@ function Form({ children }) {
                             <Outlet />
                         </Paper>
                     </Grid>
-                    <Grid item xs={1} sm={3} md={4} />
+                    <Grid item xs={0.5} sm={2} md={4} />
                 </Grid>
             </Box>
         </React.Fragment>

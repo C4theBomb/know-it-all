@@ -8,7 +8,14 @@ import OrgUnit from './OrgUnit';
 function Organizations({ retrieveOrgs }) {
     const theme = useTheme();
 
-    const [orgs, setOrgs] = useState([]);
+    const [orgs, setOrgs] = useState([
+        {
+            orgID: 12341234,
+            orgName: 'Org',
+            memberCount: 15,
+            createdAt: 15,
+        },
+    ]);
 
     useEffect(() => {
         retrieveOrgs(setOrgs);
@@ -26,9 +33,10 @@ function Organizations({ retrieveOrgs }) {
             }}
         >
             <Typography variant='h6'>Organizations</Typography>
+            <hr />
             <Box sx={{ overflowY: 'auto' }}>
-                {orgs.map((org) => (
-                    <OrgUnit org={org} />
+                {orgs.map((org, index) => (
+                    <OrgUnit org={org} key={index} />
                 ))}
             </Box>
         </Paper>
