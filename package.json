@@ -6,7 +6,7 @@
     "scripts": {
         "start": "npm start -w",
         "prebuild": "npm run env",
-        "build": "npm build -w client",
+        "build": "npm run build -w client",
         "predev": "npm run build",
         "dev": "npm start server",
         "package": "tar -czf ./dist.tar.gz ./client ./node_modules ./server LICENSE package-lock.json package.json",
