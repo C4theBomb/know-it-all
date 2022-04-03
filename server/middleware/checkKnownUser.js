@@ -4,7 +4,7 @@ async function checkKnownUser(req, res, next) {
     const user = req.user;
     const userID = req.params.userID || req.query.userID || req.body.userID;
 
-    if (user.userID == userID) {
+    if (user.id == userID) {
         return next();
     }
 
@@ -13,21 +13,21 @@ async function checkKnownUser(req, res, next) {
             {
                 association: 'ownedOrg',
                 include: {
-                    association: 'orgMember',
-                    where: { userID: user.userID },
+                    association: 'member',
+                    where: { id: user.id },
                 },
             },
             {
-                association: 'memberOrgs',
+                association: 'memberOrg',
                 include: [
                     {
-                        association: 'orgMember',
-                        where: { userID: user.userID },
+                        association: 'owner',
+                        where: { id: user.id },
                         required: false,
                     },
                     {
-                        association: 'orgOwner',
-                        where: { userID: user.userID },
+                        association: 'member',
+                        where: { id: user.id },
                         required: false,
                     },
                 ],
@@ -39,8 +39,8 @@ async function checkKnownUser(req, res, next) {
         return res.status(500).send('No user with that ID exists.');
     }
 
-    const filteredResult = result.memberOrgs.filter(
-        (org) => org.orgMembers.length != 0 || org_owner
+    const filteredResult = result.memberOrg.filter(
+        (org) => org.member.length != 0 || org.owner
     );
 
     if (filteredResult.length == 0 && result.ownedOrg) {

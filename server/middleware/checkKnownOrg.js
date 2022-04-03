@@ -7,13 +7,13 @@ async function GetOrg(req, res, next) {
     const result = await Organization.findByPk(orgID, {
         include: [
             {
-                association: 'orgOwner',
-                where: { userID: user.userID },
+                association: 'owner',
+                where: { id: user.id },
                 required: false,
             },
             {
-                association: 'orgMember',
-                where: { userID: user.userID },
+                association: 'member',
+                where: { id: user.id },
                 required: false,
             },
         ],
@@ -23,7 +23,7 @@ async function GetOrg(req, res, next) {
         return res.status(500).send('There is no organization with this id.');
     }
 
-    if (!result.orgOwner && result.orgMember.length == 0) {
+    if (!result.owner && result.member.length == 0) {
         return res
             .status(403)
             .send('You do not know any organizations with this id.');
