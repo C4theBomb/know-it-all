@@ -8,13 +8,13 @@ async function GetOrg(req, res, next) {
         attributes: { exclude: ['updatedAt'] },
         include: [
             {
-                association: 'orgOwner',
+                association: 'owner',
                 attributes: {
-                    exclude: ['userID', 'password', 'createdAt', 'updatedAt'],
+                    exclude: ['id', 'password', 'createdAt', 'updatedAt'],
                 },
             },
             {
-                association: 'orgMember',
+                association: 'member',
                 attributes: {
                     exclude: ['password', 'createdAt', 'updatedAt'],
                 },
@@ -23,11 +23,11 @@ async function GetOrg(req, res, next) {
         ],
     });
 
-    const status = org.ownerID == user.userID;
+    const status = org.ownerID == user.id;
 
     return res.send({
         org,
-        memberCount: org.orgMember.length,
+        memberCount: org.member.length,
         status,
     });
 }

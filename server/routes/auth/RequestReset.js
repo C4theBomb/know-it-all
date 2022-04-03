@@ -19,9 +19,7 @@ async function RequestReset(req, res, next) {
             authorizationToken: process.env.COURIER_AUTH_TOKEN,
         });
 
-        const resetRequest = await ResetRequest.create({
-            userID: result.userID,
-        });
+        const resetRequest = await result.createResetRequest();
 
         await courier.send({
             message: {
@@ -29,7 +27,7 @@ async function RequestReset(req, res, next) {
                 template: 'FSTM4WF60KM570KS9DBQRH0T41GJ',
                 data: {
                     email: result.email,
-                    resetRequest: resetRequest.reqID,
+                    resetRequest: resetRequest.id,
                 },
             },
         });

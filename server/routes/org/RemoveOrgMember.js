@@ -6,7 +6,7 @@ async function RemoveOrgMember(req, res, next) {
     const doomedUserIDs = req.body.doomedUsers;
 
     const result = await Organization.findByPk(orgID, {
-        include: { association: 'orgOwner' },
+        include: { association: 'owner' },
     });
 
     if (!result) {
@@ -14,10 +14,10 @@ async function RemoveOrgMember(req, res, next) {
     }
 
     if (!doomedUserIDs) {
-        await result.removeOrgMember(user.userID);
+        await result.removeMember(user.id);
     } else {
-        if (user.userID == result.orgOwner.userID) {
-            await result.removeOrgMember(doomedUserIDs);
+        if (user.id == result.owner.id) {
+            await result.removeMember(doomedUserIDs);
         } else {
             return res
                 .status(403)

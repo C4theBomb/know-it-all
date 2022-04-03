@@ -9,7 +9,7 @@ async function UpdateUserDetails(req, res, next) {
             where: {
                 [Op.and]: {
                     email: body.email,
-                    userID: { [Op.not]: req.user.userID },
+                    id: { [Op.not]: req.user.id },
                 },
             },
         });

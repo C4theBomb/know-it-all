@@ -9,7 +9,7 @@ async function DeleteOrg(req, res, next) {
     }
 
     await Organization.destroy({
-        where: { orgID: orgID, ownerID: user.userID },
+        where: { id: orgID, ownerID: user.id },
     });
 
     return res.send('Organization deleted');

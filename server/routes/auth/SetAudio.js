@@ -6,13 +6,11 @@ function SetAudio(req, res, next) {
     const oldLocation = req.files.audioFile.filepath;
 
     const uploadDir = `${__dirname}/../../public/audio`;
-    const fileName = `${user.userID}.mp3`;
+    const fileName = `${user.id}.mp3`;
     const newLocation = `${uploadDir}/${fileName}`;
 
-    fs.rename(oldLocation, newLocation, function (err) {
-        if (err) {
-            console.log(err);
-        }
+    fs.rename(oldLocation, newLocation, (err) => {
+        if (err) console.log(err);
     });
 
     res.send('File saved');

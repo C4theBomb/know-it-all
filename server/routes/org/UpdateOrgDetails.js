@@ -7,7 +7,7 @@ async function UpdateOrgDetails(req, res, next) {
         return res.status(400).send('Form missing required information.');
     }
 
-    const result = await user.getOwnedOrg({ where: { orgID: orgID } });
+    const result = await user.getOwnedOrg({ where: { id: orgID } });
 
     if (result.length < 1) {
         return res
@@ -15,7 +15,7 @@ async function UpdateOrgDetails(req, res, next) {
             .send('You do not own an organization with that id.');
     }
 
-    result[0].update({ orgName: orgName });
+    result[0].update({ name: orgName });
 
     return res.send(result[0]);
 }

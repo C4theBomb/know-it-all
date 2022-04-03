@@ -7,7 +7,7 @@ async function CreateOrg(req, res, next) {
     }
 
     const existing = await user.countOwnedOrg({
-        where: { orgName: orgName },
+        where: { name: orgName },
     });
     if (existing > 0) {
         return res
@@ -16,7 +16,7 @@ async function CreateOrg(req, res, next) {
     }
 
     const org = await user.createOwnedOrg({
-        orgName: orgName,
+        name: orgName,
     });
 
     return res.status(200).send(org);

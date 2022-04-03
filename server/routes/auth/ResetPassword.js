@@ -2,14 +2,14 @@ const forge = require('node-forge');
 const { ResetRequest } = require('../../db/models/index');
 
 async function ResetPassword(req, res, next) {
-    reqID = req.params.id;
-    password = req.body.password;
+    const reqID = req.params.id;
+    const password = req.body.password;
 
     if (!password) {
         return res.status(400).send('Form missing required information.');
     }
 
-    const result = await ResetRequest.findOne({ where: { reqID: reqID } });
+    const result = await ResetRequest.findByPk(reqID);
 
     if (!result) {
         return res

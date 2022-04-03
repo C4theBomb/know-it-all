@@ -39,7 +39,7 @@ async function CreateUser(req, res, next) {
 
             const { orgID, ...filteredBody } = body;
 
-            const result = await org.createOrgMember({
+            const result = await org.createMember({
                 ...filteredBody,
                 password: passwordHash,
             });
