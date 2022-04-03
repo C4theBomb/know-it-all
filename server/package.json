@@ -7,7 +7,7 @@
         "test": "jest -i",
         "env": "cp ../.env .env",
         "migrate": "sequelize db:migrate --env",
-        "undo-migrate": "sequelize db:migrate:undo:all --env"
+        "migrate:undo": "sequelize db:migrate:undo:all --env"
     },
     "dependencies": {
         "@trycourier/courier": "^3.5.0",
