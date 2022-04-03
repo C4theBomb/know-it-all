@@ -4,7 +4,7 @@ var { sequelize, Organization } = require('../../db/models/index');
 const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 
-describe('GetOwnedOrgs', function () {
+describe('DeleteOrg', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -16,38 +16,38 @@ describe('GetOwnedOrgs', function () {
 
     test('[200] Organization deleted', async () => {
         const user = await createTestUser('Test', 'User', 'password');
-        var org = await user.createOwnedOrg({
-            orgName: 'Org',
+        const org = await user.createOwnedOrg({
+            name: 'Org',
         });
         const token = await user.createToken();
 
         await supertest(app)
             .delete('/api/org/delete')
             .query({
-                token: token.tokenID,
-                orgID: org.orgID,
+                token: token.id,
+                orgID: org.id,
             })
             .send()
             .expect(200, 'Organization deleted')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
             .then(async () => {
-                const data = await Organization.findByPk(org.orgID);
+                const data = await Organization.findByPk(org.id);
                 expect(data).toEqual(null);
             });
     });
 
     test('[200] No organization deleted with that ID', async () => {
         const user = await createTestUser('Test', 'User', 'password');
-        var org = await user.createOwnedOrg({
-            orgName: 'Org',
+        const org = await user.createOwnedOrg({
+            name: 'Org',
         });
         const token = await user.createToken();
 
         await supertest(app)
             .delete('/api/org/delete')
             .query({
-                token: token.tokenID,
+                token: token.id,
                 orgID: 'randomString',
             })
             .send()
@@ -55,7 +55,7 @@ describe('GetOwnedOrgs', function () {
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
             .then(async () => {
-                const data = await Organization.findByPk(org.orgID);
+                const data = await Organization.findByPk(org.id);
                 expect(data.dataValues).toEqual(org.dataValues);
             });
     });
@@ -63,15 +63,15 @@ describe('GetOwnedOrgs', function () {
     test('[200] Organization not owned by that user', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const newUser = await createTestUser('New', 'User', 'password');
-        var org = await user.createOwnedOrg({
-            orgName: 'Org',
+        const org = await user.createOwnedOrg({
+            name: 'Org',
         });
         const token = await newUser.createToken();
 
         await supertest(app)
             .delete('/api/org/delete')
             .query({
-                token: token.tokenID,
+                token: token.id,
                 orgID: 'randomString',
             })
             .send()
@@ -79,7 +79,7 @@ describe('GetOwnedOrgs', function () {
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
             .then(async () => {
-                const data = await Organization.findByPk(org.orgID);
+                const data = await Organization.findByPk(org.id);
                 expect(data.dataValues).toEqual(org.dataValues);
             });
     });
@@ -92,7 +92,7 @@ describe('GetOwnedOrgs', function () {
         await supertest(app)
             .delete('/api/org/delete')
             .query({
-                token: token.tokenID,
+                token: token.id,
             })
             .send()
             .expect(400, 'Form missing required fields')

@@ -79,21 +79,21 @@ describe('CreateUser', function () {
 
         await supertest(app)
             .post(`/api/auth/register`)
-            .send({ ...user, password, orgID: org.orgID })
+            .send({ ...user, password, orgID: org.id })
             .expect(200)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then(async (response) => {
                 const org = await Organization.findByPk(response.body.orgID, {
                     include: {
-                        association: 'orgMember',
+                        association: 'member',
                     },
                 });
 
                 expect(response.body.user).toEqual(
                     expect.objectContaining(user)
                 );
-                expect(org.orgMember).toEqual(
+                expect(org.member).toEqual(
                     expect.arrayContaining([expect.objectContaining(user)])
                 );
             });

@@ -22,9 +22,9 @@ describe('GetUserDetails', function () {
         });
 
         await supertest(app)
-            .get(`/api/auth/${token.userID}`)
+            .get(`/api/auth/${token.ownerID}`)
             .query({
-                token: token.tokenID,
+                token: token.id,
             })
             .send()
             .expect(200)
@@ -50,7 +50,7 @@ describe('GetUserDetails', function () {
 
         await supertest(app)
             .get(`/api/auth/randomString`)
-            .query({ token: token.tokenID })
+            .query({ token: token.id })
             .send()
             .expect(500, 'No user with that ID exists.')
             .set('Accept', 'text/html')
@@ -66,8 +66,8 @@ describe('GetUserDetails', function () {
         const user = await createTestUser('New', 'User', 'password');
 
         await supertest(app)
-            .get(`/api/auth/${user.userID}`)
-            .query({ token: token.tokenID })
+            .get(`/api/auth/${user.id}`)
+            .query({ token: token.id })
             .send()
             .expect(403, 'You do not have contact with this user.')
             .set('Accept', 'text/html')
@@ -82,7 +82,7 @@ describe('GetUserDetails', function () {
         });
 
         await supertest(app)
-            .get(`/api/auth/${token.userID}`)
+            .get(`/api/auth/${token.ownerID}`)
             .query()
             .send()
             .expect(403, 'Unauthorized user')
@@ -98,7 +98,7 @@ describe('GetUserDetails', function () {
         });
 
         await supertest(app)
-            .get(`/api/auth/${token.userID}`)
+            .get(`/api/auth/${token.ownerID}`)
             .query({ token: 'randomString' })
             .send()
             .expect(511, 'Session expired')

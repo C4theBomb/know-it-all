@@ -18,7 +18,7 @@ async function createTestUser(firstName, lastName, password) {
     return await User.create(userInfo);
 }
 
-async function createTestOrg(orgName, owner) {
+async function createTestOrg(name, owner) {
     const hashedPassword = forge.md.sha512
         .create()
         .update(owner.password)
@@ -32,7 +32,7 @@ async function createTestOrg(orgName, owner) {
     };
 
     const user = await User.create(userInfo);
-    const org = await user.createOwnedOrg({ orgName });
+    const org = await user.createOwnedOrg({ name });
 
     return org;
 }
@@ -44,7 +44,6 @@ async function createTestToken(owner) {
         owner.password
     );
     return await user.createToken({
-        userID: user.userID,
         expires: true,
     });
 }
@@ -55,9 +54,7 @@ async function createTestResetRequest(owner) {
         owner.lastName,
         owner.password
     );
-    return await user.createResetRequest({
-        userID: user.userID,
-    });
+    return await user.createResetRequest();
 }
 
 module.exports = {

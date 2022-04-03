@@ -20,15 +20,15 @@ describe('GetOwnedOrgs', function () {
 
         await supertest(app)
             .post('/api/org/create')
-            .send({ token: token.tokenID, orgName: 'Org' })
+            .send({ token: token.id, orgName: 'Org' })
             .expect(200)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then((response) => {
                 expect(response.body).toEqual(
                     expect.objectContaining({
-                        ownerID: user.userID,
-                        orgName: 'Org',
+                        ownerID: user.id,
+                        name: 'Org',
                     })
                 );
             });
@@ -40,7 +40,7 @@ describe('GetOwnedOrgs', function () {
 
         await supertest(app)
             .post('/api/org/create')
-            .send({ token: token.tokenID })
+            .send({ token: token.id })
             .expect(400, 'Form missing necessary fields')
             .set('Accept', 'text/html')
             .expect('Content-Type', /html/);
@@ -50,12 +50,12 @@ describe('GetOwnedOrgs', function () {
         var user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         await user.createOwnedOrg({
-            orgName: 'Org',
+            name: 'Org',
         });
 
         await supertest(app)
             .post('/api/org/create')
-            .send({ token: token.tokenID, orgName: 'Org' })
+            .send({ token: token.id, orgName: 'Org' })
             .expect(
                 500,
                 'This user already has an organization with this name.'

@@ -27,7 +27,7 @@ describe('UpdateUserDetails', function () {
                 firstName: 'New',
                 lastName: 'User',
                 email: 'new.user@test.com',
-                token: token.tokenID,
+                token: token.id,
             })
             .expect(200)
             .set('Accept', 'application/json')
@@ -54,7 +54,7 @@ describe('UpdateUserDetails', function () {
             .patch('/api/auth/update')
             .send({
                 email: 'new.user@test.com',
-                token: token.tokenID,
+                token: token.id,
             })
             .expect(500, 'A user with that email already exists.')
             .set('Accept', 'text/html')

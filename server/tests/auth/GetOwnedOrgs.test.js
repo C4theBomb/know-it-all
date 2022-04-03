@@ -17,20 +17,20 @@ describe('GetOwnedOrgs', function () {
     test('[200] Retrieved owned orgs', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken({ expires: true });
-        var org = await user.createOwnedOrg({ orgName: 'Org' });
+        const org = await user.createOwnedOrg({ name: 'Org' });
 
         await supertest(app)
             .get('/api/auth')
-            .query({ token: token.tokenID })
+            .query({ token: token.id })
             .send()
             .expect(200)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then((response) => {
                 const data = {
-                    orgID: org.orgID,
+                    id: org.id,
                     ownerID: org.ownerID,
-                    orgName: org.orgName,
+                    name: org.name,
                 };
 
                 expect(response.body).toEqual(

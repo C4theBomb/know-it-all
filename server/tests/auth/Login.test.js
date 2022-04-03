@@ -27,8 +27,8 @@ describe('Login', function () {
             .then(async (response) => {
                 const token = await Token.findByPk(response.body.token);
 
-                expect(response.body.token).toEqual(token.tokenID);
-                expect(response.body.userID).toEqual(token.userID);
+                expect(response.body.token).toEqual(token.id);
+                expect(response.body.userID).toEqual(token.ownerID);
             });
     });
 

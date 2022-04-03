@@ -18,14 +18,14 @@ describe('GetOwnedOrgs', function () {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         const org = await user.createOwnedOrg({
-            orgName: 'Org',
+            name: 'Org',
         });
 
         await supertest(app)
             .patch('/api/org/update')
             .send({
-                token: token.tokenID,
-                orgID: org.orgID,
+                token: token.id,
+                orgID: org.id,
                 orgName: 'New Name',
             })
             .expect(200)
@@ -33,8 +33,8 @@ describe('GetOwnedOrgs', function () {
             .expect('Content-Type', /json/)
             .then((response) => {
                 const data = {
-                    orgName: 'New Name',
-                    orgID: org.orgID,
+                    name: 'New Name',
+                    id: org.id,
                     ownerID: org.ownerID,
                 };
 
@@ -45,14 +45,11 @@ describe('GetOwnedOrgs', function () {
     test('[400] Form missing information', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
-        const org = await user.createOwnedOrg({
-            orgName: 'Org',
-        });
 
         await supertest(app)
             .patch('/api/org/update')
             .send({
-                token: token.tokenID,
+                token: token.id,
             })
             .expect(400, 'Form missing required information.')
             .set('Accept', 'text/html')
@@ -62,14 +59,11 @@ describe('GetOwnedOrgs', function () {
     test('[500] No organization exists with that id', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
-        const org = await user.createOwnedOrg({
-            orgName: 'Org',
-        });
 
         await supertest(app)
             .patch('/api/org/update')
             .send({
-                token: token.tokenID,
+                token: token.id,
                 orgID: 'randomString',
                 orgName: 'New Name',
             })

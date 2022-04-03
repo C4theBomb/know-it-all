@@ -23,7 +23,7 @@ describe('Logout', function () {
 
         await supertest(app)
             .post('/api/auth/logout')
-            .send({ token: token.tokenID })
+            .send({ token: token.id })
             .expect(200, 'User logged out')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/);

@@ -22,7 +22,7 @@ describe('ResetPassword', function () {
         });
 
         await supertest(app)
-            .patch(`/api/auth/reset-password/${resetRequest.reqID}`)
+            .patch(`/api/auth/reset-password/${resetRequest.id}`)
             .send({
                 password: 'newPassword',
             })

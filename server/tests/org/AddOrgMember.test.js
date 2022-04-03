@@ -24,13 +24,13 @@ describe('AddOrgMember', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .post(`/api/org/${org.orgID}/add`)
-            .send({ token: token.tokenID })
+            .post(`/api/org/${org.id}/add`)
+            .send({ token: token.id })
             .expect(200, 'User added to organization.')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
             .then(async () => {
-                const members = await org.getOrgMember();
+                const members = await org.getMember();
 
                 expect(members).toEqual(
                     expect.arrayContaining([
@@ -49,7 +49,7 @@ describe('AddOrgMember', function () {
 
         await supertest(app)
             .post(`/api/org/randomString/add`)
-            .send({ token: token.tokenID })
+            .send({ token: token.id })
             .expect(404, 'No organization exists with that id.')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/);

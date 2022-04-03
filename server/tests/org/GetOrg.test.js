@@ -4,7 +4,7 @@ var { sequelize, Organization } = require('../../db/models/index');
 const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 
-describe('GetOwnedOrgs', function () {
+describe('GetOrg', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -17,21 +17,21 @@ describe('GetOwnedOrgs', function () {
     test('[200] Organization retrieved', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const org = await user.createOwnedOrg({
-            orgName: 'Org',
+            name: 'Org',
         });
         const token = await user.createToken();
 
         await supertest(app)
-            .get(`/api/org/${org.orgID}`)
-            .query({ token: token.tokenID })
+            .get(`/api/org/${org.id}`)
+            .query({ token: token.id })
             .send()
             .expect(200)
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then((response) => {
                 const orgData = {
-                    orgName: org.orgName,
-                    orgID: org.orgID,
+                    name: org.name,
+                    id: org.id,
                     ownerID: org.ownerID,
                 };
 
@@ -47,7 +47,7 @@ describe('GetOwnedOrgs', function () {
                         status: true,
                     })
                 );
-                expect(response.body.org.orgOwner).toEqual(
+                expect(response.body.org.owner).toEqual(
                     expect.objectContaining(userData)
                 );
             });
@@ -59,7 +59,7 @@ describe('GetOwnedOrgs', function () {
 
         await supertest(app)
             .get(`/api/org/randomString`)
-            .query({ token: token.tokenID })
+            .query({ token: token.id })
             .send()
             .expect(500, 'There is no organization with this id.')
             .set('Accept', 'text/html')
@@ -76,8 +76,8 @@ describe('GetOwnedOrgs', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .get(`/api/org/${org.orgID}`)
-            .query({ token: token.tokenID })
+            .get(`/api/org/${org.id}`)
+            .query({ token: token.id })
             .send()
             .expect(403, 'You do not know any organizations with this id.')
             .set('Accept', 'text/html')
@@ -87,11 +87,11 @@ describe('GetOwnedOrgs', function () {
     test('[403] Missing token', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const org = await user.createOwnedOrg({
-            orgName: 'Org',
+            name: 'Org',
         });
 
         await supertest(app)
-            .get(`/api/org/${org.orgID}`)
+            .get(`/api/org/${org.id}`)
             .send()
             .expect(403, 'Unauthorized user')
             .set('Accept', 'text/html')
@@ -101,11 +101,11 @@ describe('GetOwnedOrgs', function () {
     test('[511] Token was not found', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const org = await user.createOwnedOrg({
-            orgName: 'Org',
+            name: 'Org',
         });
 
         await supertest(app)
-            .get(`/api/org/${org.orgID}`)
+            .get(`/api/org/${org.id}`)
             .query({
                 token: 'randomString',
             })
