@@ -4,9 +4,8 @@
 name: Build release assets
 
 on:
-    push:
-        tags:
-            - '*'
+    release:
+        types: [published]
 
 jobs:
     draft:
