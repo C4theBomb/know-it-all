@@ -13,14 +13,14 @@
         "dev": "npm start server",
 
         "package": "tar -czf ./dist.tar.gz ./client ./node_modules ./server LICENSE package-lock.json package.json",
-        "predist": "npm ci && npm run build",
+        "predist": "npm ci && npm run build && npm run env:remove",
         "dist": "npm run package",
 
         "pretest": "npm run env",
         "test": "npm run test -w server",
 
         "env": "npm run env --ws && touch db.sqlite3",
-        "env:remove": "npm run env:remove -w client",
+        "env:remove": "npm run env:remove -w client && rm .env",
 
         "migrate": "npm run migrate -w server",
         "migrate:undo": "npm run migrate:undo -w server"
