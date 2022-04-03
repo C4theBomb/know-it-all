@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class Token extends Model {
         static associate(models) {
             Token.belongsTo(models.User, {
-                foreignKey: 'userID',
+                foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
         }
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Token.init(
         {
-            tokenID: {
+            id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
             },
         },
-        { sequelize }
+        { sequelize, tableName: 'token' }
     );
 
     return Token;

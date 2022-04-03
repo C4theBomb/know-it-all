@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('OrgMembers', {
+        await queryInterface.createTable('org_members', {
             orgID: {
                 type: Sequelize.UUID,
                 primaryKey: true,
@@ -23,6 +23,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('OrgMembers');
+        await queryInterface.dropTable('org_members');
     },
 };

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     class ResetRequest extends Model {
         static associate(models) {
             ResetRequest.belongsTo(models.User, {
-                foreignKey: 'userID',
+                foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
         }
@@ -12,13 +12,13 @@ module.exports = (sequelize, DataTypes) => {
 
     ResetRequest.init(
         {
-            reqID: {
+            id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
         },
-        { sequelize }
+        { sequelize, tableName: 'reset_request' }
     );
 
     return ResetRequest;

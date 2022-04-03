@@ -4,13 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     class Organization extends Model {
         static associate(models) {
             Organization.belongsTo(models.User, {
-                as: 'orgOwner',
+                as: 'owner',
                 foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
             Organization.belongsToMany(models.User, {
-                as: 'orgMember',
-                through: 'OrgMembers',
+                as: 'member',
+                through: 'org_members',
                 foreignKey: 'orgID',
                 onDelete: 'CASCADE',
             });
@@ -19,17 +19,17 @@ module.exports = (sequelize, DataTypes) => {
 
     Organization.init(
         {
-            orgID: {
+            id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
             },
-            orgName: {
+            name: {
                 type: DataTypes.STRING,
                 allowNull: false,
             },
         },
-        { sequelize }
+        { sequelize, tableName: 'organization' }
     );
 
     return Organization;

@@ -2,11 +2,11 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.addColumn('ResetRequests', 'userID', {
+        await queryInterface.addColumn('reset_request', 'ownerID', {
             type: Sequelize.UUID,
             references: {
                 model: 'Users',
-                key: 'userID',
+                key: 'id',
             },
             onUpdate: 'CASCADE',
             onDelete: 'SET NULL',
@@ -14,6 +14,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.removeColumn('ResetRequests', 'userID');
+        await queryInterface.removeColumn('reset_request', 'ownerID');
     },
 };

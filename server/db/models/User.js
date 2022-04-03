@@ -4,11 +4,11 @@ module.exports = (sequelize, DataTypes) => {
     class User extends Model {
         static associate(models) {
             User.hasOne(models.Token, {
-                foreignKey: 'userID',
+                foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
             User.hasOne(models.ResetRequest, {
-                foreignKey: 'userID',
+                foreignKey: 'ownerID',
                 onDelete: 'CASCADE',
             });
             User.hasMany(models.Organization, {
@@ -17,8 +17,8 @@ module.exports = (sequelize, DataTypes) => {
                 onDelete: 'CASCADE',
             });
             User.belongsToMany(models.Organization, {
-                as: 'memberOrgs',
-                through: 'OrgMembers',
+                as: 'memberOrg',
+                through: 'org_members',
                 foreignKey: 'userID',
                 onDelete: 'CASCADE',
             });
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
 
     User.init(
         {
-            userID: {
+            id: {
                 type: DataTypes.UUID,
                 primaryKey: true,
                 defaultValue: DataTypes.UUIDV4,
@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
             },
         },
-        { sequelize }
+        { sequelize, tableName: 'user' }
     );
 
     return User;

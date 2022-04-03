@@ -2,11 +2,11 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.addColumn('Tokens', 'userID', {
+        await queryInterface.addColumn('token', 'ownerID', {
             type: Sequelize.UUID,
             references: {
                 model: 'Users',
-                key: 'userID',
+                key: 'id',
             },
             onUpdate: 'CASCADE',
             onDelete: 'SET NULL',
@@ -14,6 +14,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.removeColumn('Tokens', 'userID');
+        await queryInterface.removeColumn('token', 'ownerID');
     },
 };
