@@ -5,7 +5,7 @@ module.exports = {
         await queryInterface.addColumn('token', 'ownerID', {
             type: Sequelize.UUID,
             references: {
-                model: 'Users',
+                model: 'user',
                 key: 'id',
             },
             onUpdate: 'CASCADE',

@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('reset_requests', {
+        await queryInterface.createTable('reset_request', {
             id: {
                 type: Sequelize.UUID,
                 primaryKey: true,
@@ -17,6 +17,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('reset_requests');
+        await queryInterface.dropTable('reset_request');
     },
 };

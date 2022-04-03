@@ -2,7 +2,7 @@
 
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('tokens', {
+        await queryInterface.createTable('token', {
             id: {
                 type: Sequelize.UUID,
                 primaryKey: true,
@@ -20,6 +20,6 @@ module.exports = {
     },
 
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('tokens');
+        await queryInterface.dropTable('token');
     },
 };

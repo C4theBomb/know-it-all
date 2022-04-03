@@ -5,7 +5,7 @@ module.exports = {
         await queryInterface.addColumn('reset_request', 'ownerID', {
             type: Sequelize.UUID,
             references: {
-                model: 'Users',
+                model: 'user',
                 key: 'id',
             },
             onUpdate: 'CASCADE',
