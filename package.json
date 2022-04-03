@@ -5,23 +5,17 @@
     "main": "index.js",
     "scripts": {
         "start": "npm start -w",
-
         "prebuild": "npm run env",
         "build": "npm build -w client",
-
         "predev": "npm run build",
         "dev": "npm start server",
-
         "package": "tar -czf ./dist.tar.gz ./client ./node_modules ./server LICENSE package-lock.json package.json",
         "predist": "npm ci && npm run build && npm run env:remove",
         "dist": "npm run package",
-
         "pretest": "npm run env",
         "test": "npm run test -w server",
-
-        "env": "npm run env --ws && touch db.sqlite3",
+        "env": "npm run env --ws && touch db.sqlite3 test_db.sqlite3",
         "env:remove": "npm run env:remove -w client && rm .env",
-
         "migrate": "npm run migrate -w server",
         "migrate:undo": "npm run migrate:undo -w server"
     },
