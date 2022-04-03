@@ -17,7 +17,7 @@ import OrgDashboard from './components/orgs/OrgDashboard';
 import UpdateOrganization from './components/forms/UpdateOrganization';
 
 function App() {
-    const [token, setToken] = useState(false);
+    const [token, setToken] = useState(true);
 
     return (
         <React.Fragment>

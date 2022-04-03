@@ -40,7 +40,10 @@ function Login({ setToken }) {
 
             setToken(() => false);
         }
-        logout();
+
+        if (Cookies.get('token')) {
+            logout();
+        }
     }, [setToken]);
 
     function handleChange(e) {

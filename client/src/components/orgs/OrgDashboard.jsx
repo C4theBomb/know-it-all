@@ -34,14 +34,14 @@ function OrgDashboard() {
     const navigate = useNavigate();
 
     const [org, setOrg] = useState({
-        orgID: orgID,
-        orgName: '',
-        orgOwner: {
+        id: orgID,
+        name: '',
+        owner: {
             firstName: '',
             lastName: '',
             email: '',
         },
-        orgMembers: [],
+        member: [],
         createdAt: '',
         memberCount: 0,
     });
@@ -65,32 +65,12 @@ function OrgDashboard() {
                 )
                 .then((response) => {
                     const res = response.data;
-                    console.log(res);
 
                     setOrg(() => {
-                        return {
-                            orgID: res.org.orgID,
-                            orgName: res.org.orgName,
-                            orgOwner: {
-                                firstName: res.org.orgOwner.firstName,
-                                lastName: res.org.orgOwner.lastName,
-                                email: res.org.orgOwner.email,
-                            },
-                            orgMembers: res.org.orgMember,
-                            createdAt: res.org.createdAt,
-                            memberCount: res.memberCount,
-                        };
+                        return { ...res.org, memberCount: res.memberCount };
                     });
 
-                    const orgMembers = res.org.orgMember.map((member) => {
-                        return {
-                            id: member.userID,
-                            ...member,
-                        };
-                    });
-
-                    setRows(() => orgMembers);
-
+                    setRows(() => res.org.member);
                     setStatus(() => res.status);
                 })
                 .catch((e) => {
@@ -119,7 +99,7 @@ function OrgDashboard() {
 
     function copyJoinLink() {
         navigator.clipboard.writeText(
-            `${process.env.REACT_APP_DOMAIN_ROOT}/regsiter?orgID=${orgID}`
+            `${process.env.REACT_APP_DOMAIN_ROOT}/register?orgID=${orgID}`
         );
     }
 
@@ -181,7 +161,7 @@ function OrgDashboard() {
             <Accordion expanded={open} onChange={handleOpen}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant='h6'>
-                        Organizations/{org.orgName}
+                        Organizations/{org.name}
                     </Typography>
                 </AccordionSummary>
                 <AccordionDetails>
@@ -194,7 +174,7 @@ function OrgDashboard() {
                             <Grid item xs={3}>
                                 <Stack>
                                     <Typography variant='body1'>
-                                        Organization ID: {org.orgID}
+                                        Organization ID: {orgID}
                                     </Typography>
                                     <Typography variant='body1'>
                                         Members: {org.memberCount}
@@ -208,10 +188,10 @@ function OrgDashboard() {
                                 <Stack>
                                     <Typography variant='body1'>
                                         Owner:{' '}
-                                        {`${org.orgOwner.firstName} ${org.orgOwner.lastName}`}
+                                        {`${org.owner.firstName} ${org.owner.lastName}`}
                                     </Typography>
                                     <Typography variant='body1'>
-                                        Email: {org.orgOwner.email}
+                                        Email: {org.owner.email}
                                     </Typography>
                                 </Stack>
                             </Grid>
@@ -228,14 +208,14 @@ function OrgDashboard() {
                                                         to='update'
                                                         style={linkStyle}
                                                     >
-                                                        Edit {org.orgName}
+                                                        Edit {org.name}
                                                     </Link>
                                                 </Button>
                                                 <Button
                                                     color='error'
                                                     onClick={handleDelete}
                                                 >
-                                                    Delete {org.orgName}
+                                                    Delete {org.name}
                                                 </Button>
                                             </ButtonGroup>
                                             <ButtonGroup

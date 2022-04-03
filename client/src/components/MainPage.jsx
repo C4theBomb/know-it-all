@@ -76,16 +76,7 @@ function MainPage() {
                 )}`
             )
             .then((response) => {
-                setOwnedOrgs(() =>
-                    response.data.map((org) => {
-                        return {
-                            orgID: org.orgID,
-                            orgName: org.orgName,
-                            memberCount: org.memberCount,
-                            createdAt: org.createdAt,
-                        };
-                    })
-                );
+                setOwnedOrgs(() => response.data);
             })
             .catch((e) => {
                 console.log(e);
@@ -100,16 +91,7 @@ function MainPage() {
                 }/auth/orgs?token=${Cookies.get('token')}`
             )
             .then((response) => {
-                setOrgs(() =>
-                    response.data.map((org) => {
-                        return {
-                            orgID: org.orgID,
-                            orgName: org.orgName,
-                            memberCount: org.memberCount,
-                            createdAt: org.createdAt,
-                        };
-                    })
-                );
+                setOrgs(() => response.data);
             });
     }
 

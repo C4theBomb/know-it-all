@@ -14,16 +14,7 @@ function JoinedOrgs() {
                 )}`
             )
             .then((response) => {
-                setOrgs(() =>
-                    response.data.map((org) => {
-                        return {
-                            orgID: org.orgID,
-                            orgName: org.orgName,
-                            memberCount: org.memberCount,
-                            createdAt: org.createdAt,
-                        };
-                    })
-                );
+                setOrgs(() => response.data);
             });
     }
 

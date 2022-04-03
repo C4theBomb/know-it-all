@@ -11,6 +11,7 @@ function StackItem({ text, children }) {
         padding: '2vh',
         color: theme.palette.text.secondary,
     };
+
     return (
         <Paper sx={paperStyle}>
             <Typography variant='h6'>{text}</Typography>
