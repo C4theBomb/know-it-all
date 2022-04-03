@@ -3,12 +3,10 @@
 
 name: Build release assets
 
-name: Publish
-
 on:
-  push:
-    tags:
-      - '*'
+    push:
+        tags:
+            - '*'
 
 jobs:
     draft:
@@ -29,7 +27,7 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies and build
               run: npm run dist
-            - name: Upload Release Asset
+            - name: Upload release assets
               id: upload-release-asset
               uses: svenstaro/upload-release-action@v2
               with:
@@ -39,4 +37,3 @@ jobs:
                   asset_name: $tag-dist.tar.gz
                   asset_content_type: application/gzip
                   overwrite: true
-            
