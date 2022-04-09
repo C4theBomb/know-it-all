@@ -70,6 +70,7 @@ function OrgDashboard() {
                         return { ...res.org, memberCount: res.memberCount };
                     });
 
+                    // Set org member rows to retrieved data and whether user is owner
                     setRows(() => res.org.member);
                     setStatus(() => res.status);
                 })
@@ -104,6 +105,7 @@ function OrgDashboard() {
     }
 
     async function removeSelected() {
+        // Map all of the doomed users into object and send for deletion
         const doomedUserIDs = selection.map((row) => row.id);
 
         await axios.post(
@@ -134,6 +136,7 @@ function OrgDashboard() {
     }
 
     async function play(id) {
+        // Retrieve audio file from server and play
         axios
             .get(
                 `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${id}.mp3`,

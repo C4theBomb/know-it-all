@@ -32,6 +32,7 @@ function RecordMp3() {
             )
             .then((res) => {
                 setUploadedFile(() => {
+                    // Retrieve audio file of user if exists
                     return new File([res.data], 'userAudio.mp3', {
                         type: res.data.type,
                         lastModified: Date.now(),
@@ -42,10 +43,12 @@ function RecordMp3() {
 
     function togglePlay() {
         if (audio && !audio.ended) {
+            // Reset audio and reset if track is playing
             audio.pause();
             audio.currentTime = 0;
             setAudio(() => null);
         } else {
+            // Set audio to file and play
             const audioFile = new Audio(URL.createObjectURL(uploadedFile));
             setAudio(() => audioFile);
             audioFile.play();
@@ -54,6 +57,7 @@ function RecordMp3() {
 
     function record() {
         if (recording) {
+            // Stop recording then set uploaded file to mp3 instance
             setRecording(() => false);
             recorder
                 .stop()
@@ -67,6 +71,7 @@ function RecordMp3() {
                     });
                 });
         } else {
+            // Start recording
             setRecording(() => true);
             recorder.start().catch((e) => {
                 console.error(e);
@@ -83,6 +88,7 @@ function RecordMp3() {
     async function handleSubmit(e) {
         e.preventDefault();
 
+        // Create form data object and attach file and user token
         var formData = new FormData();
         formData.append('audioFile', uploadedFile, 'userAudio.mp3');
         formData.append('token', Cookies.get('token'));
