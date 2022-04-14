@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
 
 import Form from '../Form';
-import { FormSubmit, FormTextField } from '../StyledElements';
+import { FormSubmit, FormTextField } from './StyledElements';
 
 function Login({
     form,

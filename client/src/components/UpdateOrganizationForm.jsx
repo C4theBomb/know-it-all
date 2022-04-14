@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography } from '@mui/material';
 
 import Form from '../Form';
-import { FormSubmit, FormTextField } from '../StyledElements';
+import { FormSubmit, FormTextField } from './StyledElements';
 
 function UpdateOrganizationForm({ name, handleSubmit, handleChange }) {
     return (

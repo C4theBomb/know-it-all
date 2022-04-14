@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { FormSubmit, FormTextField } from '../StyledElements';
+import { FormSubmit, FormTextField } from './StyledElements';
 
 function ResetForm({ form, handleSubmit, handleChange, error }) {
     return (
