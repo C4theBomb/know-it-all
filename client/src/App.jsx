@@ -2,19 +2,19 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-import MainPage from './components/MainPage';
+import MainPage from './controllers/MainPage';
 
-import Form from './components/utils/Form';
-import Login from './components/forms/Login';
-import Register from './components/forms/Register';
-import EditUser from './components/forms/EditUser';
-import Recover from './components/forms/Recover';
-import Reset from './components/forms/Reset';
+import Form from './components/Form';
+import Login from './controllers/Login';
+import Register from './controllers/Register';
+import EditUser from './controllers/EditUser';
+import Recover from './controllers/Recover';
+import Reset from './controllers/Reset';
 
-import OwnedOrgs from './components/orgs/OwnedOrgs';
-import MemberOrgs from './components/orgs/MemberOrgs';
-import OrgDashboard from './components/orgs/OrgDashboard';
-import UpdateOrganization from './components/forms/UpdateOrganization';
+import OwnedOrgs from './controllers/OwnedOrgs';
+import MemberOrgs from './controllers/MemberOrgs';
+import OrgDashboard from './controllers/OrgDashboard';
+import UpdateOrganization from './controllers/UpdateOrganization';
 
 function App() {
     const [token, setToken] = useState(true);

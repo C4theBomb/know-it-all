@@ -1,12 +1,11 @@
 import React from 'react';
-
 import {
     Accordion,
-    AccordionSummary,
     AccordionDetails,
-    Typography,
-    IconButton,
+    AccordionSummary,
     Grid,
+    IconButton,
+    Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';

@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import {
-    Typography,
     Accordion,
-    AccordionSummary,
     AccordionDetails,
+    AccordionSummary,
+    Typography,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 

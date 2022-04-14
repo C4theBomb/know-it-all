@@ -1,12 +1,13 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
-import Organizations from '../utils/Organizations';
+import Organizations from '../components/Organizations';
 
 function JoinedOrgs() {
-    async function getOrgs(setOrgs) {
+    const [orgs, setOrgs] = useState([]);
+
+    async function getOrgs() {
         axios
             .get(
                 `${
@@ -18,7 +19,9 @@ function JoinedOrgs() {
             });
     }
 
-    return <Organizations retrieveOrgs={getOrgs} />;
+    useEffect(getOrgs);
+
+    return <Organizations orgs={orgs} />;
 }
 
 export default JoinedOrgs;

@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
-
-import { Paper, Typography, Box } from '@mui/material';
+import React from 'react';
+import { Box, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 import OrgUnit from './OrgUnit';
 
-function Organizations({ retrieveOrgs }) {
+function Organizations({ orgs }) {
     const theme = useTheme();
-
-    const [orgs, setOrgs] = useState([]);
-
-    useEffect(() => {
-        retrieveOrgs(setOrgs);
-    }, [retrieveOrgs]);
 
     return (
         <Paper

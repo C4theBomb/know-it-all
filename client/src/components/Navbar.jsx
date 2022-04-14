@@ -1,17 +1,16 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
-
 import {
     AppBar,
     Button,
+    CssBaseline,
+    IconButton,
     Toolbar,
     Typography,
-    IconButton,
-    CssBaseline,
     useMediaQuery,
 } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import MenuIcon from '@mui/icons-material/Menu';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 
 function Navbar({ token }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
