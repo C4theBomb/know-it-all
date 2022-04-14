@@ -4,6 +4,7 @@ const { User } = require('../../db/models/index');
 async function UpdateUserDetails(req, res, next) {
     const { token, ...body } = req.body;
 
+    // Verify that the email is not a duplicate, if it exists
     if (body.email) {
         const result = await User.findOne({
             where: {

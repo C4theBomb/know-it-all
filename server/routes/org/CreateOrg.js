@@ -2,10 +2,12 @@ async function CreateOrg(req, res, next) {
     const user = req.user;
     const orgName = req.body.orgName;
 
+    // Error if the form does not contain an organization name
     if (!orgName) {
         return res.status(400).send('Form missing necessary fields');
     }
 
+    // Verify that no owned organizations have the same name
     const existing = await user.countOwnedOrg({
         where: { name: orgName },
     });

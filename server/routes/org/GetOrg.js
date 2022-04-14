@@ -4,6 +4,7 @@ async function GetOrg(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID;
 
+    // Retrieve organization, owner, and members
     const org = await Organization.findByPk(orgID, {
         attributes: { exclude: ['updatedAt'] },
         include: [
@@ -23,6 +24,7 @@ async function GetOrg(req, res, next) {
         ],
     });
 
+    // Verify whether user is an owner of the organization
     const status = org.ownerID == user.id;
 
     return res.send({

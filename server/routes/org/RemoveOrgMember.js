@@ -5,6 +5,7 @@ async function RemoveOrgMember(req, res, next) {
     const orgID = req.params.orgID;
     const doomedUserIDs = req.body.doomedUsers;
 
+    // Verify that an organization exists with the id
     const result = await Organization.findByPk(orgID, {
         include: { association: 'owner' },
     });
@@ -13,6 +14,7 @@ async function RemoveOrgMember(req, res, next) {
         return res.status(500).send('No organization exists with that id.');
     }
 
+    // Remove self if doomedUserIDs does not exist, otherwise destroy all users in doomedUserIDs
     if (!doomedUserIDs) {
         await result.removeMember(user.id);
     } else {
