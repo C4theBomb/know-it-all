@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+    client:
+        restart: unless-stopped
+        build:
+            context: ./client
+        ports:
+            - 3000:3000
+        volumes:
+            - ./client:/app
+            - client-node:/app/node_modules
+        networks:
+            - know-it-all
+        env_file: ./client/.env
+        environment:
+            WATCHPACK_POLLING: true
+        depends_on:
+            - server
+    server:
+        restart: unless-stopped
+        build:
+            context: ./server
+        ports:
+            - 3001:3001
+        volumes:
+            - ./server:/app
+            - server-node:/app/node_modules
+        networks:
+            - know-it-all
+        env_file: ./server/.env
+        environment:
+            DB_CONN_STRING: 'mongodb://mongodb:27017'
+            CHOKIDAR_USEPOLLING: true
+        depends_on:
+            - mysqldb
+    mysqldb:
+        restart: unless-stopped
+        image: mysql:5.7
+        ports:
+            - 3306:3306
+        volumes:
+            - know-it-all-mysql:/var/lib/mysql
+        networks:
+            - know-it-all
+        environment:
+            MYSQL_ROOT_PASSWORD: 'passw0rd'
+            MYSQL_DATABASE: dev
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 5s
+            retries: 10
+
+volumes:
+    know-it-all-mysql:
+    client-node:
+    server-node:
+networks:
+    know-it-all: {}
