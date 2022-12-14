@@ -10,7 +10,7 @@ async function Login(req, res, next) {
         expires: remember,
     });
 
-    return res.send({ userID: user.id, token: newToken.id });
+    return res.send({ token: newToken.id });
 }
 
 module.exports = Login;

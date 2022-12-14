@@ -5,8 +5,6 @@
     "scripts": {
         "start": "nodemon ./bin/www",
         "test": "jest -i",
-        "env": "cp ../.env .env",
-        "env:remove": "rm -f .env",
         "migrate": "sequelize db:migrate --env",
         "migrate:undo": "sequelize db:migrate:undo:all --env"
     },

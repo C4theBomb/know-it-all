@@ -1,5 +1,7 @@
 const forge = require('node-forge');
+
 const { ResetRequest } = require('../../db/models/index');
+const config = require('../../config/error.json');
 
 async function ResetPassword(req, res, next) {
     const reqID = req.params.id;
@@ -7,27 +9,21 @@ async function ResetPassword(req, res, next) {
 
     // Verify that the form contains a new password
     if (!password) {
-        return res.status(400).send('Form missing required information.');
+        return res.status(400).send(config.errorIncomplete);
     }
 
     // Confirm that there is a reset request for the user with that ID
     const result = await ResetRequest.findByPk(reqID);
     if (!result) {
-        return res
-            .status(500)
-            .send('A reset request with this ID does not exist');
+        return res.status(500).send(config.errorGeneric);
     }
 
     // Hash the submitted password and update model
-    const hashedPassword = forge.md.sha512
-        .create()
-        .update(password)
-        .digest()
-        .toHex();
+    const hashedPassword = forge.md.sha512.create().update(password).digest().toHex();
 
     const user = await result.getUser();
     await user.update({ password: hashedPassword });
-    return res.send('Your password has been changed');
+    return res.sendStatus(200);
 }
 
 module.exports = ResetPassword;

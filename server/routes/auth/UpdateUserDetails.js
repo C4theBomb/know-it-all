@@ -1,5 +1,7 @@
 const { Op } = require('sequelize');
+
 const { User } = require('../../db/models/index');
+const config = require('../../config/error.json');
 
 async function UpdateUserDetails(req, res, next) {
     const { token, ...body } = req.body;
@@ -16,9 +18,7 @@ async function UpdateUserDetails(req, res, next) {
         });
 
         if (result) {
-            return res
-                .status(500)
-                .send('A user with that email already exists.');
+            return res.status(500).send(config.errorDuplicateUser);
         }
     }
 

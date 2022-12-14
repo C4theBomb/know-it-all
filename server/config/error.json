@@ -1,0 +1,26 @@
+{
+    "errorGeneric": {
+        "error": "Oops! Something went wrong."
+    },
+    "errorIncomplete": {
+        "error": "Your request is missing information."
+    },
+    "errorForbidden": {
+        "error": "You are not authorized to do that."
+    },
+    "errorFailed": {
+        "error": "Request failed. Please check form and try again."
+    },
+    "errorNotFound": {
+        "error": "That resource was not found. Please check the URL and try again."
+    },
+    "errorUnauthed": {
+        "error": "Your session has expired. Please login and try again."
+    },
+    "errorUserNotFound": {
+        "error": "A user with that email does not exist. Create an account to get started."
+    },
+    "errorDuplicateUser": {
+        "error": "A user with that email already exists. Please log in or use a different email."
+    }
+}

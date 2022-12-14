@@ -6,7 +6,7 @@ async function Logout(req, res, next) {
         await token.destroy();
     }
 
-    return res.send('User logged out');
+    return res.sendStatus(200);
 }
 
 module.exports = Logout;

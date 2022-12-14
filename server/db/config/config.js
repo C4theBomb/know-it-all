@@ -13,7 +13,10 @@ module.exports = {
         storage: '../test_db.sqlite3',
     },
     development: {
-        dialect: 'sqlite',
-        storage: '../db.sqlite3',
+        username: 'root',
+        password: 'passw0rd',
+        database: 'dev',
+        host: 'mysqldb',
+        dialect: 'mysql',
     },
 };

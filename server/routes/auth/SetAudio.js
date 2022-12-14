@@ -15,7 +15,7 @@ function SetAudio(req, res, next) {
         if (err) console.log(err);
     });
 
-    res.send('File saved');
+    res.sendStatus(200);
 }
 
 module.exports = SetAudio;

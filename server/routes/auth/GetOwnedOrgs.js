@@ -5,7 +5,7 @@ async function GetOwnedOrgs(req, res, next) {
     const result = await user.getOwnedOrg({
         attributes: { exclude: ['updatedAt'] },
     });
-    return res.send(result);
+    return res.send({ orgs: result });
 }
 
 module.exports = GetOwnedOrgs;

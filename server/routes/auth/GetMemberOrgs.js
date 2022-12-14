@@ -6,7 +6,7 @@ async function GetMemberOrgs(req, res, next) {
         attributes: { exclude: ['updatedAt'] },
     });
 
-    return res.send(result);
+    return res.send({ orgs: result });
 }
 
 module.exports = GetMemberOrgs;

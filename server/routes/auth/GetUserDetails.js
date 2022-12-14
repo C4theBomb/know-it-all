@@ -6,7 +6,7 @@ async function GetUserDetails(req, res, next) {
 
     // Immediately respond if user is querying themselves
     if (user.id == userID) {
-        return res.send(user);
+        return res.send({ user });
     }
 
     // Retrieve user while excluding sensitive information
@@ -14,7 +14,7 @@ async function GetUserDetails(req, res, next) {
         where: { id: userID },
         attributes: { exclude: ['password', 'createdAt', 'updatedAt'] },
     });
-    return res.send(result);
+    return res.send({ user: result });
 }
 
 module.exports = GetUserDetails;

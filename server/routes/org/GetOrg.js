@@ -24,13 +24,10 @@ async function GetOrg(req, res, next) {
         ],
     });
 
-    // Verify whether user is an owner of the organization
-    const status = org.ownerID == user.id;
-
     return res.send({
         org,
         memberCount: org.member.length,
-        status,
+        owner: org.ownerID == user.id,
     });
 }
 

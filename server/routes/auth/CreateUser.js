@@ -1,12 +1,14 @@
 const forge = require('node-forge');
+
 const { User, Organization } = require('../../db/models/index');
+const config = require('../../config/error.json');
 
 async function CreateUser(req, res, next) {
     const body = req.body;
 
     // Verify that the object body contains all SQL required fields
     if (!body.firstName || !body.lastName || !body.email || !body.password) {
-        return res.status(400).send('The request is missing required fields.');
+        return res.status(400).send(config.errorIncomplete);
     }
 
     // Make sure that no existing user exists with that email
@@ -17,15 +19,11 @@ async function CreateUser(req, res, next) {
     });
 
     if (existingUsers > 0) {
-        return res.status(500).send('A user with that email already exists.');
+        return res.status(500).send(config.errorDuplicateUser);
     }
 
     // Hash password for storage into database
-    const passwordHash = forge.md.sha512
-        .create()
-        .update(body.password)
-        .digest()
-        .toHex();
+    const passwordHash = forge.md.sha512.create().update(body.password).digest().toHex();
 
     if (body.orgID) {
         try {
@@ -53,7 +51,7 @@ async function CreateUser(req, res, next) {
         } catch (e) {
             console.log(e);
 
-            return res.status(500).send('Whoops, something went wrong!');
+            return res.status(500).send(config.errorGeneric);
         }
     } else {
         try {
@@ -63,11 +61,11 @@ async function CreateUser(req, res, next) {
                 password: passwordHash,
             });
 
-            return res.send(result);
+            return res.send({ user: result });
         } catch (e) {
             console.log(e);
 
-            return res.status(500).send('Whoops, something went wrong!');
+            return res.status(500).send(config.errorGeneric);
         }
     }
 }
