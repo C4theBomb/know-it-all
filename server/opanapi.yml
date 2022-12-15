@@ -1,27 +1,30 @@
 openapi: 3.0.0
 servers:
     - description: SwaggerHub API Auto Mocking
-      url: https://virtserver.swaggerhub.com/C4theBomb/qOverflow/1.0.0
+      url: 'https://virtserver.swaggerhub.com/C4theBomb/know-it-all/1.0.0'
     - description: Localhost Server
-      url: http://localhost:3000/api
+      url: 'http://localhost:3000/api'
 info:
-    version: '1.0.0'
-    title: qOverflow API
+    version: 1.0.0
+    title: KnowItAll API
     description: >-
-        This API will interact with the BDPA API to expand operations and cache data to bypass rate limitations. It also implements enforcement features to prevent unauthorized operations. Authorization is done through the `authorization` header and has two scopes, `bearer` and `basic`.
-
+        This API will interact with the KnowItAll frontend to deliver data securely
+        between the client and the database. Authorization is done through the
+        `authorization` header and has two scopes, `bearer` and `basic`.
 paths:
-    /users:
+    /auth/register:
         post:
             summary: Register a new user
             requestBody:
                 required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                username:
+                                firstName:
+                                    type: string
+                                lastName:
                                     type: string
                                 email:
                                     type: string
@@ -37,113 +40,27 @@ paths:
                     $ref: '#/components/responses/ServerError'
             tags:
                 - users
-        patch:
-            summary: Modify user information
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                email:
-                                    type: string
-                                    format: email
-                                password:
-                                    type: string
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - users
-    /users/{username}:
-        parameters:
-            - name: username
-              in: path
-              required: true
-              schema:
-                  type: string
-                  example: 'pinapplezzz'
-              description: >-
-                  This should be the username of the desired user.
-        get:
-            summary: Get a user by their username
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    user:
-                                        $ref: '#/components/schemas/User'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - users
-    /users/questions:
-        get:
-            summary: Get all questions written by logged in user
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    questions:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Question'
-            tags:
-                - users
-    /users/answers:
-        get:
-            summary: Get all answers written by logged in user
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    answers:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Answer'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - users
-    /users/login:
+    /auth/login:
         post:
-            summary: Login a user and receiver an authentication token
+            summary: Login a user and receive an authentication token
             security:
                 - BasicAuth: []
             requestBody:
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
                                 remember:
                                     type: boolean
-                                    enum: [true, false]
+                                    enum:
+                                        - true
+                                        - false
             responses:
                 '200':
                     description: OK
                     content:
-                        'application/json':
+                        application/json:
                             schema:
                                 type: object
                                 properties:
@@ -153,20 +70,40 @@ paths:
                                         type: string
                 '400':
                     $ref: '#/components/responses/BadRequest'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
                 - users
-    /users/remember:
+    /auth/logout:
+        delete:
+            summary: Logout a user
+            security:
+                - BearerAuth: []
+            responses:
+                '200':
+                    description: OK
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
+                '500':
+                    $ref: '#/components/responses/ServerError'
+            tags:
+                - users
+    /auth/remember:
         get:
-            summary: Retrieve authenticated data of the user
+            summary: Retrieve data of the authenticated user
             security:
                 - BearerAuth: []
             responses:
                 '200':
                     description: OK
                     content:
-                        'application/json':
+                        application/json:
                             schema:
                                 type: object
                                 properties:
@@ -174,13 +111,47 @@ paths:
                                         $ref: '#/components/schemas/User'
                 '400':
                     $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
                 - users
-    /users/logout:
-        delete:
-            summary: Login a user and receiver an authentication token
+    /auth/update:
+        post:
+            summary: Update user details
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                firstName:
+                                    type: string
+                                lastName:
+                                    type: string
+                                email:
+                                    type: string
+                                    format: email
+            responses:
+                '200':
+                    description: OK
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
+                '409':
+                    $ref: '#/components/responses/DuplicateName'
+                '500':
+                    $ref: '#/components/responses/ServerError'
+            tags:
+                - users
+    /auth/update/audio:
+        post:
+            summary: Upload an audio file for the user
             security:
                 - BearerAuth: []
             responses:
@@ -189,63 +160,53 @@ paths:
                 '400':
                     $ref: '#/components/responses/BadRequest'
                 '401':
-                    $ref: '#/components/responses/Unauthorized'
+                    $ref: '#/components/responses/Unauthenticated'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
                 - users
-    /users/delete:
-        delete:
-            summary: Permanently delete a user's account
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '401':
-                    $ref: '#/components/responses/Unauthorized'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - users
-    /users/reset:
+    /auth/reset:
         post:
             summary: Get a link for the user to reset their password
             requestBody:
                 required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                username:
+                                email:
                                     type: string
-                                    example: 'pinapplezzz'
-                description: >-
-                    Username of the user that need to reset their password.
+                                    format: email
+                description: Username of the user that need to reset their password.
             responses:
                 '200':
                     description: OK
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '404':
+                    $ref: '#/components/responses/NotFound'
+                '500':
+                    $ref: '#/components/responses/ServerError'
             tags:
                 - users
-    /users/reset/{id}:
+    /auth/reset/{id}:
         parameters:
             - name: id
               in: path
               required: true
               schema:
                   type: string
-                  example: '62d61301c3fd83c49d35173d'
+                  example: ce628f8c-000d-49dc-81b7-3ccd48f2ed6f
               description: >-
-                  This should be the ID of the request that was created in the request page.
+                  This should be the ID of the request that was created in the request
+                  page.
         post:
             summary: Reset the user's password
             requestBody:
                 required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
@@ -254,355 +215,205 @@ paths:
             responses:
                 '200':
                     description: OK
+                '400':
+                    $ref: '#/components/responses/BadRequest'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
                 - users
-    /mail:
+    /auth/{id}:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: string
+                  example: 951b3d6c-2f13-46df-b91e-e5adb3de08d0
+              description: This should be the ID of the desired user.
         get:
-            summary: Get all of the logged in user's incoming mail
+            summary: Get the information of a known user
             security:
                 - BearerAuth: []
             responses:
                 '200':
                     description: OK
                     content:
-                        'application/json':
+                        application/json:
                             schema:
                                 type: object
                                 properties:
-                                    messages:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Mail'
+                                    user:
+                                        $ref: '#/components/schemas/User'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - mail
-        post:
-            summary: Send out outgoing mail for the logged in user
+                - users
+    /auth/orgs:
+        get:
+            summary: Get all of the organization that the logged in user owns
             security:
                 - BearerAuth: []
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    orgs:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Organization'
+            tags:
+                - users
+    /auth/orgs/member:
+        get:
+            summary: Get all of the organizations that a logged in user is a part of
+            security:
+                - BearerAuth: []
+            responses:
+                '200':
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    orgs:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Organization'
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
+                '500':
+                    $ref: '#/components/responses/ServerError'
+            tags:
+                - users
+    /org:
+        post:
+            summary: Create a new organization
             requestBody:
                 required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                receiver:
-                                    type: string
-                                    example: 'pinapplezzz'
-                                subject:
-                                    type: string
-                                text:
+                                orgName:
                                     type: string
             responses:
                 '200':
                     description: OK
                     content:
-                        'application/json':
+                        application/json:
                             schema:
                                 type: object
                                 properties:
-                                    message:
-                                        $ref: '#/components/schemas/Mail'
+                                    org:
+                                        $ref: '#/components/schemas/Organization'
                 '400':
                     $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - mail
-    /questions:
-        post:
-            summary: Create a new question
-            security:
-                - BearerAuth: []
+                - organizations
+    /org/{id}:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: string
+                  example: 951b3d6c-2f13-46df-b91e-e5adb3de08d0
+              description: This should be the ID of the desired organization.
+        get:
+            summary: Get an organization
             requestBody:
                 required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                title:
+                                username:
                                     type: string
-                                text:
+                                email:
+                                    type: string
+                                    format: email
+                                password:
                                     type: string
             responses:
                 '200':
                     description: OK
                     content:
-                        'application/json':
+                        application/json:
                             schema:
                                 type: object
                                 properties:
-                                    question:
-                                        $ref: '#/components/schemas/Question'
+                                    org:
+                                        $ref: '#/components/schemas/Organization'
+                                    memberCount:
+                                        type: integer
+                                    owner:
+                                        type: boolean
                 '400':
                     $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
+                '403':
+                    $ref: '#/components/responses/Forbidden'
+                '404':
+                    $ref: '#/components/responses/NotFound'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - questions
-    /questions/search:
-        get:
-            summary: Get a sorted set of 100 questions or search for a question
-            parameters:
-                - name: after
-                  in: query
-                  schema:
-                      type: string
-                      example: '62d6c5dc47c1eefc7acbc917'
-                  description: >-
-                      The route will return the next 100 objects after this id
-                - name: match
-                  in: query
-                  schema:
-                      type: object
-                  description: >-
-                      See [BDPA's qOverflow API](https://hscc8udvc7gs.docs.apiary.io/#/reference/0/question-endpoints/questions-search-get) for documentation
-                - name: regexMatch
-                  in: query
-                  schema:
-                      type: object
-                  description: >-
-                      See [BDPA's qOverflow API](https://hscc8udvc7gs.docs.apiary.io/#/reference/0/question-endpoints/questions-search-get) for documentation
-                - name: sort
-                  in: query
-                  schema:
-                      type: string
-                      nullable: true
-                      example: 'uvc'
-                      enum: ['u', 'uvc', 'uvac']
-                  description: >-
-                      See [BDPA's qOverflow API](https://hscc8udvc7gs.docs.apiary.io/#/reference/0/question-endpoints/questions-search-get) for documentation
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    questions:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Question'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - questions
-    /questions/{questionID}:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        get:
-            summary: Get a question by its questionID
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    question:
-                                        $ref: '#/components/schemas/Question'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - questions
+                - organizations
         patch:
-            summary: Modify a question by its questionID
-            security:
-                - BearerAuth: []
+            summary: Modify an organization
             requestBody:
+                required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                text:
+                                name:
                                     type: string
             responses:
                 '200':
                     description: OK
                 '400':
                     $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - questions
-    /questions/{questionID}/close:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        patch:
-            summary: Toggle vote to close a question
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - questions
-    /questions/{questionID}/protect:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        patch:
-            summary: Toggle vote to protect a question
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - questions
-    /questions/{questionID}/reopen:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        patch:
-            summary: Toggle vote to reopen a question
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - questions
-    /questions/{questionID}/vote:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        get:
-            summary: Get a user's vote on a question
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-            tags:
-                - questions
-        patch:
-            summary: Modify a user's vote on a question
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                operation:
-                                    type: string
-                                    enum: ['upvote', 'downvote']
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - questions
-    /questions/{questionID}/comments:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        get:
-            summary: Get all comments of a question
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    comments:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Comment'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
+                '404':
+                    $ref: '#/components/responses/NotFound'
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - comments
-        post:
-            summary: Create a comment on a question
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                text:
-                                    type: string
-                                    maxLength: 150
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    comment:
-                                        $ref: '#/components/schemas/Comment'
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - comments
-    /questions/{questionID}/comments/{commentID}:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/commentID'
+                - organizations
         delete:
-            summary: Delete a question comment
-            security:
-                - BearerAuth: []
+            summary: Delete an organization
             responses:
                 '200':
                     description: OK
+                '400':
+                    $ref: '#/components/responses/BadRequest'
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
                 '403':
                     $ref: '#/components/responses/Forbidden'
                 '404':
@@ -610,285 +421,61 @@ paths:
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - comments
-    /questions/{questionID}/comments/{commentID}/vote:
+                - organizations
+    /org/{id}/add:
         parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/commentID'
-        get:
-            summary: Get a user's vote on a question comment
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-            tags:
-                - comments
-                - votes
-        patch:
-            summary: Modify a user's vote on a question comment
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                operation:
-                                    type: string
-                                    enum: ['upvote', 'downvote']
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - comments
-                - votes
-    /questions/{questionID}/answers:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-        get:
-            summary: Get all answers of a question
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    answers:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Answer'
-                '500':
-                    $ref: '#/components/responses/ServerError'
-            tags:
-                - answers
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: string
+                  example: 951b3d6c-2f13-46df-b91e-e5adb3de08d0
+              description: This should be the ID of the desired organization.
         post:
-            summary: Answer a question
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                text:
-                                    type: string
-                                    maxLength: 3000
+            summary: Add a new user to organization
             responses:
                 '200':
                     description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    answer:
-                                        $ref: '#/components/schemas/Answer'
                 '400':
                     $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - answers
-    /questions/{questionID}/answers/{answerID}:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-        patch:
-            summary: Modify an answer by its answerID
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                text:
-                                    type: string
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    answer:
-                                        $ref: '#/components/schemas/Answer'
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - answers
-    /questions/{questionID}/answers/{answerID}/accept:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-        patch:
-            summary: Accept an answer as correct
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                '403':
-                    $ref: '#/components/responses/Forbidden'
+                '401':
+                    $ref: '#/components/responses/Unauthorized'
                 '404':
                     $ref: '#/components/responses/NotFound'
                 '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - answers
-    /questions/{questionID}/answers/{answerID}/vote:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-        get:
-            summary: Get a user's vote on an answer
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-            tags:
-                - answers
-                - votes
-        patch:
-            summary: Modify a user's vote on an answer
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                operation:
-                                    type: string
-                                    enum: ['upvote', 'downvote']
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - answers
-                - votes
-    /questions/{questionID}/answers/{answerID}/comments:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-        get:
-            summary: Get all comments of a answer
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    comments:
-                                        type: array
-                                        items:
-                                            $ref: '#/components/schemas/Comment'
-                '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - comments
+                - organizations
+    /org/{id}/remove:
+        parameters:
+            - name: id
+              in: path
+              required: true
+              schema:
+                  type: string
+                  example: 951b3d6c-2f13-46df-b91e-e5adb3de08d0
+              description: This should be the ID of the desired organization.
         post:
-            summary: Create a comment on an answer
-            security:
-                - BearerAuth: []
+            summary: Register a new user
             requestBody:
+                required: true
                 content:
-                    'application/json':
+                    application/json:
                         schema:
                             type: object
                             properties:
-                                text:
-                                    type: string
-                                    maxLength: 150
+                                doomedUsers:
+                                    type: array
+                                    items:
+                                        type: string
+                                        example: 5f0dda65-cac8-4e61-a962-ce72ea642f1d
             responses:
                 '200':
                     description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    comment:
-                                        $ref: '#/components/schemas/Comment'
                 '400':
                     $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - comments
-    /questions/{questionID}/answers/{answerID}/comments/{commentID}:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-            - $ref: '#/components/parameters/commentID'
-        delete:
-            summary: Delete an answer comment
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
+                '401':
+                    $ref: '#/components/responses/Unauthenticated'
                 '403':
                     $ref: '#/components/responses/Forbidden'
                 '404':
@@ -896,283 +483,159 @@ paths:
                 '500':
                     $ref: '#/components/responses/ServerError'
             tags:
-                - comments
-    /questions/{questionID}/answers/{answerID}/comments/{commentID}/vote:
-        parameters:
-            - $ref: '#/components/parameters/questionID'
-            - $ref: '#/components/parameters/answerID'
-            - $ref: '#/components/parameters/commentID'
-        get:
-            summary: Get a user's vote on an answer comment
-            security:
-                - BearerAuth: []
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-            tags:
-                - comments
-                - votes
-        patch:
-            summary: Modify a user's vote on an answer comment
-            security:
-                - BearerAuth: []
-            requestBody:
-                content:
-                    'application/json':
-                        schema:
-                            type: object
-                            properties:
-                                operation:
-                                    type: string
-                                    enum: ['upvote', 'downvote']
-            responses:
-                '200':
-                    description: OK
-                    content:
-                        'application/json':
-                            schema:
-                                type: object
-                                properties:
-                                    vote:
-                                        $ref: '#/components/schemas/Vote'
-
-                '400':
-                    $ref: '#/components/responses/BadRequest'
-                '403':
-                    $ref: '#/components/responses/Forbidden'
-                '500':
-                    $ref: '#/components/responses/BadRequest'
-            tags:
-                - comments
-                - votes
-
+                - organizations
 components:
     securitySchemes:
         BasicAuth:
             type: http
             scheme: basic
             description: >-
-                This is the username and password authentication method used for the login route. The authorization header should be equal to `basic {base64 encoded username:password}` encoded into base64. The base64 encoding can be found by running `btoa(username:password)`.
+                This is the username and password authentication method used for the
+                login route. The authorization header should be equal to `basic {base64
+                encoded username:password}` encoded into base64. The base64 encoding can
+                be found by running `btoa(username:password)`.
         BearerAuth:
             type: http
             scheme: bearer
             bearerFormat: jwt
             description: >-
-                This is the JWT token authentication method used for other routes requiring user privileges. The authorization header should be equal to `bearer {JTW Token}`. The token is returned in the token property of the `/users/login` response.
+                This is the JWT token authentication method used for other routes
+                requiring user privileges. The authorization header should be equal to
+                `bearer {JWT}`. The token is returned in the token property of the
+                `/users/login` response.
     schemas:
-        Answer:
-            type: object
-            properties:
-                id:
-                    type: string
-                    example: '62d8727d6c584b3b12eb23be'
-                questionID:
-                    type: string
-                    example: '62d5c7ad1b8e0da8804bde22'
-                creator:
-                    type: string
-                    example: 'pinapplezzz'
-                text:
-                    type: string
-                upvotes:
-                    type: integer
-                downvotes:
-                    type: integer
-                accepted:
-                    type: boolean
-                createdAt:
-                    type: string
-                    format: date-time
-        Comment:
-            type: object
-            properties:
-                id:
-                    type: string
-                    example: '62d87292afa7f2e7e81f1470'
-                parentID:
-                    type: string
-                    example: '62d5c7ad1b8e0da8804bde22'
-                creator:
-                    type: string
-                    example: 'pinapplezzz'
-                text:
-                    type: string
-                upvotes:
-                    type: integer
-                downvotes:
-                    type: integer
-                createdAt:
-                    type: string
-                    format: date-time
-        Mail:
-            type: object
-            properties:
-                id:
-                    type: string
-                    example: '62d872a27584c3df08a2330b'
-                sender:
-                    type: string
-                    example: 'pinapplezzz'
-                receiver:
-                    type: string
-                    example: 'pinapplezzz'
-                subject:
-                    type: string
-                    maxLength: 45
-                text:
-                    type: string
-                    maxLength: 150
-                createdAt:
-                    type: string
-                    format: date-time
-        Question:
-            type: object
-            properties:
-                id:
-                    type: string
-                    example: '62d872b85acd7bccf9087d77'
-                title:
-                    type: string
-                    maxLength: 150
-                text:
-                    type: string
-                    maxLength: 3000
-                status:
-                    type: string
-                    enum: ['open', 'protected', 'closed']
-                views:
-                    type: integer
-                answers:
-                    type: integer
-                comments:
-                    type: integer
-                upvotes:
-                    type: integer
-                downvotes:
-                    type: integer
-                hasAccepted:
-                    type: boolean
-                creator:
-                    type: string
-                    example: 'pinapplezzz'
-                reopen:
-                    type: array
-                    items:
-                        type: string
-                        example: 'pinapplezzz'
-                close:
-                    type: array
-                    items:
-                        type: string
-                        example: 'pinapplezzz'
-                protect:
-                    type: array
-                    items:
-                        type: string
-                        example: 'pinapplezzz'
-                createdAt:
-                    type: string
-                    format: date-time
         User:
             type: object
             properties:
-                username:
+                id:
                     type: string
-                    example: 'pinapplezzz'
+                    format: uuidv4
+                    example: 11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000
+                firstName:
+                    type: string
+                    example: Edward
+                lastName:
+                    type: string
+                    example: Scissorhands
                 email:
                     type: string
                     format: email
-                points:
-                    type: integer
-                level:
-                    type: integer
-        Vote:
-            type: string
-            nullable: true
-            enum: ['upvoted', 'downvoted', 'null']
+                pronouns:
+                    type: string
+                    example: he/him
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        Organization:
+            type: object
+            properties:
+                id:
+                    type: string
+                    format: uuidv4
+                    example: 11bf5b37-e0b8-42e0-8dcf-dc8c4aefc000
+                name:
+                    type: string
+                    example: The Rusty Pumpkin
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
     responses:
-        BadRequest:
-            description: Bad request
-            content:
-                'application/json':
-                    schema:
-                        type: object
-                        properties:
-                            error:
-                                type: string
-                                example: 'Your request is missing information.'
         ServerError:
             description: Server Error
             content:
-                'application/json':
+                application/json:
                     schema:
                         type: object
                         properties:
                             error:
                                 type: string
-                                example: 'Oops! Something went wrong.'
-        Unauthorized:
-            description: User unauthorized
+                                example: Oops! Something went wrong. Please try again later.
+        BadRequest:
+            description: Bad request
             content:
-                'application/json':
+                application/json:
                     schema:
                         type: object
                         properties:
                             error:
                                 type: string
-                                example: 'You are unauthenticated. Please inclue your JWT.'
+                                example: Your request is missing information.
+        Unauthenticated:
+            description: Bad request
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: You are unauthenticated, please log in and try again.
         Forbidden:
             description: User not allowed
             content:
-                'application/json':
+                application/json:
                     schema:
                         type: object
                         properties:
                             error:
                                 type: string
-                                example: 'You are not authorized to do that.'
+                                example: You are not authorized to do that.
         NotFound:
-            description: Not Found
+            description: Resource not found
             content:
-                'application/json':
+                application/json:
                     schema:
                         type: object
                         properties:
                             error:
                                 type: string
-                                example: 'That resource was not found. Please check your request and try again.'
+                                example: That resource was not found. Please try again.
+        UserNotFound:
+            description: User not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: >-
+                                    A user with that email does not exist. Create an account to
+                                    get started.
+        DuplicateName:
+            description: User not found
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            error:
+                                type: string
+                                example: >-
+                                    Something already exists with that name. Please try again with
+                                    a different name.
     parameters:
-        questionID:
-            name: questionID
+        userID:
+            name: userID
             in: path
             required: true
             schema:
                 type: string
-                example: '62d61d428849dda1c15a8b64'
-            description: >-
-                This should be the object id of the desired question.
-        answerID:
-            name: answerID
+                format: uuidv4
+                example: 254c574b-38c3-4a80-bd9e-a11bb0b58e35
+            description: This should be the object id of the desired user.
+        orgID:
+            name: orgID
             in: path
             required: true
             schema:
                 type: string
-                example: '62d61ffd5f20e06f3cb350c7'
-            description: >-
-                This should be the object id of the desired answer.
-        commentID:
-            name: commentID
-            in: path
-            required: true
-            schema:
-                type: string
-                example: '62d620175bdb35fbb86e33cb'
-            description: >-
-                This should be the object id of the desired comment.
+                format: uuidv4
+                example: 9a5fd884-fba0-4ac1-b417-fcbd382bd456
+            description: This should be the object id of the desired organization.

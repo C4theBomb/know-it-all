@@ -3,7 +3,7 @@ const forge = require('node-forge');
 const { User, Organization } = require('../../db/models/index');
 const config = require('../../config/error.json');
 
-async function CreateUser(req, res, next) {
+async function Register(req, res, next) {
     const body = req.body;
 
     // Verify that the object body contains all SQL required fields
@@ -19,7 +19,7 @@ async function CreateUser(req, res, next) {
     });
 
     if (existingUsers > 0) {
-        return res.status(500).send(config.errorDuplicateUser);
+        return res.status(400).send(config.errorDuplicateName);
     }
 
     // Hash password for storage into database
@@ -42,12 +42,12 @@ async function CreateUser(req, res, next) {
 
             const { orgID, ...filteredBody } = body;
 
-            const result = await org.createMember({
+            await org.createMember({
                 ...filteredBody,
                 password: passwordHash,
             });
 
-            return res.send({ user: result, orgID });
+            return res.sendStatus(200);
         } catch (e) {
             console.log(e);
 
@@ -55,13 +55,13 @@ async function CreateUser(req, res, next) {
         }
     } else {
         try {
-            // Create user regularly if their is not orgID
-            const result = await User.create({
+            // Create user regularly if their is no orgID
+            await User.create({
                 ...body,
                 password: passwordHash,
             });
 
-            return res.send({ user: result });
+            return res.sendStatus(200);
         } catch (e) {
             console.log(e);
 
@@ -70,4 +70,4 @@ async function CreateUser(req, res, next) {
     }
 }
 
-module.exports = CreateUser;
+module.exports = Register;

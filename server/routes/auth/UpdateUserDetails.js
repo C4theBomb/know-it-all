@@ -18,12 +18,12 @@ async function UpdateUserDetails(req, res, next) {
         });
 
         if (result) {
-            return res.status(500).send(config.errorDuplicateUser);
+            return res.status(409).send(config.errorDuplicateName);
         }
     }
 
-    req.user.update({ ...body });
-    return res.send(req.user);
+    await req.user.update({ ...body });
+    return res.sendStatus(200);
 }
 
 module.exports = UpdateUserDetails;

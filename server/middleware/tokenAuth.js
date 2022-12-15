@@ -2,30 +2,28 @@ const { Token } = require('../db/models/index');
 const config = require('../config/error.json');
 
 async function tokenAuth(req, res, next) {
-    const token = req.query.token || req.body.token;
+    const authHeader = req.get('Authorization');
 
-    // Verify that a token exists on the request
-    if (!token) {
-        return res.status(403).send(config.errorForbidden);
-    }
+    const token = authHeader?.split(' ')[1];
 
-    // Find token and make sure that it is not expired
-    const result = await Token.findByPk(token);
+    // Verify token is included in request
+    if (!token) return res.status(400).send(config.errorIncomplete);
 
+    const result = await Token.findOne({ token });
+
+    // Verify token expiration
     const date = new Date();
-
-    // Destroy token if it is expired or does not exist
     if (!result) {
-        return res.status(403).send(config.errorFailed);
+        return res.status(401).send(config.errorUnauthed);
+    } else if (result.expires && date.setDate(date.getDate + 1) > result.createdAt) {
+        await Token.findOneAndDelete({ token });
+        return res.status(401).send(config.errorUnauthed);
     }
 
-    if (token.expires == true && date.setDate(date.getDate() - 1) > result.createdAt) {
-        await Token.destroy({ where: { id: token } });
-        return res.status(511).send(config.errorUnauthed);
-    }
+    const user = await token.getUser();
 
-    // Attach user object to request
-    const user = await result.getUser();
+    if (!user) return res.status(500).send(config.errorGeneric);
+
     req.user = user;
 
     return next();

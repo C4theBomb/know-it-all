@@ -2,7 +2,7 @@ const { Organization } = require('../db/models/index');
 
 const config = require('../config/error.json');
 
-async function GetOrg(req, res, next) {
+async function checkKnownOrg(req, res, next) {
     const user = req.user;
     const orgID = req.params.orgID || req.query.orgID || req.body.orgID;
 
@@ -35,4 +35,4 @@ async function GetOrg(req, res, next) {
     return next();
 }
 
-module.exports = GetOrg;
+module.exports = checkKnownOrg;

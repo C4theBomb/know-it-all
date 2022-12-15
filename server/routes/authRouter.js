@@ -6,7 +6,7 @@ const basicAuth = require('../middleware/basicAuth');
 const tokenAuth = require('../middleware/tokenAuth');
 const checkKnownUser = require('../middleware/checkKnownUser');
 
-const CreateUser = require('./auth/CreateUser');
+const Register = require('./auth/Register');
 const UpdateUserDetails = require('./auth/UpdateUserDetails');
 const Login = require('./auth/Login');
 const Remember = require('./auth/Remember');
@@ -18,19 +18,19 @@ const GetOwnedOrgs = require('./auth/GetOwnedOrgs');
 const GetMemberOrgs = require('./auth/GetMemberOrgs');
 const GetUserDetails = require('./auth/GetUserDetails');
 
-router.post('/register', CreateUser);
-router.patch('/update', tokenAuth, UpdateUserDetails);
+router.post('/register', Register);
 router.post('/login', basicAuth, Login);
-router.post('/remember', tokenAuth, Remember);
 router.post('/logout', tokenAuth, Logout);
-router.get('/reset-password', RequestReset);
-router.patch('/reset-password/:id', ResetPassword);
+router.post('/remember', tokenAuth, Remember);
 
+router.patch('/update', tokenAuth, UpdateUserDetails);
 router.post('/audio', parseFormData, tokenAuth, SetAudio);
 
-router.get('/', tokenAuth, GetOwnedOrgs);
-router.get('/orgs', tokenAuth, GetMemberOrgs);
+router.get('/reset', RequestReset);
+router.patch('/reset/:id', ResetPassword);
 
 router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
+router.get('/orgs', tokenAuth, GetOwnedOrgs);
+router.get('/orgs/member', tokenAuth, GetMemberOrgs);
 
 module.exports = router;

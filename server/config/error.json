@@ -1,26 +1,23 @@
 {
     "errorGeneric": {
-        "error": "Oops! Something went wrong."
+        "error": "Oops! Something went wrong. Please try again later."
     },
     "errorIncomplete": {
         "error": "Your request is missing information."
     },
+    "errorUnauthed": {
+        "error": "You are unauthenticated, please log in and try again."
+    },
     "errorForbidden": {
         "error": "You are not authorized to do that."
     },
-    "errorFailed": {
-        "error": "Request failed. Please check form and try again."
-    },
     "errorNotFound": {
-        "error": "That resource was not found. Please check the URL and try again."
-    },
-    "errorUnauthed": {
-        "error": "Your session has expired. Please login and try again."
+        "error": "That resource was not found. Please try again."
     },
     "errorUserNotFound": {
         "error": "A user with that email does not exist. Create an account to get started."
     },
-    "errorDuplicateUser": {
-        "error": "A user with that email already exists. Please log in or use a different email."
+    "errorDuplicateName": {
+        "error": "Something already exists with that name. Please try again with a different name."
     }
 }

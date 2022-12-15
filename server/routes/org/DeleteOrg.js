@@ -4,7 +4,7 @@ const config = require('../../config/error.json');
 
 async function DeleteOrg(req, res, next) {
     const user = req.user;
-    const orgID = req.query.orgID;
+    const orgID = req.params.orgID;
 
     // Error if an organization id was not provided
     if (!orgID) {

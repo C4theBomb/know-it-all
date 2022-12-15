@@ -14,14 +14,14 @@ async function CreateOrg(req, res, next) {
         where: { name: orgName },
     });
     if (existing > 0) {
-        return res.status(500).send(config.errorFailed);
+        return res.status(500).send(config.errorGeneric);
     }
 
-    const org = await user.createOwnedOrg({
+    await user.createOwnedOrg({
         name: orgName,
     });
 
-    return res.status(200).send({ org });
+    return res.sendStatus(200);
 }
 
 module.exports = CreateOrg;

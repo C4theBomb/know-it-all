@@ -11,11 +11,11 @@ const GetOrg = require('./org/GetOrg');
 const AddOrgMember = require('./org/AddOrgMember');
 const RemoveOrgMember = require('./org/RemoveOrgMember');
 
-router.post('/create', tokenAuth, CreateOrg);
-router.delete('/delete', tokenAuth, DeleteOrg);
-router.patch('/update', tokenAuth, UpdateOrgDetails);
+router.post('/', tokenAuth, CreateOrg);
 router.get('/:orgID', tokenAuth, checkKnownOrg, GetOrg);
+router.patch('/:orgID', tokenAuth, UpdateOrgDetails);
+router.delete('/:orgID', tokenAuth, DeleteOrg);
 router.post('/:orgID/add', tokenAuth, AddOrgMember);
-router.post('/:orgID/delete', tokenAuth, RemoveOrgMember);
+router.post('/:orgID/remove', tokenAuth, RemoveOrgMember);
 
 module.exports = router;
