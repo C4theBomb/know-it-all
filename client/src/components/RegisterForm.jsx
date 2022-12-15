@@ -1,6 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, TextField, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import Form from './Form';
 import { FormSubmit, FormTextField } from './StyledElements';
@@ -37,7 +36,7 @@ function RegisterForm({ form, handleSubmit, handleChange, error }) {
                     onChange={handleChange}
                     value={form.pronouns}
                 />
-                <TextField
+                <FormTextField
                     required
                     label='Password'
                     name='password'
@@ -45,7 +44,7 @@ function RegisterForm({ form, handleSubmit, handleChange, error }) {
                     value={form.password}
                     other={{ type: 'password' }}
                 />
-                <TextField
+                <FormTextField
                     required
                     label='Confirm Password'
                     name='confirmPassword'

@@ -77,12 +77,4 @@ const FormSubmit = ({ color, children, type, other }) => {
     );
 };
 
-export {
-    Form,
-    FormField,
-    FormButton,
-    DynamicStack,
-    DynamicPaper,
-    FormSubmit,
-    FormTextField,
-};
+export { Form, FormField, FormButton, DynamicStack, DynamicPaper, FormSubmit, FormTextField };

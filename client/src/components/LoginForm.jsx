@@ -5,17 +5,11 @@ import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
 import Form from './Form';
 import { FormSubmit, FormTextField } from './StyledElements';
 
-function Login({
-    form,
-    error,
-    handleSubmit,
-    handleChange,
-    handleCheckboxChange,
-}) {
+function Login({ form, error, handleSubmit, handleChange, handleCheckboxChange }) {
     return (
         <Form>
             <form onSubmit={handleSubmit}>
-                <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
+                <Typography variant='h5' sx={{ margin: '1vh 0vh', fontWeight: 'bold' }}>
                     Login
                 </Typography>
                 <FormTextField
@@ -62,8 +56,7 @@ function Login({
                     Dont have an account? <Link to='/register'>Register</Link>
                 </Typography>
                 <Typography variant='body1'>
-                    Forgot your password?{' '}
-                    <Link to='/recover'>Recover Password</Link>
+                    Forgot your password? <Link to='/recover'>Recover Password</Link>
                 </Typography>
             </form>
         </Form>
