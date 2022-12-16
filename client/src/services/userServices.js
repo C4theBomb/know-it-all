@@ -24,7 +24,7 @@ async function login({ username, password, remember }) {
     }
 }
 
-async function register({ data }) {
+async function register(data) {
     const instance = createRequest('/auth');
 
     try {
@@ -40,7 +40,7 @@ async function logout() {
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
     try {
-        await instance.post('/logout');
+        await instance.delete('/logout');
     } catch (error) {
         console.log(error.response.data);
         return error;
@@ -53,7 +53,7 @@ async function remember() {
 
     if (Cookies.get('token')) {
         try {
-            const { data } = await instance.post('/remember');
+            const { data } = await instance.get('/remember');
 
             return data.user;
         } catch (error) {
@@ -65,30 +65,102 @@ async function remember() {
 
 async function getUser(userID) {
     const instance = createRequest('/auth');
-    instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    if (Cookies.get('token')) {
-        try {
-            const { data } = await instance.get(`/${userID}`);
+    try {
+        const { data } = await instance.get(`/${userID}`);
 
-            return data.user;
-        } catch (error) {
-            console.log(error.response.data);
-            return error.response.data;
-        }
+        return data.user;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
     }
 }
 
-async function requestReset() {}
+async function requestReset(data) {
+    const instance = createRequest('/auth');
 
-async function resetPassword() {}
+    try {
+        await instance.post(`/reset`);
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
 
-async function getMemberOrgs() {}
+async function resetPassword(id, data) {
+    const instance = createRequest('/auth');
 
-async function getOwnedOrgs() {}
+    try {
+        await instance.post(`/reset/${id}`, data);
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
 
-async function setAudio() {}
+async function setAudio(data) {
+    const instance = createRequest('/auth');
+    instance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
+    instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-async function updateUserDetails() {}
+    try {
+        await instance.post(`/update/audio`, data);
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
 
-export { login, logout, register, remember, getUser };
+async function updateUserDetails(data) {
+    const instance = createRequest('/auth');
+    instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
+
+    try {
+        await instance.post(`/update`, data);
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
+
+async function getMemberOrgs() {
+    const instance = createRequest('/auth');
+    instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
+
+    try {
+        const { data } = await instance.get(`/orgs`);
+
+        return data.orgs;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
+
+async function getOwnedOrgs() {
+    const instance = createRequest('/auth');
+    instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
+
+    try {
+        const { data } = await instance.get(`/orgs/member`);
+
+        return data.orgs;
+    } catch (error) {
+        console.log(error.response.data);
+        return error.response.data;
+    }
+}
+
+export {
+    login,
+    logout,
+    register,
+    remember,
+    getUser,
+    requestReset,
+    resetPassword,
+    setAudio,
+    updateUserDetails,
+    getMemberOrgs,
+    getOwnedOrgs,
+};
