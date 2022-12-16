@@ -15,18 +15,18 @@ describe('SetAudio', function () {
 
     test('[403] Missing token', async () => {
         await supertest(app)
-            .post('/api/auth/logout')
+            .post('/api/auth/audio')
             .send()
             .expect(403, 'Unauthorized user')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[400] Token was not found', async () => {
         await supertest(app)
-            .post('/api/auth/logout')
+            .post('/api/auth/audio')
             .send({ token: 'randomString' })
-            .expect(511, 'Session expired')
+            .expect(400, 'Session expired')
             .set('Accept', 'text/html')
             .expect('Content-Type', /text/);
     });

@@ -20,7 +20,7 @@ async function tokenAuth(req, res, next) {
         return res.status(401).send(config.errorUnauthed);
     }
 
-    const user = await token.getUser();
+    const user = await result.getUser();
 
     if (!user) return res.status(500).send(config.errorGeneric);
 

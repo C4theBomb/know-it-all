@@ -29,8 +29,9 @@ router.post('/audio', parseFormData, tokenAuth, SetAudio);
 router.get('/reset', RequestReset);
 router.patch('/reset/:id', ResetPassword);
 
-router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 router.get('/orgs', tokenAuth, GetOwnedOrgs);
 router.get('/orgs/member', tokenAuth, GetMemberOrgs);
+
+router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
 
 module.exports = router;

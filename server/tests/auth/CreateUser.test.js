@@ -34,12 +34,12 @@ describe('CreateUser', function () {
             });
     });
 
-    test('[500] Request missing fields', async () => {
+    test('[400] Request missing fields', async () => {
         await supertest(app)
             .post('/api/auth/register')
             .send()
             .expect(400, 'The request is missing required fields.')
-            .set('Accept', 'text/html')
+            .set('Accept', 'application/json')
             .expect('Content-Type', /text/);
     });
 
@@ -90,12 +90,8 @@ describe('CreateUser', function () {
                     },
                 });
 
-                expect(response.body.user).toEqual(
-                    expect.objectContaining(user)
-                );
-                expect(org.member).toEqual(
-                    expect.arrayContaining([expect.objectContaining(user)])
-                );
+                expect(response.body.user).toEqual(expect.objectContaining(user));
+                expect(org.member).toEqual(expect.arrayContaining([expect.objectContaining(user)]));
             });
     });
 
