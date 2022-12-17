@@ -1,6 +1,6 @@
 const { User } = require('../db/models/index');
 
-const config = require('../config/error.json');
+const errors = require('../config/error.json');
 
 async function checkKnownUser(req, res, next) {
     const user = req.user;
@@ -41,7 +41,7 @@ async function checkKnownUser(req, res, next) {
 
     // Confirm that a user with that ID exists within the database
     if (!result) {
-        return res.status(404).send(config.errorNotFound);
+        return res.status(404).send(errors.NotFound);
     }
 
     // Filter for an organization where the user is a member or an owner
@@ -49,7 +49,7 @@ async function checkKnownUser(req, res, next) {
 
     // Error if there is not an organization that includes that user and they are not in an owned organization
     if (filteredResult.length == 0 && result.ownedOrg.length == 0) {
-        return res.status(403).send(config.errorForbidden);
+        return res.status(403).send(errors.Forbidden);
     }
 
     return next();

@@ -52,7 +52,7 @@ describe('Get User Details', function () {
             .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect('Content-Type', /json/)
-            .expect(404, errors.errorNotFound);
+            .expect(404, errors.NotFound);
     });
 
     test('[403] No contact with that user', async () => {
@@ -68,7 +68,7 @@ describe('Get User Details', function () {
             .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect('Content-Type', /json/)
-            .expect(403, errors.errorForbidden);
+            .expect(403, errors.Forbidden);
     });
 
     test('[400] Request does not include token', async () => {
@@ -76,7 +76,7 @@ describe('Get User Details', function () {
             .get(`/api/auth/randomString`)
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -85,6 +85,6 @@ describe('Get User Details', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

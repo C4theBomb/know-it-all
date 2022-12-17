@@ -36,7 +36,7 @@ describe('Logout', function () {
             .post('/api/auth/logout')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -45,6 +45,6 @@ describe('Logout', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

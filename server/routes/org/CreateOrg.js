@@ -1,4 +1,4 @@
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function CreateOrg(req, res, next) {
     const user = req.user;
@@ -6,7 +6,7 @@ async function CreateOrg(req, res, next) {
 
     // Error if the form does not contain an organization name
     if (!orgName) {
-        return res.status(400).send(config.errorIncomplete);
+        return res.status(400).send(errors.Incomplete);
     }
 
     // Verify that no owned organizations have the same name
@@ -14,7 +14,7 @@ async function CreateOrg(req, res, next) {
         where: { name: orgName },
     });
     if (existing > 0) {
-        return res.status(500).send(config.errorGeneric);
+        return res.status(409).send(errors.DuplicateName);
     }
 
     await user.createOwnedOrg({

@@ -1,6 +1,6 @@
 const { Organization } = require('../../db/models/index');
 
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function DeleteOrg(req, res, next) {
     const user = req.user;
@@ -8,7 +8,7 @@ async function DeleteOrg(req, res, next) {
 
     // Error if an organization id was not provided
     if (!orgID) {
-        return res.status(400).send(config.errorIncomplete);
+        return res.status(400).send(errors.Incomplete);
     }
 
     // Destroy all organizations with that ID

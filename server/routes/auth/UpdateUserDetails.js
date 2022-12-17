@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 
 const { User } = require('../../db/models/index');
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function UpdateUserDetails(req, res, next) {
     const { token, ...body } = req.body;
@@ -18,7 +18,7 @@ async function UpdateUserDetails(req, res, next) {
         });
 
         if (result) {
-            return res.status(409).send(config.errorDuplicateName);
+            return res.status(409).send(errors.DuplicateName);
         }
     }
 

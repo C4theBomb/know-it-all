@@ -41,7 +41,7 @@ describe('Update Org Details', function () {
             .patch('/api/org/update')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[404] No organization exists with that id', async () => {
@@ -55,7 +55,7 @@ describe('Update Org Details', function () {
                 name: 'New Name',
             })
             .expect('Content-Type', /json/)
-            .expect(404, errors.errorNotFound);
+            .expect(404, errors.NotFound);
     });
 
     test('[409] Pre-existing organization with that name', async () => {
@@ -71,7 +71,7 @@ describe('Update Org Details', function () {
             .set('Authorization', `bearer ${token.id}`)
             .send({ name: 'Org' })
             .expect('Content-Type', /json/)
-            .expect(409, errors.errorDuplicateName);
+            .expect(409, errors.DuplicateName);
     });
 
     test('[400] Request does not include token', async () => {
@@ -79,7 +79,7 @@ describe('Update Org Details', function () {
             .patch('/api/org/randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -88,6 +88,6 @@ describe('Update Org Details', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

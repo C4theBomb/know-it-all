@@ -50,7 +50,7 @@ describe('Update User Details', function () {
                 email: 'new.user@test.com',
             })
             .expect('Content-Type', /json/)
-            .expect(409, errors.errorDuplicateName);
+            .expect(409, errors.DuplicateName);
     });
 
     test('[400] Request does not include token', async () => {
@@ -58,7 +58,7 @@ describe('Update User Details', function () {
             .patch('/api/auth/update')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -67,6 +67,6 @@ describe('Update User Details', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

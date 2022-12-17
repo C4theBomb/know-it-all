@@ -50,7 +50,7 @@ describe('Get Member Orgs', function () {
             .get('/api/auth/orgs/member')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -59,6 +59,6 @@ describe('Get Member Orgs', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

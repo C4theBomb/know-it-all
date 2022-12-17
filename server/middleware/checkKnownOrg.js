@@ -1,6 +1,6 @@
 const { Organization } = require('../db/models/index');
 
-const config = require('../config/error.json');
+const errors = require('../config/error.json');
 
 async function checkKnownOrg(req, res, next) {
     const user = req.user;
@@ -24,12 +24,12 @@ async function checkKnownOrg(req, res, next) {
 
     // Verify that there is an organization that the specified id.
     if (!result) {
-        return res.status(404).send(config.errorNotFound);
+        return res.status(404).send(errors.NotFound);
     }
 
     // Verify that the user who submitted the request exists as an owner or member
     if (!result.owner && result.member.length == 0) {
-        return res.status(403).send(config.errorForbidden);
+        return res.status(403).send(errors.Forbidden);
     }
 
     return next();

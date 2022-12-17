@@ -60,7 +60,7 @@ describe('Remove Org Member', function () {
                 doomedUsers: [newUser.id],
             })
             .expect('Content-Type', /json/)
-            .expect(404, errors.errorNotFound);
+            .expect(404, errors.NotFound);
     });
 
     test('[403] Insufficient permissions', async () => {
@@ -81,7 +81,7 @@ describe('Remove Org Member', function () {
             })
             .set('Authorization', `bearer ${token.id}`)
             .expect('Content-Type', /json/)
-            .expect(403, errors.errorForbidden);
+            .expect(403, errors.Forbidden);
     });
 
     test('[400] Request does not include token', async () => {
@@ -89,7 +89,7 @@ describe('Remove Org Member', function () {
             .post('/api/org/randomString/remove')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[401] Token was not found', async () => {
@@ -98,6 +98,6 @@ describe('Remove Org Member', function () {
             .set('Authorization', 'bearer randomString')
             .send()
             .expect('Content-Type', /json/)
-            .expect(401, errors.errorUnauthed);
+            .expect(401, errors.Unauthenticated);
     });
 });

@@ -40,7 +40,7 @@ describe('Login', function () {
             .post('/api/auth/login')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[403] Invalid password', async () => {
@@ -53,6 +53,6 @@ describe('Login', function () {
             .set('Authorization', `basic ${encoded}`)
             .send()
             .expect('Content-Type', /json/)
-            .expect(403, errors.errorForbidden);
+            .expect(403, errors.Forbidden);
     });
 });

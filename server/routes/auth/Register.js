@@ -1,14 +1,14 @@
 const forge = require('node-forge');
 
 const { User, Organization } = require('../../db/models/index');
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function Register(req, res, next) {
     const body = req.body;
 
     // Verify that the object body contains all SQL required fields
     if (!body.firstName || !body.lastName || !body.email || !body.password) {
-        return res.status(400).send(config.errorIncomplete);
+        return res.status(400).send(errors.Incomplete);
     }
 
     // Make sure that no existing user exists with that email
@@ -19,7 +19,7 @@ async function Register(req, res, next) {
     });
 
     if (existingUsers > 0) {
-        return res.status(400).send(config.errorDuplicateName);
+        return res.status(409).send(errors.DuplicateName);
     }
 
     // Hash password for storage into database
@@ -51,7 +51,7 @@ async function Register(req, res, next) {
         } catch (e) {
             console.log(e);
 
-            return res.status(500).send(config.errorGeneric);
+            return res.status(500).send(errors.Generic);
         }
     } else {
         try {
@@ -65,7 +65,7 @@ async function Register(req, res, next) {
         } catch (e) {
             console.log(e);
 
-            return res.status(500).send(config.errorGeneric);
+            return res.status(500).send(errors.Generic);
         }
     }
 }

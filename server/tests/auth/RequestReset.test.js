@@ -31,7 +31,7 @@ describe('Request Reset', function () {
             .post('/api/auth/reset')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[404] No user with email', async () => {
@@ -41,6 +41,6 @@ describe('Request Reset', function () {
             .post('/api/auth/reset')
             .send({ email: 'randomString' })
             .expect('Content-Type', /json/)
-            .expect(404, errors.errorNotFound);
+            .expect(404, errors.NotFound);
     });
 });

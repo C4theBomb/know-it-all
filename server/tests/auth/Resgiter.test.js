@@ -83,7 +83,7 @@ describe('Register', function () {
             .post('/api/auth/register')
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[409] User already exists', async () => {
@@ -100,6 +100,6 @@ describe('Register', function () {
             .post('/api/auth/register')
             .send(userInfo)
             .expect('Content-Type', /json/)
-            .expect(409, errors.errorDuplicateName);
+            .expect(409, errors.DuplicateName);
     });
 });

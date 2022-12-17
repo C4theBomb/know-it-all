@@ -1,23 +1,20 @@
 {
-    "errorGeneric": {
+    "Generic": {
         "error": "Oops! Something went wrong. Please try again later."
     },
-    "errorIncomplete": {
+    "Incomplete": {
         "error": "Your request is missing information."
     },
-    "errorUnauthed": {
+    "Unauthenticated": {
         "error": "You are unauthenticated, please log in and try again."
     },
-    "errorForbidden": {
+    "Forbidden": {
         "error": "You are not authorized to do that."
     },
-    "errorNotFound": {
+    "NotFound": {
         "error": "That resource was not found. Please try again."
     },
-    "errorUserNotFound": {
-        "error": "A user with that email does not exist. Create an account to get started."
-    },
-    "errorDuplicateName": {
+    "DuplicateName": {
         "error": "Something already exists with that name. Please try again with a different name."
     }
 }

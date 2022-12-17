@@ -1,20 +1,20 @@
 const { CourierClient } = require('@trycourier/courier');
 
 const { User } = require('../../db/models/index');
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function RequestReset(req, res, next) {
     try {
         // Make sure that the request contains an email
         const email = req.body.email;
         if (!email) {
-            return res.status(400).send(config.errorIncomplete);
+            return res.status(400).send(errors.Incomplete);
         }
 
         // Confirm that a user exists with that email
         const result = await User.findOne({ where: { email: email } });
         if (!result) {
-            return res.status(404).send(config.errorNotFound);
+            return res.status(404).send(errors.NotFound);
         }
 
         // Create resetRequest instance and send email containing reset information
@@ -39,7 +39,7 @@ async function RequestReset(req, res, next) {
         return res.sendStatus(200);
     } catch (e) {
         console.log(e);
-        return res.status(500).send(config.errorGeneric);
+        return res.status(500).send(errors.Generic);
     }
 }
 

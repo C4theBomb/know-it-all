@@ -1,6 +1,6 @@
 const { Organization } = require('../../db/models/index');
 
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function AddOrgMember(req, res, next) {
     const user = req.user;
@@ -9,7 +9,7 @@ async function AddOrgMember(req, res, next) {
     // Verify that an organization exists with the ID provided
     const result = await Organization.findByPk(orgID);
     if (!result) {
-        return res.status(404).send(config.errorNotFound);
+        return res.status(404).send(errors.NotFound);
     }
 
     // Add the as a member to the found organization

@@ -1,6 +1,6 @@
 const { Organization } = require('../../db/models/index');
 
-const config = require('../../config/error.json');
+const errors = require('../../config/error.json');
 
 async function RemoveOrgMember(req, res, next) {
     const user = req.user;
@@ -13,7 +13,7 @@ async function RemoveOrgMember(req, res, next) {
     });
 
     if (!result) {
-        return res.status(404).send(config.errorNotFound);
+        return res.status(404).send(errors.NotFound);
     }
 
     // Remove self if doomedUserIDs does not exist, otherwise destroy all users in doomedUserIDs
@@ -23,7 +23,7 @@ async function RemoveOrgMember(req, res, next) {
         if (user.id == result.owner.id) {
             await result.removeMember(doomedUserIDs);
         } else {
-            return res.status(403).send(config.errorForbidden);
+            return res.status(403).send(errors.Forbidden);
         }
     }
 

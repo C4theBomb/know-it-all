@@ -43,7 +43,7 @@ describe('Reset Password', function () {
             .patch(`/api/auth/reset/${resetRequest.reqID}`)
             .send()
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorIncomplete);
+            .expect(400, errors.Incomplete);
     });
 
     test('[500] Reset request does not exist', async () => {
@@ -53,6 +53,6 @@ describe('Reset Password', function () {
                 password: 'newPassword',
             })
             .expect('Content-Type', /json/)
-            .expect(500, errors.errorGeneric);
+            .expect(500, errors.Generic);
     });
 });
