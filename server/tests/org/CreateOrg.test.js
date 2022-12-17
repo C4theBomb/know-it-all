@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize, Token } = require('../../db/models/index');
+var { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestUser } = require('../utils');
 
-describe('GetOwnedOrgs', function () {
+const { createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Create Org', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -19,19 +21,11 @@ describe('GetOwnedOrgs', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .post('/api/org/create')
-            .send({ token: token.id, orgName: 'Org' })
-            .expect(200)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .then((response) => {
-                expect(response.body).toEqual(
-                    expect.objectContaining({
-                        ownerID: user.id,
-                        name: 'Org',
-                    })
-                );
-            });
+            .post('/api/org')
+            .set('Authorization', `bearer ${token.id}`)
+            .send({ orgName: 'Org' })
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
     test('[400] Form missing orgName', async () => {
@@ -39,14 +33,14 @@ describe('GetOwnedOrgs', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .post('/api/org/create')
-            .send({ token: token.id })
-            .expect(400, 'Form missing necessary fields')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /html/);
+            .post('/api/org')
+            .set('Authorization', `bearer ${token.id}`)
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[500] Pre-existing organization with that name', async () => {
+    test('[409] Pre-existing organization with that name', async () => {
         var user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         await user.createOwnedOrg({
@@ -54,33 +48,27 @@ describe('GetOwnedOrgs', function () {
         });
 
         await supertest(app)
-            .post('/api/org/create')
-            .send({ token: token.id, orgName: 'Org' })
-            .expect(
-                500,
-                'This user already has an organization with this name.'
-            )
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .post('/api/org')
+            .set('Authorization', `bearer ${token.id}`)
+            .send({ orgName: 'Org' })
+            .expect('Content-Type', /json/)
+            .expect(409, errors.errorDuplicateName);
     });
 
-    test('[403] Missing token', async () => {
+    test('[400] Request does not include token', async () => {
         await supertest(app)
-            .post('/api/org/create')
+            .post('/api/org')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
-            .post('/api/org/create')
-            .send({
-                token: 'randomString',
-            })
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .post('/api/org')
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

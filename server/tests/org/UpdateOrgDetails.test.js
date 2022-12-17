@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize, Organization } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestUser, createTestOrg, createTestToken } = require('../utils');
 
-describe('GetOwnedOrgs', function () {
+const { createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Update Org Details', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -22,24 +24,13 @@ describe('GetOwnedOrgs', function () {
         });
 
         await supertest(app)
-            .patch('/api/org/update')
+            .patch(`/api/org/${org.id}`)
+            .set('Authorization', `bearer ${token.id}`)
             .send({
-                token: token.id,
-                orgID: org.id,
-                orgName: 'New Name',
+                name: 'New Name',
             })
-            .expect(200)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .then((response) => {
-                const data = {
-                    name: 'New Name',
-                    id: org.id,
-                    ownerID: org.ownerID,
-                };
-
-                expect(response.body).toEqual(expect.objectContaining(data));
-            });
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
     test('[400] Form missing information', async () => {
@@ -48,47 +39,55 @@ describe('GetOwnedOrgs', function () {
 
         await supertest(app)
             .patch('/api/org/update')
-            .send({
-                token: token.id,
-            })
-            .expect(400, 'Form missing required information.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[500] No organization exists with that id', async () => {
+    test('[404] No organization exists with that id', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
         await supertest(app)
-            .patch('/api/org/update')
+            .patch('/api/org/randomString')
+            .set('Authorization', `bearer ${token.id}`)
             .send({
-                token: token.id,
-                orgID: 'randomString',
-                orgName: 'New Name',
+                name: 'New Name',
             })
-            .expect(500, 'You do not own an organization with that id.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(404, errors.errorNotFound);
     });
 
-    test('[403] Missing token', async () => {
+    test('[409] Pre-existing organization with that name', async () => {
+        const user = await createTestUser('Test', 'User', 'password');
+        const token = await user.createToken();
+        await user.createOwnedOrg({ name: 'Org' });
+        const org = await user.createOwnedOrg({
+            name: 'Other',
+        });
+
         await supertest(app)
-            .patch('/api/org/update')
+            .patch(`/api/org/${org.id}`)
+            .set('Authorization', `bearer ${token.id}`)
+            .send({ name: 'Org' })
+            .expect('Content-Type', /json/)
+            .expect(409, errors.errorDuplicateName);
+    });
+
+    test('[400] Request does not include token', async () => {
+        await supertest(app)
+            .patch('/api/org/randomString')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
-            .patch('/api/org/update')
-            .send({
-                token: 'randomString',
-            })
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .patch('/api/org/randomString')
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize, Organization } = require('../../db/models/index');
+const { sequelize, Organization } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestUser, createTestOrg } = require('../utils');
 
-describe('DeleteOrg', function () {
+const { createTestUser, createTestOrg } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Delete Org', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -22,18 +24,14 @@ describe('DeleteOrg', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .delete('/api/org/delete')
-            .query({
-                token: token.id,
-                orgID: org.id,
-            })
+            .delete(`/api/org/${org.id}`)
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(200, 'Organization deleted')
-            .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
+            .expect(200, 'OK')
             .then(async () => {
                 const data = await Organization.findByPk(org.id);
-                expect(data).toEqual(null);
+                expect(data).toBeNull();
             });
     });
 
@@ -45,15 +43,11 @@ describe('DeleteOrg', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .delete('/api/org/delete')
-            .query({
-                token: token.id,
-                orgID: 'randomString',
-            })
+            .delete(`/api/org/randomString`)
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(200, 'Organization deleted')
-            .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
+            .expect(200, 'OK')
             .then(async () => {
                 const data = await Organization.findByPk(org.id);
                 expect(data.dataValues).toEqual(org.dataValues);
@@ -69,55 +63,31 @@ describe('DeleteOrg', function () {
         const token = await newUser.createToken();
 
         await supertest(app)
-            .delete('/api/org/delete')
-            .query({
-                token: token.id,
-                orgID: 'randomString',
-            })
+            .delete(`/api/org/${org.id}`)
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(200, 'Organization deleted')
-            .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
+            .expect(200, 'OK')
             .then(async () => {
                 const data = await Organization.findByPk(org.id);
-                expect(data.dataValues).toEqual(org.dataValues);
+                expect(data).not.toBeNull();
             });
     });
 
-    test('[400] No orgID provided', async () => {
-        const user = await createTestUser('Test', 'User', 'password');
-        const newUser = await createTestUser('New', 'User', 'password');
-        const token = await newUser.createToken();
-
+    test('[400] Request does not include token', async () => {
         await supertest(app)
-            .delete('/api/org/delete')
-            .query({
-                token: token.id,
-            })
+            .delete('/api/org/randomString')
             .send()
-            .expect(400, 'Form missing required fields')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[403] Missing token', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
-            .delete('/api/org/delete')
+            .delete('/api/org/randomString')
+            .set('Authorization', 'bearer randomString')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
-    });
-
-    test('[511] Token was not found', async () => {
-        await supertest(app)
-            .delete('/api/org/delete')
-            .query({
-                token: 'randomString',
-            })
-            .send()
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

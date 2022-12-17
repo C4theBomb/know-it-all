@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestOrg, createTestUser, createTestToken } = require('../utils');
 
-describe('AddOrgMember', function () {
+const { createTestOrg, createTestUser, createTestToken } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Add Org Member', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -25,19 +27,10 @@ describe('AddOrgMember', function () {
 
         await supertest(app)
             .post(`/api/org/${org.id}/add`)
+            .set('Authorization', `bearer ${token.id}`)
             .send({ token: token.id })
-            .expect(200, 'User added to organization.')
-            .set('Accept', 'text/html')
             .expect('Content-Type', /text/)
-            .then(async () => {
-                const members = await org.getMember();
-
-                expect(members).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining(user.dataValues),
-                    ])
-                );
-            });
+            .expect(200, 'OK');
     });
 
     test('[404] Organization not found', async () => {
@@ -49,27 +42,26 @@ describe('AddOrgMember', function () {
 
         await supertest(app)
             .post(`/api/org/randomString/add`)
-            .send({ token: token.id })
-            .expect(404, 'No organization exists with that id.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
-    });
-
-    test('[403] Missing token', async () => {
-        await supertest(app)
-            .post('/api/auth/logout')
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(404, errors.errorNotFound);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[400] Request does not include token', async () => {
         await supertest(app)
-            .post('/api/auth/logout')
-            .send({ token: 'randomString' })
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .post('/api/org/randomString/add')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
+    });
+
+    test('[401] Token was not found', async () => {
+        await supertest(app)
+            .post('/api/org/randomString/add')
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

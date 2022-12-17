@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Create User', function () {
+describe('Register', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -86,7 +86,7 @@ describe('Create User', function () {
             .expect(400, errors.errorIncomplete);
     });
 
-    test('[400] User already exists', async () => {
+    test('[409] User already exists', async () => {
         await createTestUser('Test', 'User', 'password');
         const userInfo = {
             firstName: 'Test',
@@ -100,6 +100,6 @@ describe('Create User', function () {
             .post('/api/auth/register')
             .send(userInfo)
             .expect('Content-Type', /json/)
-            .expect(400, errors.errorDuplicateName);
+            .expect(409, errors.errorDuplicateName);
     });
 });
