@@ -43,7 +43,9 @@ async function getOrg(id) {
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
     try {
-        await instance.delete('/logout');
+        const response = await instance.get(`/${id}`);
+        console.log(response.data);
+        return response.data;
     } catch (error) {
         console.log(error.response.data);
         return error;
@@ -73,3 +75,5 @@ async function updateOrgDetails(id, data) {
         return error;
     }
 }
+
+export { addMember, createOrg, deleteOrg, getOrg, removeMember, updateOrgDetails };

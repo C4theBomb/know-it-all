@@ -6,7 +6,7 @@ import { FormSubmit, FormTextField } from './StyledElements';
 
 function RegisterForm({ form, handleSubmit, handleChange, error }) {
     return (
-        <Form text='Create an Account'>
+        <Form text='Create an Account' error={error}>
             <form onSubmit={handleSubmit}>
                 <FormTextField
                     required
@@ -52,13 +52,6 @@ function RegisterForm({ form, handleSubmit, handleChange, error }) {
                     value={form.confirmPassword}
                     other={{ type: 'password' }}
                 />
-                {error && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='secondary'>
-                            {error}
-                        </Typography>
-                    </Box>
-                )}
                 <FormSubmit
                     color='primary'
                     type='submit'

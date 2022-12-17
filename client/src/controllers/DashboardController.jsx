@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
-import Dashboard from '../components/Dashboard';
+import { Dashboard } from '../components';
+import { getAudio } from '../services/userServices';
+import { getOrg, deleteOrg, removeMember } from '../services/orgServices';
 
-function OrgDashboard() {
+function DashboardController() {
     const { orgID } = useParams();
     const navigate = useNavigate();
 
@@ -24,24 +24,18 @@ function OrgDashboard() {
     const [rows, setRows] = useState([]);
     const [status, setStatus] = useState(true);
     const [selection, setSelection] = useState(null);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         async function getData() {
-            await axios
-                .get(
-                    `${
-                        process.env.REACT_APP_API_ROOT
-                    }/org/${orgID}?token=${Cookies.get('token')}`
-                )
-                .then((response) => {
-                    const res = response.data;
-
+            await getOrg(orgID)
+                .then((res) => {
                     setOrg(() => {
                         return { ...res.org, memberCount: res.memberCount };
                     });
 
                     setRows(() => res.org.member);
-                    setStatus(() => res.status);
+                    setStatus(() => res.owner);
                 })
                 .catch((e) => {
                     console.log(e);
@@ -52,15 +46,12 @@ function OrgDashboard() {
         getData();
     }, [navigate, orgID]);
 
+    function handleOpen() {
+        setOpen((initial) => (initial ? false : true));
+    }
+
     async function handleDelete() {
-        await axios
-            .delete(`${process.env.REACT_APP_API_ROOT}/org/delete`, {
-                params: {
-                    token: Cookies.get('token'),
-                    orgID,
-                },
-            })
-            .then(navigate('/'));
+        await deleteOrg(orgID).then(navigate('/'));
     }
 
     function copyID() {
@@ -76,51 +67,30 @@ function OrgDashboard() {
     async function removeSelected() {
         const doomedUserIDs = selection.map((row) => row.id);
 
-        await axios.post(
-            `${process.env.REACT_APP_API_ROOT}/org/${orgID}/delete`,
-            {
-                token: Cookies.get('token'),
-                orgID,
-                doomedUserIDs,
-            }
-        );
+        await removeMember(orgID, doomedUserIDs);
     }
 
     async function leaveOrg() {
-        await axios
-            .post(`${process.env.REACT_APP_API_ROOT}/org/${orgID}/delete`, {
-                token: Cookies.get('token'),
-                orgID,
-            })
-            .then(() => navigate('/'))
-            .catch((e) => {
-                console.log(e);
-                navigate('/');
-            });
+        await removeMember(orgID, {}).then(navigate('/'));
     }
 
     async function play(id) {
-        await axios
-            .get(
-                `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${id}.mp3`,
-                {
-                    responseType: 'blob',
-                }
-            )
-            .then((res) => {
-                const uploadedFile = new File([res.data], 'userAudio.mp3', {
-                    type: res.data.type,
-                    lastModified: Date.now(),
-                });
-                const audioFile = new Audio(URL.createObjectURL(uploadedFile));
-                audioFile.play();
+        await getAudio(id).then((res) => {
+            const uploadedFile = new File([res], 'userAudio.mp3', {
+                type: res.type,
+                lastModified: Date.now(),
             });
+            const audioFile = new Audio(URL.createObjectURL(uploadedFile));
+            audioFile.play();
+        });
     }
 
     return (
         <Dashboard
             org={org}
             rows={rows}
+            open={open}
+            handleOpen={handleOpen}
             setSelection={setSelection}
             onClick={play}
             status={status}
@@ -133,4 +103,4 @@ function OrgDashboard() {
     );
 }
 
-export default OrgDashboard;
+export default DashboardController;

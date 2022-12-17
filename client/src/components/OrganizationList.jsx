@@ -2,9 +2,9 @@ import React from 'react';
 import { Box, Paper, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
-import OrgUnit from './OrgUnit';
+import { OrgUnit } from '.';
 
-function Organizations({ orgs }) {
+function OrganizationList({ orgs }) {
     const theme = useTheme();
 
     return (
@@ -29,4 +29,4 @@ function Organizations({ orgs }) {
     );
 }
 
-export default Organizations;
+export default OrganizationList;

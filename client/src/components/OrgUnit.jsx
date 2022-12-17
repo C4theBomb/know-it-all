@@ -1,11 +1,5 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Typography,
-} from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 function OrgUnit({ org }) {

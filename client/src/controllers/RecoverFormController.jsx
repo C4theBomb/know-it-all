@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-import RecoverForm from '../components/RecoverForm';
+import { RecoverForm } from '../components';
+import { requestReset } from '../services/userServices';
 
-function Recover() {
+function RecoverFormController() {
     const [form, setForm] = useState({
         email: '',
     });
     const [error, setError] = useState('');
-    const [success, setSuccess] = useState('');
 
     function handleChange(e) {
         const name = e.target.name;
@@ -21,25 +20,17 @@ function Recover() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await axios
-            .get(
-                `${process.env.REACT_APP_API_ROOT}/auth/reset-password?${form.email}`
-            )
-            .then((response) => {
-                setSuccess(() => response.data);
-            })
-            .catch((e) => setError(() => e.response.data));
+        await requestReset(form);
     }
 
     return (
         <RecoverForm
             form={form}
             error={error}
-            success={success}
             handleChange={handleChange}
             handleSubmit={handleSubmit}
         />
     );
 }
 
-export default Recover;
+export default RecoverFormController;

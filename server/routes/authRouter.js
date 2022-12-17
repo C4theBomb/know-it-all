@@ -26,7 +26,7 @@ router.post('/remember', tokenAuth, Remember);
 router.patch('/update', tokenAuth, UpdateUserDetails);
 router.post('/audio', parseFormData, tokenAuth, SetAudio);
 
-router.get('/reset', RequestReset);
+router.post('/reset', RequestReset);
 router.patch('/reset/:id', ResetPassword);
 
 router.get('/orgs', tokenAuth, GetOwnedOrgs);

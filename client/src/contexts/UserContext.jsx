@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import Cookies from 'js-cookie';
+
 import { remember } from '../services/userServices';
 
 const initialUserData = { loading: true };
@@ -14,12 +16,15 @@ export default function UserProvider({ children }) {
     useEffect(() => {
         const loadUserData = async () => {
             const { user, error } = await remember();
+
             if (error) {
                 navigate('/login');
+                Cookies.remove('token');
             } else {
                 setUserData(user || { loading: false });
             }
         };
+
         if (userData.loading) loadUserData();
     }, [userData.loading]);
 

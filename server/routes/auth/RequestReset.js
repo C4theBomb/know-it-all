@@ -6,7 +6,7 @@ const config = require('../../config/error.json');
 async function RequestReset(req, res, next) {
     try {
         // Make sure that the request contains an email
-        const email = req.query.email;
+        const email = req.body.email;
         if (!email) {
             return res.status(400).send(config.errorIncomplete);
         }
@@ -27,10 +27,11 @@ async function RequestReset(req, res, next) {
         await courier.send({
             message: {
                 to: { email: result.email },
-                template: 'FSTM4WF60KM570KS9DBQRH0T41GJ',
+                template: '484W41FM494HX6H1RFRNAXNGQ28C',
                 data: {
                     email: result.email,
                     resetRequest: resetRequest.id,
+                    apiDomainRoot: process.env.CLIENT_DOMAIN_ROOT,
                 },
             },
         });

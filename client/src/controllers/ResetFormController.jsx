@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
 
-import ResetForm from '../components/ResetForm';
+import { ResetForm } from '../components';
+import { resetPassword } from '../services/userServices';
+import { useError } from '../contexts';
 
-function Reset() {
+function ResetFormController() {
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -12,7 +13,7 @@ function Reset() {
         password: '',
         confirmPassword: '',
     });
-    const [error, setError] = useState('');
+    const { error, setError } = useError();
 
     function handleChange(e) {
         const name = e.target.name;
@@ -25,17 +26,14 @@ function Reset() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await axios
-            .patch(
-                `${process.env.REACT_APP_API_ROOT}/auth/reset-password/${id}`,
-                {
-                    password: form.password,
-                }
-            )
-            .then(() => {
-                navigate('/login');
-            })
-            .catch((e) => setError(() => e.response.data));
+
+        const error = await resetPassword(id, { password: form.password });
+
+        if (error) {
+            setError(() => error);
+        } else {
+            navigate('/login');
+        }
     }
 
     return (
@@ -48,4 +46,4 @@ function Reset() {
     );
 }
 
-export default Reset;
+export default ResetFormController;

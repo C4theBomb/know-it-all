@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from 'axios';
-import Cookies from 'js-cookie';
 
-import UpdateOrganizationForm from '../components/UpdateOrganizationForm';
+import { UpdateOrganizationForm } from '../components';
+import { updateOrgDetails } from '../services/orgServices';
 
-function UpdateOrganization() {
+function UpdateOrganizationFormController() {
     const { orgID } = useParams();
     const navigate = useNavigate();
 
@@ -19,15 +18,10 @@ function UpdateOrganization() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await axios
-            .patch(`${process.env.REACT_APP_API_ROOT}/org/update`, {
-                token: Cookies.get('token'),
-                orgName: name,
-                orgID,
-            })
-            .then(() => {
-                navigate(`/org/${orgID}`);
-            });
+
+        await updateOrgDetails(orgID, { orgName: name }).then(() => {
+            navigate(`/org/${orgID}`);
+        });
     }
 
     return (
@@ -39,4 +33,4 @@ function UpdateOrganization() {
     );
 }
 
-export default UpdateOrganization;
+export default UpdateOrganizationFormController;

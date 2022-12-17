@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import axios from 'axios';
 
 import RegisterForm from '../components/RegisterForm';
+import { useError } from '../contexts';
+import { register } from '../services/userServices';
 
-function Register() {
+function RegisterFormController() {
     const navigate = useNavigate();
     const [params] = useSearchParams();
+    const { error, setError } = useError();
 
     const [form, setForm] = useState({
         firstName: '',
@@ -16,7 +18,6 @@ function Register() {
         password: '',
         confirmPassword: '',
     });
-    const [error, setError] = useState('');
 
     function handleChange(e) {
         const name = e.target.name;
@@ -31,25 +32,16 @@ function Register() {
         e.preventDefault();
 
         const { confirmPassword, ...filteredForm } = form;
-        await axios
-            .post(`${process.env.REACT_APP_API_ROOT}/auth/register`, {
-                ...filteredForm,
-                orgID: params.orgID,
-            })
-            .then(() => {
-                navigate('/login');
-            })
-            .catch((e) => setError(() => e.response.data));
+        const { error } = await register({ ...filteredForm, orgID: params.get('orgID') });
+
+        if (error) {
+            setError(() => error);
+        } else {
+            navigate('/login');
+        }
     }
 
-    return (
-        <RegisterForm
-            form={form}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            error={error}
-        />
-    );
+    return <RegisterForm {...{ form, handleSubmit, handleChange, error }} />;
 }
 
-export default Register;
+export default RegisterFormController;

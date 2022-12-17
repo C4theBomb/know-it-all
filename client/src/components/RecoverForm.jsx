@@ -1,39 +1,22 @@
-import React from 'react';
-import { Box, Typography } from '@mui/material';
-
+import { Form } from '.';
 import { FormSubmit, FormTextField } from './StyledElements';
 
-function RecoverForm({ form, error, success, handleSubmit, handleChange }) {
+function RecoverForm({ form, error, handleSubmit, handleChange }) {
     return (
-        <form onSubmit={handleSubmit}>
-            <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
-                Recover my Password
-            </Typography>
-            <FormTextField
-                required
-                label='Email'
-                name='email'
-                onChange={handleChange}
-                value={form.email}
-            />
-            {error && (
-                <Box textAlign='right'>
-                    <Typography variant='body2' color='error'>
-                        {error}
-                    </Typography>
-                </Box>
-            )}
-            {success && (
-                <Box textAlign='right'>
-                    <Typography variant='body2' color='primary'>
-                        {success}
-                    </Typography>
-                </Box>
-            )}
-            <FormSubmit color='primary' type='submit'>
-                Recover my password
-            </FormSubmit>
-        </form>
+        <Form text='Recover Password' error={error}>
+            <form onSubmit={handleSubmit}>
+                <FormTextField
+                    required
+                    label='Email'
+                    name='email'
+                    onChange={handleChange}
+                    value={form.email}
+                />
+                <FormSubmit color='primary' type='submit'>
+                    Recover my password
+                </FormSubmit>
+            </form>
+        </Form>
     );
 }
 

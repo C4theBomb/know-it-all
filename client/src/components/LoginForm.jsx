@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Checkbox, FormControlLabel, Typography } from '@mui/material';
 
-import Form from './Form';
+import { Form } from '.';
 import { FormSubmit, FormTextField } from './StyledElements';
 
-function Login({ form, error, handleSubmit, handleChange, handleCheckboxChange }) {
+function Login({ form, handleSubmit, handleChange, handleCheckboxChange, error }) {
     return (
-        <Form>
+        <Form text='Login' error={error}>
             <form onSubmit={handleSubmit}>
-                <Typography variant='h5' sx={{ margin: '1vh 0vh', fontWeight: 'bold' }}>
-                    Login
-                </Typography>
                 <FormTextField
                     required
                     label='Email'
@@ -42,13 +39,6 @@ function Login({ form, error, handleSubmit, handleChange, handleCheckboxChange }
                         onChange={handleCheckboxChange}
                     />
                 </div>
-                {error && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='error'>
-                            {error}
-                        </Typography>
-                    </Box>
-                )}
                 <FormSubmit color='primary' type='submit'>
                     Login
                 </FormSubmit>

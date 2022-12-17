@@ -1,16 +1,10 @@
-import React from 'react';
-import { Typography } from '@mui/material';
-
-import Form from './Form';
+import { Form } from '.';
 import { FormSubmit, FormTextField } from './StyledElements';
 
 function UpdateOrganizationForm({ name, handleSubmit, handleChange }) {
     return (
         <Form text='Rename Organization'>
             <form onSubmit={handleSubmit}>
-                <Typography variant='h4' sx={{ marginTop: '1vh 0vh' }}>
-                    Rename Organization
-                </Typography>
                 <FormTextField
                     required
                     label='Name'

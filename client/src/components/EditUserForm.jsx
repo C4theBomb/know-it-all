@@ -2,8 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
-import Form from './Form';
-import RecordMp3 from './RecordMp3';
+import { Form } from '.';
+import { RecordMp3 } from '../controllers';
 import { FormSubmit, FormTextField } from './StyledElements';
 
 function EditUserForm({ form, error, handleSubmit, handleChange }) {

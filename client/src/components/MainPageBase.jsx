@@ -6,24 +6,12 @@ import OrgUnit from './OrgUnit';
 import StackItem from './StackItem';
 import { Form, FormButton, FormField } from './StyledElements';
 
-function MainPageBase({
-    form,
-    orgs,
-    ownedOrgs,
-    joinOrg,
-    createOrg,
-    handleChange,
-}) {
+function MainPageBase({ form, orgs, ownedOrgs, joinOrg, createOrg, handleChange }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Grid
-                container
-                spacing={2}
-                alignItems='center'
-                style={{ height: '95vh' }}
-            >
+            <Grid container spacing={2} alignItems='center' style={{ height: '95vh' }}>
                 <Grid item xs={0.5} sm={2} md={4} />
                 <Grid item xs={11} sm={8} md={4}>
                     <Stack spacing={2}>
@@ -36,10 +24,7 @@ function MainPageBase({
                                         value={form.id}
                                         onChange={handleChange}
                                     />
-                                    <FormButton
-                                        type='submit'
-                                        variant='outlined'
-                                    >
+                                    <FormButton type='submit' variant='outlined'>
                                         Join Organization
                                     </FormButton>
                                 </Form>
@@ -54,10 +39,7 @@ function MainPageBase({
                                         value={form.name}
                                         onChange={handleChange}
                                     />
-                                    <FormButton
-                                        type='submit'
-                                        variant='outlined'
-                                    >
+                                    <FormButton type='submit' variant='outlined'>
                                         Create Organization
                                     </FormButton>
                                 </Form>
@@ -76,7 +58,7 @@ function MainPageBase({
                             )}
 
                             {ownedOrgs.map((org) => (
-                                <OrgUnit org={org} />
+                                <OrgUnit org={org} key={org.id} />
                             ))}
                         </StackItem>
                         <StackItem>
@@ -92,7 +74,7 @@ function MainPageBase({
                             )}
 
                             {orgs.map((org) => (
-                                <OrgUnit org={org} />
+                                <OrgUnit org={org} key={org.id} />
                             ))}
                         </StackItem>
                     </Stack>

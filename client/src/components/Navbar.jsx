@@ -1,22 +1,26 @@
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Box, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 export default function Navbar({ logout, userData, mode, toggleMode }) {
     function NavbarControls() {
-        return userData.username ? (
-            <Button
-                color='inherit'
-                component={Link}
-                to='/login'
-                onClick={logout}
-                sx={{ margin: '0 1vh' }}
-            >
-                Logout
-            </Button>
+        return userData.email ? (
+            <>
+                <Button color='inherit' component={Link} to='/update'>
+                    Account
+                </Button>
+                <Button
+                    color='inherit'
+                    component={Link}
+                    to='/login'
+                    onClick={logout}
+                    sx={{ margin: '0 1vh' }}
+                >
+                    Logout
+                </Button>
+            </>
         ) : (
             <>
                 <Button color='inherit' component={Link} to='/login'>
