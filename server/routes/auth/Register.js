@@ -37,7 +37,7 @@ async function Register(req, res, next) {
                     password: passwordHash,
                 });
 
-                return res.send(result);
+                return res.sendStatus(200);
             }
 
             const { orgID, ...filteredBody } = body;

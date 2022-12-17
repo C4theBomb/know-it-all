@@ -1,8 +1,10 @@
 const supertest = require('supertest');
 
-var { sequelize, Token } = require('../../db/models/index');
+const { sequelize, Token } = require('../../db/models/index');
 const app = require('../../app');
+
 const { createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
 
 describe('Login', function () {
     beforeEach(async () => {
@@ -17,18 +19,19 @@ describe('Login', function () {
     test('[200] Successful login', async () => {
         const password = 'password';
         const user = await createTestUser('Test', 'User', password);
+        const encoded = Buffer.from(`${user.email}:${password}`).toString('base64');
 
         await supertest(app)
             .post('/api/auth/login')
-            .send({ email: user.email, password })
+            .set('Authorization', `basic ${encoded}`)
+            .send()
             .expect(200)
-            .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then(async (response) => {
                 const token = await Token.findByPk(response.body.token);
 
                 expect(response.body.token).toEqual(token.id);
-                expect(response.body.userID).toEqual(token.ownerID);
+                expect(response.body.user.id).toEqual(token.ownerID);
             });
     });
 
@@ -36,20 +39,20 @@ describe('Login', function () {
         await supertest(app)
             .post('/api/auth/login')
             .send()
-            .expect(400, 'Request lacking information')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[400] Invalid password', async () => {
+    test('[403] Invalid password', async () => {
         const password = 'password';
         const user = await createTestUser('Test', 'User', password);
+        const encoded = Buffer.from(`${user.email}:randomString`).toString('base64');
 
         await supertest(app)
             .post('/api/auth/login')
-            .send({ email: user.email, password: 'randomString' })
-            .expect(400, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .set('Authorization', `basic ${encoded}`)
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(403, errors.errorForbidden);
     });
 });

@@ -22,8 +22,6 @@ async function tokenAuth(req, res, next) {
 
     const user = await result.getUser();
 
-    if (!user) return res.status(500).send(config.errorGeneric);
-
     req.user = user;
 
     return next();

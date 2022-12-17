@@ -1,9 +1,11 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 
-describe('SetAudio', function () {
+const errors = require('../../config/error.json');
+
+describe('Set Audio', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -13,21 +15,20 @@ describe('SetAudio', function () {
         }
     });
 
-    test('[403] Missing token', async () => {
+    test('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/auth/audio')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[400] Token was not found', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/auth/audio')
-            .send({ token: 'randomString' })
-            .expect(400, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

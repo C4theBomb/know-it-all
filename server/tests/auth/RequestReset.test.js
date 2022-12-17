@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestUser } = require('../utils');
 
-describe('Logout', function () {
+const { createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Request Reset', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -18,35 +20,27 @@ describe('Logout', function () {
         const user = await createTestUser('Test', 'User', 'password');
 
         await supertest(app)
-            .get('/api/auth/reset-password')
-            .query({ email: user.email })
-            .send()
-            .expect(
-                200,
-                'Password reset request sent. If a user exists with this email, an email will be sent with the required information.'
-            )
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .post('/api/auth/reset')
+            .send({ email: user.email })
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
     test('[400] Request missing email', async () => {
         await supertest(app)
-            .get('/api/auth/reset-password')
+            .post('/api/auth/reset')
             .send()
-            .expect(400, 'Request missing required fields')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[500] No user with email', async () => {
+    test('[404] No user with email', async () => {
         await createTestUser('Test', 'User', 'password');
 
         await supertest(app)
-            .get('/api/auth/reset-password')
-            .query({ email: 'randomString' })
-            .send()
-            .expect(500, 'Whoops something went wrong')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .post('/api/auth/reset')
+            .send({ email: 'randomString' })
+            .expect('Content-Type', /json/)
+            .expect(404, errors.errorNotFound);
     });
 });

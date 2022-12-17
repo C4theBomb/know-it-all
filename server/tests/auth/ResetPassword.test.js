@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestResetRequest } = require('../utils');
 
-describe('ResetPassword', function () {
+const { createTestResetRequest } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Reset Password', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -22,13 +24,12 @@ describe('ResetPassword', function () {
         });
 
         await supertest(app)
-            .patch(`/api/auth/reset-password/${resetRequest.id}`)
+            .patch(`/api/auth/reset/${resetRequest.id}`)
             .send({
                 password: 'newPassword',
             })
-            .expect(200, 'Your password has been changed')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
     test('[400] Missing password', async () => {
@@ -39,21 +40,19 @@ describe('ResetPassword', function () {
         });
 
         await supertest(app)
-            .patch(`/api/auth/reset-password/${resetRequest.reqID}`)
+            .patch(`/api/auth/reset/${resetRequest.reqID}`)
             .send()
-            .expect(400, 'Form missing required information.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
     test('[500] Reset request does not exist', async () => {
         await supertest(app)
-            .patch(`/api/auth/reset-password/randomString`)
+            .patch(`/api/auth/reset/randomString`)
             .send({
                 password: 'newPassword',
             })
-            .expect(500, 'A reset request with this ID does not exist')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(500, errors.errorGeneric);
     });
 });

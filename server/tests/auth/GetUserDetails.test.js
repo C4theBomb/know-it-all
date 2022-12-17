@@ -1,10 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize, Token } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestToken, createTestUser } = require('../utils');
 
-describe('GetUserDetails', function () {
+const { createTestToken, createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Get User Details', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -23,15 +25,12 @@ describe('GetUserDetails', function () {
 
         await supertest(app)
             .get(`/api/auth/${token.ownerID}`)
-            .query({
-                token: token.id,
-            })
+            .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect(200)
-            .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
             .then((response) => {
-                expect(response.body).toEqual(
+                expect(response.body.user).toEqual(
                     expect.objectContaining({
                         firstName: 'Test',
                         lastName: 'User',
@@ -41,7 +40,7 @@ describe('GetUserDetails', function () {
             });
     });
 
-    test('[500] User ID does not exist', async () => {
+    test('[404] User ID does not exist', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -50,11 +49,10 @@ describe('GetUserDetails', function () {
 
         await supertest(app)
             .get(`/api/auth/randomString`)
-            .query({ token: token.id })
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(500, 'No user with that ID exists.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(404, errors.errorNotFound);
     });
 
     test('[403] No contact with that user', async () => {
@@ -67,42 +65,26 @@ describe('GetUserDetails', function () {
 
         await supertest(app)
             .get(`/api/auth/${user.id}`)
-            .query({ token: token.id })
+            .set('Authorization', `bearer ${token.id}`)
             .send()
-            .expect(403, 'You do not have contact with this user.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(403, errors.errorForbidden);
     });
 
-    test('[403] Missing token', async () => {
-        const token = await createTestToken({
-            firstName: 'Test',
-            lastName: 'User',
-            password: 'password',
-        });
-
+    test('[400] Request does not include token', async () => {
         await supertest(app)
-            .get(`/api/auth/${token.ownerID}`)
-            .query()
+            .get(`/api/auth/randomString`)
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[511] Token was not found', async () => {
-        const token = await createTestToken({
-            firstName: 'Test',
-            lastName: 'User',
-            password: 'password',
-        });
-
+    test('[401] Token was not found', async () => {
         await supertest(app)
-            .get(`/api/auth/${token.ownerID}`)
-            .query({ token: 'randomString' })
+            .get('/api/auth/randomString')
+            .set('Authorization', 'bearer randomString')
             .send()
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

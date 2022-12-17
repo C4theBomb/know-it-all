@@ -2,9 +2,11 @@ const supertest = require('supertest');
 
 var { sequelize } = require('../../db/models/index');
 const app = require('../../app');
-const { createTestToken, createTestUser } = require('../utils');
 
-describe('UpdateUserDetails', function () {
+const { createTestToken, createTestUser } = require('../utils');
+const errors = require('../../config/error.json');
+
+describe('Update User Details', function () {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -23,59 +25,48 @@ describe('UpdateUserDetails', function () {
 
         await supertest(app)
             .patch('/api/auth/update')
+            .set('Authorization', `bearer ${token.id}`)
             .send({
                 firstName: 'New',
                 lastName: 'User',
                 email: 'new.user@test.com',
-                token: token.id,
             })
-            .expect(200)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
-            .then(async (response) => {
-                expect(response.body).toEqual(
-                    expect.objectContaining({
-                        firstName: 'New',
-                        lastName: 'User',
-                        email: 'new.user@test.com',
-                    })
-                );
-            });
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
-    test('[500] Pre-existing user with email', async () => {
+    test('[409] Pre-existing user with email', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
             password: 'password',
         });
         await createTestUser('New', 'User', 'password');
+
         await supertest(app)
             .patch('/api/auth/update')
+            .set('Authorization', `bearer ${token.id}`)
             .send({
                 email: 'new.user@test.com',
-                token: token.id,
             })
-            .expect(500, 'A user with that email already exists.')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(409, errors.errorDuplicateName);
     });
 
-    test('[403] Missing token', async () => {
+    test('[400] Request does not include token', async () => {
         await supertest(app)
             .patch('/api/auth/update')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
             .patch('/api/auth/update')
-            .send({ token: 'randomString' })
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });

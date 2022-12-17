@@ -1,8 +1,10 @@
 const supertest = require('supertest');
 
-var { sequelize, Token } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
+
 const { createTestToken } = require('../utils');
+const errors = require('../../config/error.json');
 
 describe('Logout', function () {
     beforeEach(async () => {
@@ -23,27 +25,26 @@ describe('Logout', function () {
 
         await supertest(app)
             .post('/api/auth/logout')
-            .send({ token: token.id })
-            .expect(200, 'User logged out')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .set('Authorization', `bearer ${token.id}`)
+            .send()
+            .expect('Content-Type', /text/)
+            .expect(200, 'OK');
     });
 
-    test('[403] Missing token', async () => {
+    test('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/auth/logout')
             .send()
-            .expect(403, 'Unauthorized user')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .expect('Content-Type', /json/)
+            .expect(400, errors.errorIncomplete);
     });
 
-    test('[511] Token was not found', async () => {
+    test('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/auth/logout')
-            .send({ token: 'randomString' })
-            .expect(511, 'Session expired')
-            .set('Accept', 'text/html')
-            .expect('Content-Type', /text/);
+            .set('Authorization', 'bearer randomString')
+            .send()
+            .expect('Content-Type', /json/)
+            .expect(401, errors.errorUnauthed);
     });
 });
