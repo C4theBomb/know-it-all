@@ -19,7 +19,7 @@ jobs:
             - name: Write .env to build
               env:
                   DOTENV: '${{ secrets.DOTENV }}'
-              run: echo "$DOTENV" >> .env
+              run: echo "$DOTENV" >> ./server/.env
             - name: Use Node.js 16.x
               uses: actions/setup-node@v2
               with:
