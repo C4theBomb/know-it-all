@@ -16,7 +16,7 @@ jobs:
 
         steps:
             - uses: actions/checkout@v2
-            - name: Write .env to build
+            - name: Write ./server/.env to build
               env:
                   DOTENV: '${{ secrets.DOTENV }}'
               run: echo "$DOTENV" >> ./server/.env
@@ -26,7 +26,5 @@ jobs:
                   node-version: 16.x
             - name: Install dependencies
               run: npm ci
-            - name: Distribute environment file
-              run: npm run env
             - name: Test build
               run: npm run test
