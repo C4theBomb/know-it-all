@@ -5,7 +5,7 @@ name: Create release draft
 
 on:
     push:
-        branches: [development]
+        branches: [dev]
     workflow_dispatch:
 
 jobs:
