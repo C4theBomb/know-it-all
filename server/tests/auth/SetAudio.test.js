@@ -5,14 +5,10 @@ const app = require('../../app');
 
 const errors = require('../../config/error.json');
 
-describe('Set Audio', function () {
+describe('Set Audio', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[400] Request does not include token', async () => {

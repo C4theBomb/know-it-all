@@ -1,8 +1,8 @@
 const { Organization } = require('../../db/models/index');
 
-async function GetOrg(req, res, next) {
-    const user = req.user;
-    const orgID = req.params.orgID;
+async function GetOrg(req, res) {
+    const { user } = req;
+    const { orgID } = req.params;
 
     // Retrieve organization, owner, and members
     const org = await Organization.findByPk(orgID, {
@@ -27,7 +27,7 @@ async function GetOrg(req, res, next) {
     return res.send({
         org,
         memberCount: org.member.length,
-        owner: org.ownerID == user.id,
+        owner: org.ownerID === user.id,
     });
 }
 

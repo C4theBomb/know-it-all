@@ -3,17 +3,13 @@ const supertest = require('supertest');
 const { sequelize, Organization } = require('../../db/models/index');
 const app = require('../../app');
 
-const { createTestUser, createTestOrg } = require('../utils');
+const { createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Delete Org', function () {
+describe('Delete Org', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Organization deleted', async () => {
@@ -43,7 +39,7 @@ describe('Delete Org', function () {
         const token = await user.createToken();
 
         await supertest(app)
-            .delete(`/api/org/randomString`)
+            .delete('/api/org/randomString')
             .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect('Content-Type', /text/)

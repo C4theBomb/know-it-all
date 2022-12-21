@@ -3,9 +3,9 @@ const forge = require('node-forge');
 const { ResetRequest } = require('../../db/models/index');
 const errors = require('../../config/error.json');
 
-async function ResetPassword(req, res, next) {
+async function ResetPassword(req, res) {
     const reqID = req.params.id;
-    const password = req.body.password;
+    const { password } = req.body;
 
     // Verify that the form contains a new password
     if (!password) {

@@ -3,7 +3,7 @@ const { Organization } = require('../db/models/index');
 const errors = require('../config/error.json');
 
 async function checkKnownOrg(req, res, next) {
-    const user = req.user;
+    const { user } = req;
     const orgID = req.params.orgID || req.query.orgID || req.body.orgID;
 
     // Get all organizations by the provided ID, with a list of members and owner
@@ -28,7 +28,7 @@ async function checkKnownOrg(req, res, next) {
     }
 
     // Verify that the user who submitted the request exists as an owner or member
-    if (!result.owner && result.member.length == 0) {
+    if (!result.owner && result.member.length === 0) {
         return res.status(403).send(errors.Forbidden);
     }
 

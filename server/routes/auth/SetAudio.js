@@ -1,7 +1,7 @@
 const fs = require('fs');
 
-function SetAudio(req, res, next) {
-    const user = req.user;
+function SetAudio(req, res) {
+    const { user } = req;
 
     const oldLocation = req.files.audioFile.filepath;
 
@@ -11,9 +11,7 @@ function SetAudio(req, res, next) {
     const newLocation = `${uploadDir}/${fileName}`;
 
     // Move file from public to folder
-    fs.rename(oldLocation, newLocation, (err) => {
-        if (err) console.log(err);
-    });
+    fs.rename(oldLocation, newLocation);
 
     res.sendStatus(200);
 }

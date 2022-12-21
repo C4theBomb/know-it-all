@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.addColumn('reset_request', 'ownerID', {
@@ -13,7 +11,7 @@ module.exports = {
         });
     },
 
-    async down(queryInterface, Sequelize) {
+    async down(queryInterface) {
         await queryInterface.removeColumn('reset_request', 'ownerID');
     },
 };

@@ -6,14 +6,10 @@ const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Register', function () {
+describe('Register', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] User successfully created', async () => {
@@ -49,7 +45,7 @@ describe('Register', function () {
         const password = 'password';
 
         await supertest(app)
-            .post(`/api/auth/register`)
+            .post('/api/auth/register')
             .send({ ...user, password, orgID: org.id })
             .expect('Content-Type', /text/)
             .expect(200, 'OK');
@@ -72,7 +68,7 @@ describe('Register', function () {
         const password = 'password';
 
         await supertest(app)
-            .post(`/api/auth/register`)
+            .post('/api/auth/register')
             .send({ ...user, password, orgID: 'randomString' })
             .expect('Content-Type', /text/)
             .expect(200, 'OK');

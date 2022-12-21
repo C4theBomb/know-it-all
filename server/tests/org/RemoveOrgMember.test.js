@@ -6,14 +6,10 @@ const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Remove Org Member', function () {
+describe('Remove Org Member', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] User removed from organization', async () => {
@@ -38,7 +34,7 @@ describe('Remove Org Member', function () {
                 const data = await org.getMember();
 
                 expect(data).toEqual(
-                    expect.not.arrayContaining([expect.objectContaining(user.dataValues)])
+                    expect.not.arrayContaining([expect.objectContaining(user.dataValues)]),
                 );
             });
     });
@@ -54,7 +50,7 @@ describe('Remove Org Member', function () {
         await org.addMember(newUser.id);
 
         await supertest(app)
-            .post(`/api/org/randomString/remove`)
+            .post('/api/org/randomString/remove')
             .set('Authorization', `bearer ${token.id}`)
             .send({
                 doomedUsers: [newUser.id],

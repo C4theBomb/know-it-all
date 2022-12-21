@@ -3,7 +3,7 @@ const { Op } = require('sequelize');
 const { User } = require('../../db/models/index');
 const errors = require('../../config/error.json');
 
-async function UpdateUserDetails(req, res, next) {
+async function UpdateUserDetails(req, res) {
     const { token, ...body } = req.body;
 
     // Verify that the email is not a duplicate, if it exists

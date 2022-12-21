@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
             },
         },
-        { sequelize, tableName: 'user' }
+        { sequelize, tableName: 'user' },
     );
 
     return User;

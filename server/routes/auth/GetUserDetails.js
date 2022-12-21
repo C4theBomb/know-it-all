@@ -1,7 +1,7 @@
 const { User } = require('../../db/models/index');
 
-async function GetUserDetails(req, res, next) {
-    const userID = req.params.userID;
+async function GetUserDetails(req, res) {
+    const { userID } = req.params;
 
     // Retrieve user while excluding sensitive information
     const result = await User.findOne({

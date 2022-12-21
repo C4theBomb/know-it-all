@@ -3,8 +3,8 @@ const forge = require('node-forge');
 const { User, Organization } = require('../../db/models/index');
 const errors = require('../../config/error.json');
 
-async function Register(req, res, next) {
-    const body = req.body;
+async function Register(req, res) {
+    const { body } = req;
 
     // Verify that the object body contains all SQL required fields
     if (!body.firstName || !body.lastName || !body.email || !body.password) {
@@ -32,7 +32,7 @@ async function Register(req, res, next) {
 
             if (!org) {
                 // Create user regularly if organization is not found
-                const result = await User.create({
+                await User.create({
                     ...body,
                     password: passwordHash,
                 });
@@ -49,8 +49,6 @@ async function Register(req, res, next) {
 
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e);
-
             return res.status(500).send(errors.Generic);
         }
     } else {
@@ -63,8 +61,6 @@ async function Register(req, res, next) {
 
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e);
-
             return res.status(500).send(errors.Generic);
         }
     }

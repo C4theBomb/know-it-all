@@ -6,14 +6,10 @@ const app = require('../../app');
 const { createTestResetRequest } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Reset Password', function () {
+describe('Reset Password', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Successful reset password', async () => {
@@ -48,7 +44,7 @@ describe('Reset Password', function () {
 
     test('[500] Reset request does not exist', async () => {
         await supertest(app)
-            .patch(`/api/auth/reset/randomString`)
+            .patch('/api/auth/reset/randomString')
             .send({
                 password: 'newPassword',
             })

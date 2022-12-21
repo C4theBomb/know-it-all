@@ -1,19 +1,15 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 
 const { createTestToken, createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Update User Details', function () {
+describe('Update User Details', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Successfully changed user details', async () => {

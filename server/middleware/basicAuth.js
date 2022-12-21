@@ -15,7 +15,7 @@ async function basicAuth(req, res, next) {
 
     // Make sure that a user exists with that email
     const result = await User.findOne({
-        where: { email: email },
+        where: { email },
     });
     if (!result) {
         return res.status(404).send(errors.NotFound);
@@ -24,7 +24,7 @@ async function basicAuth(req, res, next) {
     // Hash the password and verify that the user hash is identical
     const hashedPassword = forge.md.sha512.create().update(password).digest().toHex();
 
-    if (hashedPassword != result.password) {
+    if (hashedPassword !== result.password) {
         return res.status(403).send(errors.Forbidden);
     }
 

@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: true,
             },
         },
-        { sequelize, tableName: 'token' }
+        { sequelize, tableName: 'token' },
     );
 
     return Token;

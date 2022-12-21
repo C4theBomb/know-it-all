@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
                 defaultValue: DataTypes.UUIDV4,
             },
         },
-        { sequelize, tableName: 'reset_request' }
+        { sequelize, tableName: 'reset_request' },
     );
 
     return ResetRequest;

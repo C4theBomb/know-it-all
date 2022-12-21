@@ -6,14 +6,10 @@ const app = require('../../app');
 const { createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Update Org Details', function () {
+describe('Update Org Details', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Successfully changed org name', async () => {
@@ -39,6 +35,7 @@ describe('Update Org Details', function () {
 
         await supertest(app)
             .patch('/api/org/update')
+            .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect('Content-Type', /json/)
             .expect(400, errors.Incomplete);

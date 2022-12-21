@@ -6,23 +6,19 @@ const app = require('../../app');
 const { createTestOrg, createTestUser, createTestToken } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Add Org Member', function () {
+describe('Add Org Member', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] User added to organization', async () => {
-        var org = await createTestOrg('Org', {
+        const org = await createTestOrg('Org', {
             firstName: 'New',
             lastName: 'User',
             password: 'password',
         });
-        var user = await createTestUser('Test', 'User', 'password');
+        const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
         await supertest(app)
@@ -41,7 +37,7 @@ describe('Add Org Member', function () {
         });
 
         await supertest(app)
-            .post(`/api/org/randomString/add`)
+            .post('/api/org/randomString/add')
             .set('Authorization', `bearer ${token.id}`)
             .send()
             .expect('Content-Type', /json/)

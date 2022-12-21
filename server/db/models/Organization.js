@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
             },
         },
-        { sequelize, tableName: 'organization' }
+        { sequelize, tableName: 'organization' },
     );
 
     return Organization;

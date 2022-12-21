@@ -15,7 +15,7 @@ async function tokenAuth(req, res, next) {
     const date = new Date();
     if (!result) {
         return res.status(401).send(errors.Unauthenticated);
-    } else if (result.expires && date.setDate(date.getDate + 1) > result.createdAt) {
+    } if (result.expires && date.setDate(date.getDate + 1) > result.createdAt) {
         await Token.findOneAndDelete({ token });
         return res.status(401).send(errors.Unauthenticated);
     }

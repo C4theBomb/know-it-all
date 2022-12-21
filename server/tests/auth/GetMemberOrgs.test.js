@@ -6,18 +6,14 @@ const app = require('../../app');
 const { createTestOrg, createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Get Member Orgs', function () {
+describe('Get Member Orgs', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Retrieved joined orgs', async () => {
-        var org = await createTestOrg('Test Org', {
+        const org = await createTestOrg('Test Org', {
             firstName: 'Test',
             lastName: 'User',
             password: 'password',
@@ -40,7 +36,7 @@ describe('Get Member Orgs', function () {
                 };
 
                 expect(response.body.orgs).toEqual(
-                    expect.arrayContaining([expect.objectContaining(data)])
+                    expect.arrayContaining([expect.objectContaining(data)]),
                 );
             });
     });

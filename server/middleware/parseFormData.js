@@ -2,7 +2,7 @@ const formidable = require('formidable');
 
 function parseFormData(req, res, next) {
     // Parse multipart form data into formidable object and set static file save location
-    var form = formidable();
+    const form = formidable();
     form.uploadDir = `${__dirname}/../public/`;
 
     form.parse(req, (err, fields, files) => {

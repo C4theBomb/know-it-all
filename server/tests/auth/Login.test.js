@@ -6,14 +6,10 @@ const app = require('../../app');
 const { createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Login', function () {
+describe('Login', () => {
     beforeEach(async () => {
-        try {
-            await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
-        } catch (error) {
-            console.log('[ERROR]: Database connection failed');
-        }
+        await sequelize.authenticate();
+        await sequelize.sync({ force: 'true' });
     });
 
     test('[200] Successful login', async () => {

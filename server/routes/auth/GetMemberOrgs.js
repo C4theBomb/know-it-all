@@ -1,6 +1,6 @@
-async function GetMemberOrgs(req, res, next) {
+async function GetMemberOrgs(req, res) {
     // Retrieve all of the organizations the user is a part of
-    const user = req.user;
+    const { user } = req;
 
     const result = await user.getMemberOrg({
         attributes: { exclude: ['updatedAt'] },

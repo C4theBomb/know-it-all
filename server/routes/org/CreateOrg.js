@@ -1,8 +1,8 @@
 const errors = require('../../config/error.json');
 
-async function CreateOrg(req, res, next) {
-    const user = req.user;
-    const orgName = req.body.orgName;
+async function CreateOrg(req, res) {
+    const { user } = req;
+    const { orgName } = req.body;
 
     // Error if the form does not contain an organization name
     if (!orgName) {
