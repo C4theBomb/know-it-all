@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
-import { Dashboard } from '../controllers';
+import { OrganizationDashboard } from '../controllers';
 
 function OrgDashboard() {
     const navigate = useNavigate();
@@ -13,14 +13,14 @@ function OrgDashboard() {
         if (!Cookies.get('token')) {
             navigate('/login');
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <>
             <Helmet>
                 <title>Dashboard | KnowItAll</title>
             </Helmet>
-            <Dashboard />
+            <OrganizationDashboard />
         </>
     );
 }

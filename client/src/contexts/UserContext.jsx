@@ -26,7 +26,7 @@ export default function UserProvider({ children }) {
         };
 
         if (userData.loading) loadUserData();
-    }, [userData.loading]);
+    }, [userData.loading, navigate]);
 
     return (
         <UserContext.Provider

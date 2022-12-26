@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import MicRecorder from 'mic-recorder-to-mp3';
 

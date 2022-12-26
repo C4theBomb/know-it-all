@@ -11,7 +11,7 @@ import RecoverForm from './RecoverForm';
 import ResetForm from './ResetForm';
 import OrganizationList from './OrganizationList';
 import MemberUnit from './MemberUnit';
-import Dashboard from './Dashboard';
+import OrganizationDashboard from './OrganizationDashboard';
 import UpdateOrganizationForm from './UpdateOrganizationForm';
 
 export {
@@ -28,6 +28,6 @@ export {
     ResetForm,
     OrganizationList,
     MemberUnit,
-    Dashboard,
+    OrganizationDashboard,
     UpdateOrganizationForm,
 };

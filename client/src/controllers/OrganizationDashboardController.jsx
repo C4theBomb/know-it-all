@@ -5,7 +5,7 @@ import { Dashboard } from '../components';
 import { getAudio } from '../services/userServices';
 import { getOrg, deleteOrg, removeMember } from '../services/orgServices';
 
-function DashboardController() {
+function OrganizationDashboardController() {
     const { orgID } = useParams();
     const navigate = useNavigate();
 
@@ -103,4 +103,4 @@ function DashboardController() {
     );
 }
 
-export default DashboardController;
+export default OrganizationDashboardController;

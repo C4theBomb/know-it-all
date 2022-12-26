@@ -8,7 +8,7 @@ import RecoverForm from './RecoverFormController';
 import ResetForm from './ResetFormController';
 import OwnedOrgsDashboard from './OwnedOrgsDashboard';
 import MemberOrgsDashboard from './MemberOrgsDashboard';
-import Dashboard from './DashboardController';
+import OrganizationDashboard from './OrganizationDashboardController';
 import UpdateOrganizationForm from './UpdateOrganizationFormController';
 
 export {
@@ -22,6 +22,6 @@ export {
     ResetForm,
     OwnedOrgsDashboard,
     MemberOrgsDashboard,
-    Dashboard,
+    OrganizationDashboard,
     UpdateOrganizationForm,
 };

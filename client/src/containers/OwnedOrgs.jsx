@@ -13,7 +13,7 @@ function OwnedOrgs() {
         if (!Cookies.get('token')) {
             navigate('/login');
         }
-    }, []);
+    }, [navigate]);
 
     return (
         <>

@@ -13,7 +13,8 @@
         "test": "npm run test -w server",
         "migrate": "npm run migrate -w server",
         "migrate:undo": "npm run migrate:undo -w server",
-        "predist": "npm ci && npm run build"
+        "predist": "npm ci && npm run build",
+        "lint": "npx eslint '**'"
     },
     "author": "C4 Patino",
     "license": "ISC",
