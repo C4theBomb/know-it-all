@@ -1,18 +1,12 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
-const debug = require('debug')('server:server');
 const http = require('http');
 require('dotenv').config();
 
 const app = require('../app');
-const { sequelize } = require('../db/models/index');
+const logger = require('../utils/logger');
 
-/**
- * Normalize a port into a number, string, or false.
- */
+const { sequelize } = require('../db/models/index');
 
 function normalizePort(val) {
     const port = parseInt(val, 10);
@@ -56,16 +50,16 @@ function onError(error) {
 
     // handle specific listen errors with friendly messages
     switch (error.code) {
-    case 'EACCES':
-        console.error(`${bind} requires elevated privileges`);
-        process.exit(1);
-        break;
-    case 'EADDRINUSE':
-        console.error(`${bind} is already in use`);
-        process.exit(1);
-        break;
-    default:
-        throw error;
+        case 'EACCES':
+            logger.error(`${bind} requires elevated privileges`);
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            logger.error(`${bind} is already in use`);
+            process.exit(1);
+            break;
+        default:
+            throw error;
     }
 }
 
@@ -76,19 +70,20 @@ function onError(error) {
 async function onListening() {
     const addr = server.address();
     const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-    debug(`Listening on ${bind}`);
+    logger.info(`Listening on ${bind}`);
 }
 
 async function connectDatabase() {
     try {
         await sequelize.authenticate();
-        console.log(
-            `[INFO]: Database connection to '${process.env.NODE_ENV}' has been established successfully.`,
+        logger.info(
+            `Database connection to '${process.env.NODE_ENV}' has been established successfully.`
         );
     } catch (error) {
-        console.log('[ERROR]: Unable to connect to the database;', error);
+        logger.error('Unable to connect to the database;', error);
     }
 }
+
 connectDatabase().then(() => {
     /**
      * Listen on provided port, on all network interfaces.

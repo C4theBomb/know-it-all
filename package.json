@@ -14,7 +14,10 @@
         "migrate": "npm run migrate -w server",
         "migrate:undo": "npm run migrate:undo -w server",
         "predist": "npm ci && npm run build",
-        "lint": "npx eslint '**'"
+        "eslint": "npx eslint",
+        "eslint:fix": "npx eslint --fix",
+        "eslint:all": "npx eslint '**'",
+        "eslint:all:fix": "npx eslint '**' --fix"
     },
     "author": "C4 Patino",
     "license": "ISC",

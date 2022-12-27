@@ -21,7 +21,7 @@ async function login({ email, password, remember }) {
 
         return data;
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error;
     }
 }
@@ -32,7 +32,7 @@ async function register(data) {
     try {
         await instance.post('/register', data);
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error;
     }
 }
@@ -44,7 +44,7 @@ async function logout() {
     try {
         await instance.post('/logout');
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error;
     }
 }
@@ -59,7 +59,7 @@ async function remember() {
 
             return data;
         } catch (error) {
-            console.log(error.response.data);
+            console.error(error.response.data);
             return error.response.data;
         }
     }
@@ -73,7 +73,7 @@ async function getUser(userID) {
 
         return data.user;
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -84,7 +84,7 @@ async function requestReset(data) {
     try {
         await instance.post(`/reset`, data);
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -95,7 +95,7 @@ async function resetPassword(id, data) {
     try {
         await instance.patch(`/reset/${id}`, data);
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -108,7 +108,7 @@ async function setAudio(data) {
     try {
         await instance.post('/audio', data);
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -131,7 +131,7 @@ async function updateUserDetails(data) {
     try {
         await instance.post(`/update`, data);
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -145,7 +145,7 @@ async function getMemberOrgs() {
 
         return data;
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
@@ -159,7 +159,7 @@ async function getOwnedOrgs() {
 
         return data;
     } catch (error) {
-        console.log(error.response.data);
+        console.error(error.response.data);
         return error.response.data;
     }
 }
