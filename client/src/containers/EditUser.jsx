@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 
 import { EditUserForm, RecordMp3 } from '../controllers';
-import { Form } from '../components';
 
 function Login() {
     const navigate = useNavigate();
@@ -20,10 +19,8 @@ function Login() {
             <Helmet>
                 <title>Update Account Details | KnowItAll</title>
             </Helmet>
-            <Form text='Update Account Details'>
-                <EditUserForm />
-                <RecordMp3 />
-            </Form>
+            <EditUserForm />
+            <RecordMp3 />
         </>
     );
 }
