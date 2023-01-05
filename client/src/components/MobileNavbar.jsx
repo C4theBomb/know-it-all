@@ -23,7 +23,7 @@ import { Link } from 'react-router-dom';
 
 export default function MobileNavbar({ logout, userData, open, setOpen, mode, toggleMode }) {
     function ControlButtons() {
-        return userData.username ? (
+        return userData?.email ? (
             <ListItem>
                 <ListItemButton color='inherit' component={Link} to='/login' onClick={logout}>
                     <ListItemIcon>

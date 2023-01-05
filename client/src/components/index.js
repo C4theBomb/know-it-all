@@ -13,6 +13,7 @@ import OrganizationList from './OrganizationList';
 import MemberUnit from './MemberUnit';
 import OrganizationDashboard from './OrganizationDashboard';
 import UpdateOrganizationForm from './UpdateOrganizationForm';
+import RegisterForm from './RegisterForm';
 
 export {
     Navbar,
@@ -30,4 +31,5 @@ export {
     MemberUnit,
     OrganizationDashboard,
     UpdateOrganizationForm,
+    RegisterForm,
 };

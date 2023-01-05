@@ -17,7 +17,8 @@
         "eslint": "npx eslint",
         "eslint:fix": "npx eslint --fix",
         "eslint:all": "npx eslint '**'",
-        "eslint:all:fix": "npx eslint '**' --fix"
+        "eslint:all:fix": "npx eslint '**' --fix",
+        "storybook": "npm run storybook -w client"
     },
     "author": "C4 Patino",
     "license": "ISC",

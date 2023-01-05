@@ -1,17 +1,7 @@
+**/public
 
-# Created by https://www.toptal.com/developers/gitignore/api/node,react,git,visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=node,react,git,visualstudiocode
-
-**/dist.tar.gz
-
-### Express ###
-**/public/
-
-### TODO ###
-TODO
-
-### Sqlite ###
-*.sqlite3
+# Created by https://www.toptal.com/developers/gitignore/api/node,react,visualstudiocode,git
+# Edit at https://www.toptal.com/developers/gitignore?templates=node,react,visualstudiocode,git
 
 ### Git ###
 # Created by git for backups. To disable backups in Git:
@@ -200,6 +190,4 @@ sketch
 .history
 .ionide
 
-# Support for Project snippet scope
-
-# End of https://www.toptal.com/developers/gitignore/api/node,react,git,visualstudiocode
+# End of https://www.toptal.com/developers/gitignore/api/node,react,visualstudiocode,git

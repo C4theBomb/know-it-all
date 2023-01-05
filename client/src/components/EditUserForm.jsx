@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
 
 import { Form } from '.';
-import { RecordMp3 } from '../controllers';
 import { FormSubmit, FormTextField } from './StyledElements';
 
 function EditUserForm({ form, error, handleSubmit, handleChange }) {
     const linkStyle = { textDecoration: 'none', color: 'inherit' };
 
     return (
-        <Form text='Update Account Details'>
+        <Form text='Update Account Details' error={error}>
             <form onSubmit={handleSubmit}>
                 <FormTextField
                     required
@@ -40,13 +39,6 @@ function EditUserForm({ form, error, handleSubmit, handleChange }) {
                     onChange={handleChange}
                     value={form.pronouns}
                 />
-                {error && (
-                    <Box textAlign='right'>
-                        <Typography variant='body2' color='secondary'>
-                            {error}
-                        </Typography>
-                    </Box>
-                )}
                 <FormSubmit color='primary' type='submit'>
                     Update Details
                 </FormSubmit>
@@ -56,7 +48,6 @@ function EditUserForm({ form, error, handleSubmit, handleChange }) {
                     </Link>
                 </FormSubmit>
             </form>
-            <RecordMp3 />
         </Form>
     );
 }

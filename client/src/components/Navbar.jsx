@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 export default function Navbar({ logout, userData, mode, toggleMode }) {
     function NavbarControls() {
-        return userData.email ? (
+        return userData?.email ? (
             <>
                 <Button color='inherit' component={Link} to='/update'>
                     Account

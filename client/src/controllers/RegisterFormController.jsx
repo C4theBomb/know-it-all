@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import RegisterForm from '../components/RegisterForm';
+import { RegisterForm } from '../components';
 import { useError } from '../contexts';
 import { register } from '../services/userServices';
 
