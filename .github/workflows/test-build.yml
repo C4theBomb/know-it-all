@@ -10,7 +10,7 @@ on:
     workflow_dispatch:
 
 jobs:
-    test build:
+    test-build:
         environment: test
         runs-on: ubuntu-latest
 
@@ -28,7 +28,7 @@ jobs:
               run: npm ci
             - name: Test build
               run: npm run test
-    run eslint:
+    run-eslint:
         environment: test
         runs-on: ubuntu-latest
 
