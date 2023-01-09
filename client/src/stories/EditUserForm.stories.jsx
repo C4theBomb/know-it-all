@@ -1,23 +1,38 @@
-import { EditUserForm } from '../components';
+import { rest } from 'msw';
+
+import { ErrorProvider, UserContext } from '../contexts';
+import { EditUserForm } from '../controllers';
 
 export default {
     title: 'Forms/EditUserForm',
     component: EditUserForm,
-    args: {
-        form: {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-        },
-        error: '',
-    },
-    argTypes: {
-        handleSubmit: { action: 'submit' },
-        handleChange: { action: 'inputChange' },
-    },
 };
 
-const Template = (args) => <EditUserForm {...args} />;
+const Template = (args) => (
+    <UserContext.Provider
+        value={{
+            userData: args,
+        }}
+    >
+        <ErrorProvider>
+            <EditUserForm />
+        </ErrorProvider>
+    </UserContext.Provider>
+);
 
-export const Primary = Template.bind({});
+export const WithIntialData = Template.bind({});
+WithIntialData.args = {
+    firstName: 'Test',
+    lastName: 'User',
+    email: 'test.user@test.com',
+    pronouns: 'they/them',
+};
+WithIntialData.parameters = {
+    msw: {
+        handlers: [
+            rest.post(`${process.env.REACT_APP_API_ROOT}/auth/update`, (req, res, ctx) => {
+                return res(ctx.json({}));
+            }),
+        ],
+    },
+};

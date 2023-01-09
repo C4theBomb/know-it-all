@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Dashboard } from '../components';
+import { OrganizationDashboard } from '../components';
 import { getAudio } from '../services/userServices';
 import { getOrg, deleteOrg, removeMember } from '../services/orgServices';
 
@@ -86,7 +86,7 @@ function OrganizationDashboardController() {
     }
 
     return (
-        <Dashboard
+        <OrganizationDashboard
             org={org}
             rows={rows}
             open={open}

@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from 'react';
 
-const ErrorContext = createContext();
+export const ErrorContext = createContext();
 
 export default function ModeProvider({ children }) {
     const [error, setError] = useState('');

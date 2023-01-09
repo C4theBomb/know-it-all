@@ -29,7 +29,7 @@ function EditUserFormController() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const { error } = await updateUserDetails(form);
+        const error = await updateUserDetails(form);
 
         if (error) {
             setError(() => error);

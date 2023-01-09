@@ -5,23 +5,18 @@ import { Outlet } from 'react-router-dom';
 
 import { useMode } from '../contexts';
 import { Navbar } from '../controllers';
+import { lightTheme, darkTheme } from '../themes';
+
+const THEMES = {
+    light: lightTheme,
+    dark: darkTheme,
+};
 
 function Layout() {
     const { mode } = useMode();
 
-    const theme = createTheme({
-        palette: { mode },
-        breakpoints: {
-            values: {
-                xs: 0,
-                sm: 768,
-                md: 1024,
-            },
-        },
-    });
-
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={THEMES[mode]}>
             <CssBaseline enableColorScheme />
             <Helmet>
                 <title>KnowItAll</title>

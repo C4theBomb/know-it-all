@@ -1,22 +1,38 @@
-import { Navbar } from '../components';
+import { rest } from 'msw';
+
+import { ModeProvider, UserContext } from '../contexts';
+import { Navbar } from '../controllers';
 
 export default {
-    title: 'Layout/Navbar/Navbar',
+    title: 'Layout/Navbar',
     component: Navbar,
-    argTypes: {
-        mode: { options: ['light', 'dark'], control: { type: 'radio' } },
-        logout: { action: 'logout' },
-        toggleMode: { action: 'toggleMode' },
+    parameters: {
+        msw: {
+            handlers: [
+                rest.post(`${process.env.REACT_APP_API_ROOT}/auth/logout`, (req, res, ctx) => {
+                    return res(ctx.json({}));
+                }),
+            ],
+        },
     },
 };
 
-const Template = (args) => <Navbar {...args} />;
+const Template = (args) => (
+    <UserContext.Provider
+        value={{
+            setUserData: () => {},
+            userData: args,
+        }}
+    >
+        <ModeProvider>
+            <Navbar />
+        </ModeProvider>
+    </UserContext.Provider>
+);
 
 export const LoggedIn = Template.bind({});
 LoggedIn.args = {
-    userData: {
-        username: 'User 1',
-    },
+    email: 'test.user@test.com',
 };
 
 export const LoggedOut = Template.bind({});
