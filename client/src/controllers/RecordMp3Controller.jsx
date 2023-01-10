@@ -21,6 +21,10 @@ function RecordMp3Controller() {
     useEffect(() => {
         if (!userData.loading) {
             getAudio(userData.id).then((data) => {
+                if (!data) {
+                    return;
+                }
+
                 setUploadedFile(() => {
                     // Retrieve audio file of user if exists
                     return new File([data], 'userAudio.mp3', {
@@ -33,6 +37,10 @@ function RecordMp3Controller() {
     }, [userData]);
 
     function togglePlay() {
+        if (!uploadedFile) {
+            return;
+        }
+
         if (audioRecording && !audioRecording.ended) {
             // Reset audio and reset if track is playing
             audioRecording.pause();

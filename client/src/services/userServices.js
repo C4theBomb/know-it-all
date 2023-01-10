@@ -114,14 +114,18 @@ async function setAudio(data) {
 }
 
 async function getAudio(userID) {
-    const response = await axios.get(
-        `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${userID}.mp3`,
-        {
-            responseType: 'blob',
-        }
-    );
+    try {
+        const response = await axios.get(
+            `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${userID}.mp3`,
+            {
+                responseType: 'blob',
+            }
+        );
 
-    return response.data;
+        return response.data;
+    } catch (error) {
+        return;
+    }
 }
 
 async function updateUserDetails(data) {

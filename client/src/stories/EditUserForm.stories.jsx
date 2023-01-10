@@ -4,7 +4,7 @@ import { ErrorProvider, UserContext } from '../contexts';
 import { EditUserForm } from '../controllers';
 
 export default {
-    title: 'Forms/EditUserForm',
+    title: 'Forms/EditUser',
     component: EditUserForm,
 };
 
@@ -31,7 +31,7 @@ WithIntialData.parameters = {
     msw: {
         handlers: [
             rest.post(`${process.env.REACT_APP_API_ROOT}/auth/update`, (req, res, ctx) => {
-                return res(ctx.json({}));
+                return res(ctx.status(200));
             }),
         ],
     },

@@ -1,18 +1,16 @@
 import { OrgUnit } from '../components';
 
 export default {
-    title: 'OrgUnit',
+    title: 'Components/OrgUnit',
     component: OrgUnit,
 };
 
-const Template = (args) => <OrgUnit {...args} />;
+const Template = (args) => <OrgUnit org={args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-    org: {
-        id: 'fcfce355-7877-4a7f-a762-33ead250daa2',
-        name: 'Test Org',
-        memberCount: 42,
-        createdAt: 1672202132563,
-    },
+    id: 'fcfce355-7877-4a7f-a762-33ead250daa2',
+    name: 'Test Org',
+    memberCount: 42,
+    createdAt: 1672202132563,
 };
