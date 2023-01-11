@@ -21,9 +21,12 @@ function OrganizationList({ orgs }) {
             <Typography variant='h6'>Organizations</Typography>
             <hr />
             <Box sx={{ overflowY: 'auto' }}>
-                {orgs.map((org, index) => (
-                    <OrgUnit org={org} key={index} />
-                ))}
+                {orgs.length === 0 ? (
+                    <Typography variant='body1'>Nothing to see here</Typography>
+                ) : (
+                    orgs.map((org, index) => <OrgUnit org={org} key={index} />)
+                )}
+                {}
             </Box>
         </Paper>
     );
