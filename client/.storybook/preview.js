@@ -5,6 +5,7 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import '@storybook/addon-console';
 import { initialize, mswDecorator } from 'msw-storybook-addon';
+import { cookieDecorator } from 'storybook-addon-cookie';
 
 import { darkTheme, lightTheme } from '../src/themes';
 
@@ -96,4 +97,4 @@ export const withBrowserRouter = (Story) => {
 
 initialize();
 
-export const decorators = [mswDecorator, withBrowserRouter, withMuiTheme];
+export const decorators = [mswDecorator, cookieDecorator, withBrowserRouter, withMuiTheme];

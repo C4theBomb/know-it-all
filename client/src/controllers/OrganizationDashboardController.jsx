@@ -23,7 +23,7 @@ function OrganizationDashboardController() {
     });
     const [rows, setRows] = useState([]);
     const [status, setStatus] = useState(true);
-    const [selection, setSelection] = useState(null);
+    const [selection, setSelection] = useState([]);
     const [open, setOpen] = useState(false);
 
     useEffect(() => {

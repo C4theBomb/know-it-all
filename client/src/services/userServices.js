@@ -159,9 +159,9 @@ async function getOwnedOrgs() {
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
     try {
-        const { data } = await instance.get(`/orgs`);
+        const res = await instance.get(`/orgs`);
 
-        return data;
+        return res.data;
     } catch (error) {
         console.error(error.response.data);
         return error.response.data;

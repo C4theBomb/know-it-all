@@ -57,7 +57,9 @@ function MainPageController() {
     async function joinOrg(e) {
         e.preventDefault();
 
-        await addMember.then(retrieveMemberOrgs).catch((e) => console.log(e));
+        await addMember(form.id)
+            .then(retrieveMemberOrgs)
+            .catch((e) => console.log(e));
     }
 
     return (

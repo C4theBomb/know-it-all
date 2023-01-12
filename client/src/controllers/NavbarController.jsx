@@ -17,7 +17,6 @@ export default function NavbarController() {
     const toggleOpen = () => setOpen((initial) => !initial);
 
     const toggleMode = () => {
-        console.log('Changed mode');
         setMode(() => (mode === 'light' ? 'dark' : 'light'));
     };
 
