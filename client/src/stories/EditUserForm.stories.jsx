@@ -36,3 +36,20 @@ WithIntialData.parameters = {
         ],
     },
 };
+
+export const WithoutInitialData = Template.bind({});
+WithoutInitialData.args = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    pronouns: '',
+};
+WithoutInitialData.parameters = {
+    msw: {
+        handlers: [
+            rest.post(`${process.env.REACT_APP_API_ROOT}/auth/update`, (req, res, ctx) => {
+                return res(ctx.status(200));
+            }),
+        ],
+    },
+};

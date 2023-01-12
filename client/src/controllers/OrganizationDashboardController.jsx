@@ -38,7 +38,7 @@ function OrganizationDashboardController() {
                     setStatus(() => res.owner);
                 })
                 .catch((e) => {
-                    console.log(e);
+                    console.error(e.response.data.error);
                     navigate('/');
                 });
         }
@@ -51,7 +51,12 @@ function OrganizationDashboardController() {
     }
 
     async function handleDelete() {
-        await deleteOrg(orgID).then(navigate('/'));
+        await deleteOrg(orgID)
+            .then(navigate('/'))
+            .catch((e) => {
+                console.error(e.response.data.error);
+                navigate('/');
+            });
     }
 
     function copyID() {
@@ -67,22 +72,36 @@ function OrganizationDashboardController() {
     async function removeSelected() {
         const doomedUserIDs = selection.map((row) => row.id);
 
-        await removeMember(orgID, doomedUserIDs);
+        try {
+            await removeMember(orgID, doomedUserIDs);
+        } catch (error) {
+            const message = error.response.data;
+
+            console.error(message.error);
+        }
     }
 
     async function leaveOrg() {
-        await removeMember(orgID, {}).then(navigate('/'));
+        await removeMember(orgID, {})
+            .then(navigate('/'))
+            .catch((e) => {
+                console.error(e.response.data.error);
+            });
     }
 
     async function play(id) {
-        await getAudio(id).then((res) => {
-            const uploadedFile = new File([res], 'userAudio.mp3', {
-                type: res.type,
-                lastModified: Date.now(),
+        await getAudio(id)
+            .then((res) => {
+                const uploadedFile = new File([res], 'userAudio.mp3', {
+                    type: res.type,
+                    lastModified: Date.now(),
+                });
+                const audioFile = new Audio(URL.createObjectURL(uploadedFile));
+                audioFile.play();
+            })
+            .catch((e) => {
+                console.error(e.response.data.error);
             });
-            const audioFile = new Audio(URL.createObjectURL(uploadedFile));
-            audioFile.play();
-        });
     }
 
     return (

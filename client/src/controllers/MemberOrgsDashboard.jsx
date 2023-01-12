@@ -9,9 +9,15 @@ function MemberOrgsDashboard() {
 
     function getOrgs() {
         if (Cookies.get('token')) {
-            getMemberOrgs().then((res) => {
-                setOrgs(() => res.orgs);
-            });
+            getMemberOrgs()
+                .then((res) => {
+                    setOrgs(() => res.orgs);
+                })
+                .catch((error) => {
+                    const message = error.response.data;
+
+                    console.error(message.error);
+                });
         }
     }
 

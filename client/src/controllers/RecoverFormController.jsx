@@ -20,9 +20,13 @@ function RecoverFormController() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const response = await requestReset(form);
-        if (response?.error) {
-            setError(response.error);
+
+        try {
+            await requestReset(form);
+        } catch (error) {
+            const message = error.response.data;
+
+            setError(message.error);
         }
     }
 

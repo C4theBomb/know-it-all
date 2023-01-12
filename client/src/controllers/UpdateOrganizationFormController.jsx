@@ -19,9 +19,13 @@ function UpdateOrganizationFormController() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await updateOrgDetails(orgID, { orgName: name }).then(() => {
-            navigate(`/org/${orgID}`);
-        });
+        await updateOrgDetails(orgID, { orgName: name })
+            .then(() => {
+                navigate(`/org/${orgID}`);
+            })
+            .catch((e) => {
+                console.error(e.response.data.error);
+            });
     }
 
     return (

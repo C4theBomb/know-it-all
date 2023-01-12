@@ -32,12 +32,14 @@ function RegisterFormController() {
         e.preventDefault();
 
         const { confirmPassword, ...filteredForm } = form;
-        const response = await register({ ...filteredForm, orgID: params.get('orgID') });
 
-        if (response?.error) {
-            setError(() => response.error);
-        } else {
+        try {
+            await register({ ...filteredForm, orgID: params.get('orgID') });
             navigate('/login');
+        } catch (error) {
+            const message = error.response.data;
+
+            setError(message.error);
         }
     }
 

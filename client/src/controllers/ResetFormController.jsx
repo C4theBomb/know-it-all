@@ -27,12 +27,13 @@ function ResetFormController() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const error = await resetPassword(id, { password: form.password });
-
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            await resetPassword(id, { password: form.password });
             navigate('/login');
+        } catch (error) {
+            const message = error.response.data;
+
+            setError(message.error);
         }
     }
 

@@ -36,12 +36,13 @@ function LoginFormController({ setToken }) {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const { error } = await login(form);
-
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            await login(form);
             navigate('/');
+        } catch (error) {
+            const message = error.response.data;
+
+            setError(() => message.error);
         }
     }
 

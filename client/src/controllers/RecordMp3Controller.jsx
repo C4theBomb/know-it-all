@@ -20,19 +20,23 @@ function RecordMp3Controller() {
 
     useEffect(() => {
         if (!userData.loading) {
-            getAudio(userData.id).then((data) => {
-                if (!data) {
-                    return;
-                }
+            getAudio(userData.id)
+                .then((data) => {
+                    if (!data) {
+                        return;
+                    }
 
-                setUploadedFile(() => {
-                    // Retrieve audio file of user if exists
-                    return new File([data], 'userAudio.mp3', {
-                        type: data.type,
-                        lastModified: Date.now(),
+                    setUploadedFile(() => {
+                        // Retrieve audio file of user if exists
+                        return new File([data], 'userAudio.mp3', {
+                            type: data.type,
+                            lastModified: Date.now(),
+                        });
                     });
+                })
+                .catch((e) => {
+                    console.error(e.response.data.error);
                 });
-            });
         }
     }, [userData]);
 
@@ -92,7 +96,9 @@ function RecordMp3Controller() {
         formData.append('audioFile', uploadedFile, 'userAudio.mp3');
         formData.append('token', Cookies.get('token'));
 
-        await setAudio(formData);
+        setAudio(formData).catch((e) => {
+            console.error(e.response.data.error);
+        });
     }
 
     return <RecordMp3 {...{ togglePlay, record, uploadRecord, handleSubmit }} />;

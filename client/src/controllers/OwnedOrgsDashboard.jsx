@@ -9,9 +9,13 @@ function OwnedOrgsDashboard() {
 
     function getOrgs() {
         if (Cookies.get('token')) {
-            getOwnedOrgs().then((res) => {
-                setOrgs(() => res.orgs);
-            });
+            getOwnedOrgs()
+                .then((res) => {
+                    setOrgs(() => res.orgs);
+                })
+                .catch((e) => {
+                    console.error(e.response.data.error);
+                });
         }
     }
 

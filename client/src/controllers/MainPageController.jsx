@@ -35,31 +35,52 @@ function MainPageController() {
     }
 
     async function retrieveOwnedOrgs() {
-        const { orgs } = await getOwnedOrgs().catch((e) => console.log(e));
+        try {
+            const { orgs } = await getOwnedOrgs().catch((e) => console.error(e));
+            setOwnedOrgs(() => orgs);
+        } catch (error) {
+            const message = error.response.data;
 
-        setOwnedOrgs(() => orgs);
+            console.error(message.error);
+        }
     }
 
     async function retrieveMemberOrgs() {
-        const { orgs } = await getMemberOrgs().catch((e) => console.log(e));
+        try {
+            const { orgs } = await getMemberOrgs().catch((e) => console.error(e));
+            setOrgs(() => orgs);
+        } catch (error) {
+            const message = error.response.data;
 
-        setOrgs(() => orgs);
+            console.error(message.error);
+        }
     }
 
     async function makeOrg(e) {
         e.preventDefault();
 
-        await createOrg({ orgName: form.name })
-            .then(retrieveOwnedOrgs)
-            .catch((e) => console.log(e));
+        try {
+            await createOrg({ orgName: form.name })
+                .then(retrieveOwnedOrgs)
+                .catch((e) => console.log(e));
+        } catch (error) {
+            const message = error.response.data;
+
+            console.error(message.error);
+        }
     }
 
     async function joinOrg(e) {
         e.preventDefault();
 
-        await addMember(form.id)
-            .then(retrieveMemberOrgs)
-            .catch((e) => console.log(e));
+        try {
+            await addMember(form.id);
+            await retrieveMemberOrgs();
+        } catch (error) {
+            const message = error.response.data;
+
+            console.error(message.error);
+        }
     }
 
     return (

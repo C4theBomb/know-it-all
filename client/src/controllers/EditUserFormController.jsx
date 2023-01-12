@@ -29,12 +29,14 @@ function EditUserFormController() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const error = await updateUserDetails(form);
 
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            await updateUserDetails(form);
             navigate('/');
+        } catch (error) {
+            const message = error.response.data;
+
+            setError(() => message.error);
         }
     }
 

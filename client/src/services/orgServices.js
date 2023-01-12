@@ -6,73 +6,43 @@ async function addMember(id) {
     const instance = createRequest(`/org`);
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post(`/${id}/add`);
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    await instance.post(`/${id}/add`);
 }
 
 async function createOrg(data) {
     const instance = createRequest('/org');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post('/', data);
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    await instance.post('/', data);
 }
 
 async function deleteOrg(id) {
     const instance = createRequest('/org');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.delete(`/${id}`);
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    await instance.delete(`/${id}`);
 }
 
 async function getOrg(id) {
     const instance = createRequest('/org');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        const response = await instance.get(`/${id}`);
-        return response.data;
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    const response = await instance.get(`/${id}`);
+    return response.data;
 }
 
 async function removeMember(id, doomedUsers) {
     const instance = createRequest('/org');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post(`/${id}/remove`, { doomedUsers });
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    await instance.post(`/${id}/remove`, { doomedUsers });
 }
 
 async function updateOrgDetails(id, data) {
     const instance = createRequest('/org');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.patch(`/${id}`, { data });
-    } catch (error) {
-        console.log(error.response.data);
-        return error;
-    }
+    await instance.patch(`/${id}`, { data });
 }
 
 export { addMember, createOrg, deleteOrg, getOrg, removeMember, updateOrgDetails };

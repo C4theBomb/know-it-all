@@ -10,43 +10,28 @@ async function login({ email, password, remember }) {
     const instance = createRequest('/auth');
     instance.defaults.headers.common['Authorization'] = `basic ${encoded}`;
 
-    try {
-        const { data } = await instance.post('/login', { remember });
+    const { data } = await instance.post('/login', { remember });
 
-        if (remember) {
-            Cookies.set('token', data.token, { expires: 365 });
-        } else {
-            Cookies.set('token', data.token, { expires: 1 });
-        }
-
-        return data;
-    } catch (error) {
-        console.error(error.response.data);
-        return error;
+    if (remember) {
+        Cookies.set('token', data.token, { expires: 365 });
+    } else {
+        Cookies.set('token', data.token, { expires: 1 });
     }
+
+    return data;
 }
 
 async function register(data) {
     const instance = createRequest('/auth');
 
-    try {
-        await instance.post('/register', data);
-    } catch (error) {
-        console.error(error.response.data);
-        return error;
-    }
+    await instance.post('/register', data);
 }
 
 async function logout() {
     const instance = createRequest('/auth');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post('/logout');
-    } catch (error) {
-        console.error(error.response.data);
-        return error;
-    }
+    await instance.post('/logout');
 }
 
 async function remember() {
@@ -54,50 +39,29 @@ async function remember() {
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
     if (Cookies.get('token')) {
-        try {
-            const { data } = await instance.post('/remember');
-
-            return data;
-        } catch (error) {
-            console.error(error.response.data);
-            return error.response.data;
-        }
+        const { data } = await instance.post('/remember');
+        return data;
     }
 }
 
 async function getUser(userID) {
     const instance = createRequest('/auth');
 
-    try {
-        const { data } = await instance.get(`/${userID}`);
+    const { data } = await instance.get(`/${userID}`);
 
-        return data.user;
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    return data.user;
 }
 
 async function requestReset(data) {
     const instance = createRequest('/auth');
 
-    try {
-        await instance.post(`/reset`, data);
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    await instance.post(`/reset`, data);
 }
 
 async function resetPassword(id, data) {
     const instance = createRequest('/auth');
 
-    try {
-        await instance.patch(`/reset/${id}`, data);
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    await instance.patch(`/reset/${id}`, data);
 }
 
 async function setAudio(data) {
@@ -105,67 +69,43 @@ async function setAudio(data) {
     instance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post('/audio', data);
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    await instance.post('/audio', data);
 }
 
 async function getAudio(userID) {
-    try {
-        const response = await axios.get(
-            `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${userID}.mp3`,
-            {
-                responseType: 'blob',
-            }
-        );
+    const response = await axios.get(
+        `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${userID}.mp3`,
+        {
+            responseType: 'blob',
+        }
+    );
 
-        return response.data;
-    } catch (error) {
-        return;
-    }
+    return response.data;
 }
 
 async function updateUserDetails(data) {
     const instance = createRequest('/auth');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        await instance.post(`/update`, data);
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    await instance.post(`/update`, data);
 }
 
 async function getMemberOrgs() {
     const instance = createRequest('/auth');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        const { data } = await instance.get(`/orgs/member`);
+    const { data } = await instance.get(`/orgs/member`);
 
-        return data;
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    return data;
 }
 
 async function getOwnedOrgs() {
     const instance = createRequest('/auth');
     instance.defaults.headers.common['Authorization'] = `bearer ${Cookies.get('token')}`;
 
-    try {
-        const res = await instance.get(`/orgs`);
+    const { data } = await instance.get(`/orgs`);
 
-        return res.data;
-    } catch (error) {
-        console.error(error.response.data);
-        return error.response.data;
-    }
+    return data;
 }
 
 export {

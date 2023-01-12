@@ -24,7 +24,14 @@ export default function NavbarController() {
     const md = useMediaQuery((theme) => theme.breakpoints.only('md'));
 
     const logoutUser = async () => {
-        await logout();
+        try {
+            await logout();
+        } catch (error) {
+            const message = error.response.data;
+
+            console.error(message.error);
+        }
+
         Cookies.remove('token');
         setUserData({});
         navigate('/login');
