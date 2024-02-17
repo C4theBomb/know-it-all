@@ -16,7 +16,7 @@ describe('Delete Org', function () {
         }
     });
 
-    test('[200] Organization deleted', async () => {
+    it('[200] Organization deleted', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const org = await user.createOwnedOrg({
             name: 'Org',
@@ -35,7 +35,7 @@ describe('Delete Org', function () {
             });
     });
 
-    test('[200] No organization deleted with that ID', async () => {
+    it('[200] No organization deleted with that ID', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const org = await user.createOwnedOrg({
             name: 'Org',
@@ -54,7 +54,7 @@ describe('Delete Org', function () {
             });
     });
 
-    test('[200] Organization not owned by that user', async () => {
+    it('[200] Organization not owned by that user', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const newUser = await createTestUser('New', 'User', 'password');
         const org = await user.createOwnedOrg({
@@ -74,7 +74,7 @@ describe('Delete Org', function () {
             });
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .delete('/api/org/randomString')
             .send()
@@ -82,7 +82,7 @@ describe('Delete Org', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .delete('/api/org/randomString')
             .set('Authorization', 'bearer randomString')

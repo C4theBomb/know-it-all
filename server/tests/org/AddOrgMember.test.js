@@ -16,7 +16,7 @@ describe('Add Org Member', function () {
         }
     });
 
-    test('[200] User added to organization', async () => {
+    it('[200] User added to organization', async () => {
         var org = await createTestOrg('Org', {
             firstName: 'New',
             lastName: 'User',
@@ -33,7 +33,7 @@ describe('Add Org Member', function () {
             .expect(200, 'OK');
     });
 
-    test('[404] Organization not found', async () => {
+    it('[404] Organization not found', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -48,7 +48,7 @@ describe('Add Org Member', function () {
             .expect(404, errors.NotFound);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/org/randomString/add')
             .send()
@@ -56,7 +56,7 @@ describe('Add Org Member', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/org/randomString/add')
             .set('Authorization', 'bearer randomString')

@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { EditUserForm } from '../components';
 import { useUser } from '../contexts';
-import { updateUserDetails } from '../services/userServices';
+import { createRequest } from '../utils/requests';
 
 function EditUserFormController() {
     const navigate = useNavigate();
@@ -22,31 +22,28 @@ function EditUserFormController() {
         const name = e.target.name;
         const value = e.target.value;
 
-        setForm((form) => {
-            return { ...form, [name]: value };
-        });
+        setForm((form) => ({ ...form, [name]: value }));
     }
 
     async function handleSubmit(e) {
         e.preventDefault();
-        const { error } = await updateUserDetails(form);
 
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            const instance = createRequest();
+            await instance.post('/auth/update', form);
             navigate('/');
+        } catch (error) {
+            setError(() => error.response.data);
         }
     }
 
     useEffect(() => {
-        if (!userData.loading) {
-            setForm(() => ({
-                firstName: userData.firstName,
-                lastName: userData.lastName,
-                email: userData.email,
-                pronouns: userData.pronouns,
-            }));
-        }
+        setForm(() => ({
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email,
+            pronouns: userData.pronouns,
+        }));
     }, [userData]);
 
     return (

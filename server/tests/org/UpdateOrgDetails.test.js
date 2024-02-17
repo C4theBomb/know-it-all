@@ -16,7 +16,7 @@ describe('Update Org Details', function () {
         }
     });
 
-    test('[200] Successfully changed org name', async () => {
+    it('[200] Successfully changed org name', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         const org = await user.createOwnedOrg({
@@ -33,7 +33,7 @@ describe('Update Org Details', function () {
             .expect(200, 'OK');
     });
 
-    test('[400] Form missing information', async () => {
+    it('[400] Form missing information', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
@@ -44,7 +44,7 @@ describe('Update Org Details', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[404] No organization exists with that id', async () => {
+    it('[404] No organization exists with that id', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
@@ -58,7 +58,7 @@ describe('Update Org Details', function () {
             .expect(404, errors.NotFound);
     });
 
-    test('[409] Pre-existing organization with that name', async () => {
+    it('[409] Pre-existing organization with that name', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         await user.createOwnedOrg({ name: 'Org' });
@@ -74,7 +74,7 @@ describe('Update Org Details', function () {
             .expect(409, errors.DuplicateName);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .patch('/api/org/randomString')
             .send()
@@ -82,7 +82,7 @@ describe('Update Org Details', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .patch('/api/org/randomString')
             .set('Authorization', 'bearer randomString')

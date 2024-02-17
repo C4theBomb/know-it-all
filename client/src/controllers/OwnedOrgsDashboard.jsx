@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { OrganizationList } from '../components';
-import { getOwnedOrgs } from '../services/userServices';
+import { createRequest } from '../utils/requests';
 
 function OwnedOrgsDashboard() {
     const [orgs, setOrgs] = useState([]);
 
-    async function getOrgs() {
-        getOwnedOrgs().then((res) => {
-            setOrgs(() => res.orgs);
-        });
-    }
+    const getOrgs = useCallback(async () => {
+        try {
+            const instance = createRequest();
+            const response = await instance.get('/auth/orgs/member');
+            setOrgs(() => response.data.orgs);
+        } catch (error) {}
+    }, []);
 
-    useEffect(getOrgs);
+    useEffect(getOrgs, [getOrgs]);
 
     return <OrganizationList orgs={orgs} />;
 }

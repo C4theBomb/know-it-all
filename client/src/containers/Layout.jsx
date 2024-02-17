@@ -1,5 +1,5 @@
 import { Box, CssBaseline } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Helmet } from 'react-helmet';
 import { Outlet } from 'react-router-dom';
 

@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 import MicRecorder from 'mic-recorder-to-mp3';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useUser } from '../contexts';
 import { RecordMp3 } from '../components';
-import { setAudio, getAudio } from '../services/userServices';
+import { useUser } from '../contexts';
+import { createRequest } from '../utils/requests';
 
 function RecordMp3Controller() {
     const { userData } = useUser();
@@ -19,28 +18,29 @@ function RecordMp3Controller() {
     const [uploadedFile, setUploadedFile] = useState(null);
     const [audioRecording, setAudioRecording] = useState(null);
 
-    useEffect(() => {
-        if (!userData.loading) {
-            getAudio(userData.id).then((data) => {
-                setUploadedFile(() => {
-                    // Retrieve audio file of user if exists
-                    return new File([data], 'userAudio.mp3', {
-                        type: data.type,
-                        lastModified: Date.now(),
-                    });
+    const getData = useCallback(async () => {
+        try {
+            const response = await axios.get(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${userData.id}.mp3`,
+                { responseType: 'blob' }
+            );
+            setUploadedFile(() => {
+                return new File([response.data], 'userAudio.mp3', {
+                    type: response.data.type,
+                    lastModified: Date.now(),
                 });
             });
-        }
-    }, [userData]);
+        } catch (error) {}
+    }, [userData.id]);
+
+    useEffect(getData, [getData]);
 
     function togglePlay() {
         if (audioRecording && !audioRecording.ended) {
-            // Reset audio and reset if track is playing
             audioRecording.pause();
             audioRecording.currentTime = 0;
             setAudioRecording(() => null);
         } else {
-            // Set audio to file and play
             const audioFile = new Audio(URL.createObjectURL(uploadedFile));
             setAudioRecording(() => audioFile);
             audioFile.play();
@@ -49,7 +49,6 @@ function RecordMp3Controller() {
 
     function record() {
         if (recording) {
-            // Stop recording then set uploaded file to mp3 instance
             setRecording(() => false);
             recorder
                 .stop()
@@ -63,11 +62,8 @@ function RecordMp3Controller() {
                     });
                 });
         } else {
-            // Start recording
             setRecording(() => true);
-            recorder.start().catch((e) => {
-                console.error(e);
-            });
+            recorder.start();
         }
     }
 
@@ -80,12 +76,13 @@ function RecordMp3Controller() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        // Create form data object and attach file and user token
         var formData = new FormData();
         formData.append('audioFile', uploadedFile, 'userAudio.mp3');
-        formData.append('token', Cookies.get('token'));
 
-        await setAudio(formData);
+        const instance = createRequest();
+        instance.defaults.headers.common['Content-Type'] = 'multipart/form-data';
+
+        return instance.post('/auth/audio', formData);
     }
 
     return <RecordMp3 {...{ togglePlay, record, uploadRecord, handleSubmit }} />;

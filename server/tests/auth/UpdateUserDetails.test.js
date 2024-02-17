@@ -16,7 +16,7 @@ describe('Update User Details', function () {
         }
     });
 
-    test('[200] Successfully changed user details', async () => {
+    it('[200] Successfully changed user details', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -35,7 +35,7 @@ describe('Update User Details', function () {
             .expect(200, 'OK');
     });
 
-    test('[409] Pre-existing user with email', async () => {
+    it('[409] Pre-existing user with email', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -53,7 +53,7 @@ describe('Update User Details', function () {
             .expect(409, errors.DuplicateName);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .patch('/api/auth/update')
             .send()
@@ -61,7 +61,7 @@ describe('Update User Details', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .patch('/api/auth/update')
             .set('Authorization', 'bearer randomString')

@@ -5,40 +5,38 @@ services:
         restart: unless-stopped
         build:
             context: ./client
-            dockerfile: Dockerfile.dev
         ports:
             - 3000:3000
         volumes:
             - ./client:/app
-            - /app/node_modules
+            - client-node:/app/node_modules
         networks:
             - know-it-all
+        env_file: .env
         environment:
-            REACT_APP_API_ROOT: 'http://localhost:3001/api'
-            REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
             WATCHPACK_POLLING: true
+        depends_on:
+            - server
     server:
         restart: unless-stopped
         build:
-            context: ./server/Dockerfile
+            context: ./server
         ports:
-            - 3001:3000
+            - 3000:3001
         volumes:
             - ./server:/app
-            - /app/node_modules
+            - server-node:/app/node_modules
         networks:
             - know-it-all
+        env_file: .env
         environment:
-            NODE_ENV: development
-            MYSQL_HOST: mysqldb
-            MYSQL_USER: root
-            MYSQL_PASSWORD: passw0rd
-            MYSQL_DATABASE: dev
+            DB_CONN_STRING: 'mongodb://mongodb:27017'
+            CHOKIDAR_USEPOLLING: true
         depends_on:
             - mysqldb
     mysqldb:
         restart: unless-stopped
-        image: mysql:8.3
+        image: mysql:5.7
         ports:
             - 3306:3306
         volumes:
@@ -55,5 +53,7 @@ services:
 
 volumes:
     know-it-all-mysql:
+    client-node:
+    server-node:
 networks:
     know-it-all: {}

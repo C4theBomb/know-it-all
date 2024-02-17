@@ -16,7 +16,7 @@ describe('Register', function () {
         }
     });
 
-    test('[200] User successfully created', async () => {
+    it('[200] User successfully created', async () => {
         const user = {
             firstName: 'Test',
             lastName: 'User',
@@ -32,7 +32,7 @@ describe('Register', function () {
             .expect(200, 'OK');
     });
 
-    test('[200] Created with organization', async () => {
+    it('[200] Created with organization', async () => {
         const orgOwner = {
             firstName: 'Org',
             lastName: 'Owner',
@@ -55,7 +55,7 @@ describe('Register', function () {
             .expect(200, 'OK');
     });
 
-    test('[200] Nonexistent orgID does not error', async () => {
+    it('[200] Nonexistent orgID does not error', async () => {
         const orgOwner = {
             firstName: 'Org',
             lastName: 'Owner',
@@ -78,7 +78,7 @@ describe('Register', function () {
             .expect(200, 'OK');
     });
 
-    test('[400] Request missing fields', async () => {
+    it('[400] Request missing fields', async () => {
         await supertest(app)
             .post('/api/auth/register')
             .send()
@@ -86,7 +86,7 @@ describe('Register', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[409] User already exists', async () => {
+    it('[409] User already exists', async () => {
         await createTestUser('Test', 'User', 'password');
         const userInfo = {
             firstName: 'Test',

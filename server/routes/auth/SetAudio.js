@@ -5,13 +5,15 @@ function SetAudio(req, res, next) {
 
     const oldLocation = req.files.audioFile.filepath;
 
-    // Set new auto file location to static asset folder
     const uploadDir = `${__dirname}/../../public/audio`;
     const fileName = `${user.id}.mp3`;
     const newLocation = `${uploadDir}/${fileName}`;
 
-    // Move file from public to folder
-    fs.rename(oldLocation, newLocation, (err) => {
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+
+    fs.copyFile(oldLocation, newLocation, (err) => {
         if (err) console.log(err);
     });
 

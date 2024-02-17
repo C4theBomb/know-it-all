@@ -1,7 +1,6 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import { Box, Grid, Card, Typography, CardContent, Alert } from '@mui/material';
+import { Alert, Box, Card, CardContent, Grid, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { Outlet } from 'react-router-dom';
 
 function Form({ children, text, error }) {
     const theme = useTheme();

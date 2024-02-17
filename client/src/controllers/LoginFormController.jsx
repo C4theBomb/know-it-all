@@ -1,13 +1,16 @@
+import { Buffer } from 'buffer';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { LoginForm } from '../components';
-import { useError } from '../contexts';
-import { login } from '../services/userServices';
+import { useError, useUser } from '../contexts';
+import { createRequest } from '../utils/requests';
 
 function LoginFormController({ setToken }) {
     const navigate = useNavigate();
     const { error, setError } = useError();
+    const { setUserData } = useUser();
 
     const [form, setForm] = useState({
         email: '',
@@ -36,12 +39,21 @@ function LoginFormController({ setToken }) {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const { error } = await login(form);
+        const encoded = Buffer.from(`${form.email}:${form.password}`).toString('base64');
 
-        if (error) {
-            setError(() => error);
-        } else {
+        const instance = createRequest();
+        instance.defaults.headers.common['Authorization'] = `basic ${encoded}`;
+
+        try {
+            const response = await instance.post('/auth/login', { remember: form.remember });
+            const expires = form.remember ? 365 : 1;
+
+            setUserData(() => response.data.user);
+            Cookies.set('token', response.data.token, { expires });
+
             navigate('/');
+        } catch (error) {
+            setError(() => error.response.data);
         }
     }
 

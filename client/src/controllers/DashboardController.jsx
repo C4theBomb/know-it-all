@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Dashboard } from '../components';
-import { getAudio } from '../services/userServices';
-import { getOrg, deleteOrg, removeMember } from '../services/orgServices';
+import { createRequest } from '../utils/requests';
 
 function DashboardController() {
     const { orgID } = useParams();
@@ -26,32 +26,33 @@ function DashboardController() {
     const [selection, setSelection] = useState(null);
     const [open, setOpen] = useState(false);
 
-    useEffect(() => {
-        async function getData() {
-            await getOrg(orgID)
-                .then((res) => {
-                    setOrg(() => {
-                        return { ...res.org, memberCount: res.memberCount };
-                    });
+    const getOrg = useCallback(async () => {
+        try {
+            const instance = createRequest();
+            const response = await instance.get(`/org/${orgID}`);
 
-                    setRows(() => res.org.member);
-                    setStatus(() => res.owner);
-                })
-                .catch((e) => {
-                    console.log(e);
-                    navigate('/');
-                });
+            const orgData = { ...response.data.org, memberCount: response.data.memberCount };
+
+            setOrg(() => orgData);
+            setRows(() => response.data.org.member);
+            setStatus(() => response.data.owner);
+        } catch (error) {
+            navigate('/');
         }
-
-        getData();
     }, [navigate, orgID]);
+
+    useEffect(getOrg, [getOrg]);
 
     function handleOpen() {
         setOpen((initial) => (initial ? false : true));
     }
 
     async function handleDelete() {
-        await deleteOrg(orgID).then(navigate('/'));
+        try {
+            const instance = createRequest();
+            await instance.delete(`/org/${orgID}`);
+            navigate('/');
+        } catch (error) {}
     }
 
     function copyID() {
@@ -67,22 +68,33 @@ function DashboardController() {
     async function removeSelected() {
         const doomedUserIDs = selection.map((row) => row.id);
 
-        await removeMember(orgID, doomedUserIDs);
+        try {
+            const instance = createRequest();
+            await instance.post(`/org/${orgID}/remove`, { doomedUserIDs });
+        } catch (error) {}
     }
 
     async function leaveOrg() {
-        await removeMember(orgID, {}).then(navigate('/'));
+        try {
+            const instance = createRequest();
+            await instance.post(`/org/${orgID}/remove`, {});
+            navigate('/');
+        } catch (error) {}
     }
 
     async function play(id) {
-        await getAudio(id).then((res) => {
-            const uploadedFile = new File([res], 'userAudio.mp3', {
-                type: res.type,
+        try {
+            const request = await axios.get(
+                `${process.env.REACT_APP_DOMAIN_ROOT}/public/audio/${id}.mp3`,
+                { responseType: 'blob' }
+            );
+            const uploadedFile = new File([request.data], 'userAudio.mp3', {
+                type: request.data.type,
                 lastModified: Date.now(),
             });
             const audioFile = new Audio(URL.createObjectURL(uploadedFile));
             audioFile.play();
-        });
+        } catch (error) {}
     }
 
     return (

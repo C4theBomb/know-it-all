@@ -16,7 +16,7 @@ describe('Get Member Orgs', function () {
         }
     });
 
-    test('[200] Retrieved joined orgs', async () => {
+    it('[200] Retrieved joined orgs', async () => {
         var org = await createTestOrg('Test Org', {
             firstName: 'Test',
             lastName: 'User',
@@ -45,7 +45,7 @@ describe('Get Member Orgs', function () {
             });
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .get('/api/auth/orgs/member')
             .send()
@@ -53,7 +53,7 @@ describe('Get Member Orgs', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .get('/api/auth/orgs/member')
             .set('Authorization', 'bearer randomString')

@@ -15,7 +15,7 @@ describe('Set Audio', function () {
         }
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/auth/audio')
             .send()
@@ -23,7 +23,7 @@ describe('Set Audio', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/auth/audio')
             .set('Authorization', 'bearer randomString')

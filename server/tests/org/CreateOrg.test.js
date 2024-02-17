@@ -16,7 +16,7 @@ describe('Create Org', function () {
         }
     });
 
-    test('[200] Organization created', async () => {
+    it('[200] Organization created', async () => {
         var user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
@@ -28,7 +28,7 @@ describe('Create Org', function () {
             .expect(200, 'OK');
     });
 
-    test('[400] Form missing orgName', async () => {
+    it('[400] Form missing orgName', async () => {
         var user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
@@ -40,7 +40,7 @@ describe('Create Org', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[409] Pre-existing organization with that name', async () => {
+    it('[409] Pre-existing organization with that name', async () => {
         var user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         await user.createOwnedOrg({
@@ -55,7 +55,7 @@ describe('Create Org', function () {
             .expect(409, errors.DuplicateName);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/org')
             .send()
@@ -63,7 +63,7 @@ describe('Create Org', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/org')
             .set('Authorization', 'bearer randomString')

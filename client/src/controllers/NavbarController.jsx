@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { MobileNavbar, Navbar } from '../components';
 import { useMode, useUser } from '../contexts';
-import { logout } from '../services/userServices';
+import { createRequest } from '../utils/requests';
 
 export default function NavbarController() {
     const navigate = useNavigate();
@@ -17,7 +17,6 @@ export default function NavbarController() {
     const toggleOpen = () => setOpen((initial) => !initial);
 
     const toggleMode = () => {
-        console.log('Changed mode');
         setMode(() => (mode === 'light' ? 'dark' : 'light'));
     };
 
@@ -25,10 +24,15 @@ export default function NavbarController() {
     const md = useMediaQuery((theme) => theme.breakpoints.only('md'));
 
     const logoutUser = async () => {
-        await logout();
-        Cookies.remove('token');
-        setUserData({});
-        navigate('/login');
+        try {
+            const instance = createRequest();
+            await instance.post('/auth/logout');
+        } catch (error) {
+        } finally {
+            Cookies.remove('token');
+            setUserData({});
+            navigate('/login');
+        }
     };
 
     return md || sm

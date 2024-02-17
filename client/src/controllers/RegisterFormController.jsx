@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import RegisterForm from '../components/RegisterForm';
 import { useError } from '../contexts';
-import { register } from '../services/userServices';
+import { createRequest } from '../utils/requests';
 
 function RegisterFormController() {
     const navigate = useNavigate();
@@ -32,12 +32,14 @@ function RegisterFormController() {
         e.preventDefault();
 
         const { confirmPassword, ...filteredForm } = form;
-        const { error } = await register({ ...filteredForm, orgID: params.get('orgID') });
+        const fullForm = { ...filteredForm, orgID: params.get('orgID') };
 
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            const instance = createRequest();
+            await instance.post('/auth/register', fullForm);
             navigate('/login');
+        } catch (error) {
+            setError(() => error.response.data);
         }
     }
 

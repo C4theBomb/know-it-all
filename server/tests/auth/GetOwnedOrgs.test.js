@@ -16,7 +16,7 @@ describe('Get Owned Orgs', function () {
         }
     });
 
-    test('[200] Retrieved owned orgs', async () => {
+    it('[200] Retrieved owned orgs', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken({ expires: true });
         const org = await user.createOwnedOrg({ name: 'Org' });
@@ -41,7 +41,7 @@ describe('Get Owned Orgs', function () {
             });
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .get('/api/auth/orgs')
             .send()
@@ -49,7 +49,7 @@ describe('Get Owned Orgs', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .get('/api/auth/orgs')
             .set('Authorization', 'bearer randomString')

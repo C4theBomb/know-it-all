@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {
     Accordion,
     AccordionDetails,
@@ -13,9 +14,8 @@ import {
     Typography,
     useMediaQuery,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { DataGrid } from '@mui/x-data-grid';
+import { Link } from 'react-router-dom';
 
 import { MemberUnit } from '.';
 import { DynamicPaper, DynamicStack } from './StyledElements';

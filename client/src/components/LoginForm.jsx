@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Checkbox, FormControlLabel, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { Form } from '.';
 import { FormSubmit, FormTextField } from './StyledElements';

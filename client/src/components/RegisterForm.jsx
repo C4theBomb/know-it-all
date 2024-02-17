@@ -1,5 +1,5 @@
+import { Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Box, Typography } from '@mui/material';
 
 import Form from './Form';
 import { FormSubmit, FormTextField } from './StyledElements';

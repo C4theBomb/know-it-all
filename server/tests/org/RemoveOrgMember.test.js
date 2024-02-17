@@ -16,7 +16,7 @@ describe('Remove Org Member', function () {
         }
     });
 
-    test('[200] User removed from organization', async () => {
+    it('[200] User removed from organization', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         const org = await user.createOwnedOrg({
@@ -43,7 +43,7 @@ describe('Remove Org Member', function () {
             });
     });
 
-    test('[404] Organization does not exist', async () => {
+    it('[404] Organization does not exist', async () => {
         const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         const org = await user.createOwnedOrg({
@@ -63,7 +63,7 @@ describe('Remove Org Member', function () {
             .expect(404, errors.NotFound);
     });
 
-    test('[403] Insufficient permissions', async () => {
+    it('[403] Insufficient permissions', async () => {
         const org = await createTestOrg('Org', {
             firstName: 'Test',
             lastName: 'User',
@@ -84,7 +84,7 @@ describe('Remove Org Member', function () {
             .expect(403, errors.Forbidden);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .post('/api/org/randomString/remove')
             .send()
@@ -92,7 +92,7 @@ describe('Remove Org Member', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .post('/api/org/randomString/remove')
             .set('Authorization', 'bearer randomString')

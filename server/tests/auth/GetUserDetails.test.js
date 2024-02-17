@@ -16,7 +16,7 @@ describe('Get User Details', function () {
         }
     });
 
-    test('[200] Successfully recieved user details', async () => {
+    it('[200] Successfully recieved user details', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -40,7 +40,7 @@ describe('Get User Details', function () {
             });
     });
 
-    test('[404] User ID does not exist', async () => {
+    it('[404] User ID does not exist', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -55,7 +55,7 @@ describe('Get User Details', function () {
             .expect(404, errors.NotFound);
     });
 
-    test('[403] No contact with that user', async () => {
+    it('[403] No contact with that user', async () => {
         const token = await createTestToken({
             firstName: 'Test',
             lastName: 'User',
@@ -71,7 +71,7 @@ describe('Get User Details', function () {
             .expect(403, errors.Forbidden);
     });
 
-    test('[400] Request does not include token', async () => {
+    it('[400] Request does not include token', async () => {
         await supertest(app)
             .get(`/api/auth/randomString`)
             .send()
@@ -79,7 +79,7 @@ describe('Get User Details', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[401] Token was not found', async () => {
+    it('[401] Token was not found', async () => {
         await supertest(app)
             .get('/api/auth/randomString')
             .set('Authorization', 'bearer randomString')

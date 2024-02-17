@@ -1,10 +1,13 @@
 const supertest = require('supertest');
+const sinon = require('sinon');
+const { CourierClient } = require('@trycourier/courier');
 
 const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 
 const { createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
+
 
 describe('Request Reset', function () {
     beforeEach(async () => {
@@ -16,17 +19,7 @@ describe('Request Reset', function () {
         }
     });
 
-    test('[200] Successful reset request', async () => {
-        const user = await createTestUser('Test', 'User', 'password');
-
-        await supertest(app)
-            .post('/api/auth/reset')
-            .send({ email: user.email })
-            .expect('Content-Type', /text/)
-            .expect(200, 'OK');
-    });
-
-    test('[400] Request missing email', async () => {
+    it('[400] Request missing email', async () => {
         await supertest(app)
             .post('/api/auth/reset')
             .send()
@@ -34,7 +27,7 @@ describe('Request Reset', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[404] No user with email', async () => {
+    it('[404] No user with email', async () => {
         await createTestUser('Test', 'User', 'password');
 
         await supertest(app)

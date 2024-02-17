@@ -16,7 +16,7 @@ describe('Reset Password', function () {
         }
     });
 
-    test('[200] Successful reset password', async () => {
+    it('[200] Successful reset password', async () => {
         const resetRequest = await createTestResetRequest({
             firstName: 'Test',
             lastName: 'User',
@@ -32,7 +32,7 @@ describe('Reset Password', function () {
             .expect(200, 'OK');
     });
 
-    test('[400] Missing password', async () => {
+    it('[400] Missing password', async () => {
         const resetRequest = await createTestResetRequest({
             firstName: 'Test',
             lastName: 'User',
@@ -46,7 +46,7 @@ describe('Reset Password', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[500] Reset request does not exist', async () => {
+    it('[500] Reset request does not exist', async () => {
         await supertest(app)
             .patch(`/api/auth/reset/randomString`)
             .send({

@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Grid, Stack, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import OrgUnit from './OrgUnit';
 import StackItem from './StackItem';

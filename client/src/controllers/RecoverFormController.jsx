@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 
 import { RecoverForm } from '../components';
-import { requestReset } from '../services/userServices';
+import { createRequest } from '../utils/requests';
 
 function RecoverFormController() {
-    const [form, setForm] = useState({
-        email: '',
-    });
+    const [form, setForm] = useState({});
     const [error, setError] = useState('');
 
     function handleChange(e) {
@@ -20,7 +18,13 @@ function RecoverFormController() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-        await requestReset(form);
+
+        try {
+            const instance = createRequest();
+            await instance.post('/auth/reset', form);
+        } catch (error) {
+            setError(() => error.response.data);
+        }
     }
 
     return (

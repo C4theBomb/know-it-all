@@ -1,6 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
 import { Box, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import { Form } from '.';
 import { RecordMp3 } from '../controllers';

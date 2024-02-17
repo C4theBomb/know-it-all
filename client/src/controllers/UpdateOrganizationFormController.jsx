@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { UpdateOrganizationForm } from '../components';
-import { updateOrgDetails } from '../services/orgServices';
+import { createRequest } from '../utils/requests';
 
 function UpdateOrganizationFormController() {
     const { orgID } = useParams();
@@ -18,10 +18,9 @@ function UpdateOrganizationFormController() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-
-        await updateOrgDetails(orgID, { orgName: name }).then(() => {
-            navigate(`/org/${orgID}`);
-        });
+        const instance = createRequest();
+        await instance.patch(`/org/${orgID}`, { orgName: name });
+        navigate(`/org/${orgID}`);
     }
 
     return (

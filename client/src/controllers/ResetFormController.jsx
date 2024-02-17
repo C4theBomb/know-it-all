@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { ResetForm } from '../components';
-import { resetPassword } from '../services/userServices';
 import { useError } from '../contexts';
+import { createRequest } from '../utils/requests';
 
 function ResetFormController() {
     const navigate = useNavigate();
@@ -27,12 +27,12 @@ function ResetFormController() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        const error = await resetPassword(id, { password: form.password });
-
-        if (error) {
-            setError(() => error);
-        } else {
+        try {
+            const instance = createRequest();
+            await instance.patch(`/reset/${id}`);
             navigate('/login');
+        } catch (error) {
+            setError(() => error.response.data);
         }
     }
 

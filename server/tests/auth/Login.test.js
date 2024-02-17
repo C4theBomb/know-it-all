@@ -16,7 +16,7 @@ describe('Login', function () {
         }
     });
 
-    test('[200] Successful login', async () => {
+    it('[200] Successful login', async () => {
         const password = 'password';
         const user = await createTestUser('Test', 'User', password);
         const encoded = Buffer.from(`${user.email}:${password}`).toString('base64');
@@ -35,7 +35,7 @@ describe('Login', function () {
             });
     });
 
-    test('[400] Request missing fields', async () => {
+    it('[400] Request missing fields', async () => {
         await supertest(app)
             .post('/api/auth/login')
             .send()
@@ -43,7 +43,7 @@ describe('Login', function () {
             .expect(400, errors.Incomplete);
     });
 
-    test('[403] Invalid password', async () => {
+    it('[403] Invalid password', async () => {
         const password = 'password';
         const user = await createTestUser('Test', 'User', password);
         const encoded = Buffer.from(`${user.email}:randomString`).toString('base64');

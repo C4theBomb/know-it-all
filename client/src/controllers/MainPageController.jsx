@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import { useCallback, useEffect, useState } from 'react';
 
 import { MainPageBase } from '../components';
-import { getMemberOrgs, getOwnedOrgs } from '../services/userServices';
-import { createOrg, addMember } from '../services/orgServices';
+import { createRequest } from '../utils/requests';
 
 function MainPageController() {
-    const navigate = useNavigate();
-
     const [ownedOrgs, setOwnedOrgs] = useState([]);
     const [orgs, setOrgs] = useState([]);
     const [form, setForm] = useState({
@@ -16,14 +11,26 @@ function MainPageController() {
         id: '',
     });
 
+    const getOwnedOrgs = useCallback(async () => {
+        try {
+            const instance = createRequest();
+            const response = await instance.get('/auth/orgs');
+            setOwnedOrgs(() => response.data.orgs);
+        } catch (error) {}
+    }, []);
+
+    const getMemberOrgs = useCallback(async () => {
+        try {
+            const instance = createRequest();
+            const response = await instance.get('/auth/orgs/member');
+            setOrgs(() => response.data.orgs);
+        } catch (error) {}
+    }, []);
+
     useEffect(() => {
-        if (Cookies.get('token')) {
-            retrieveMemberOrgs();
-            retrieveOwnedOrgs();
-        } else {
-            navigate('/login');
-        }
-    }, [navigate]);
+        getOwnedOrgs();
+        getMemberOrgs();
+    }, [getOwnedOrgs, getMemberOrgs]);
 
     function handleChange(e) {
         const name = e.target.name;
@@ -34,30 +41,16 @@ function MainPageController() {
         });
     }
 
-    async function retrieveOwnedOrgs() {
-        const { orgs } = await getOwnedOrgs().catch((e) => console.log(e));
-
-        setOwnedOrgs(() => orgs);
-    }
-
-    async function retrieveMemberOrgs() {
-        const { orgs } = await getMemberOrgs().catch((e) => console.log(e));
-
-        setOrgs(() => orgs);
-    }
-
     async function makeOrg(e) {
         e.preventDefault();
-
-        await createOrg({ orgName: form.name })
-            .then(retrieveOwnedOrgs)
-            .catch((e) => console.log(e));
+        const instance = createRequest();
+        instance.post('/org/create', form).then(getOwnedOrgs);
     }
 
     async function joinOrg(e) {
         e.preventDefault();
-
-        await addMember.then(retrieveMemberOrgs).catch((e) => console.log(e));
+        const instance = createRequest();
+        instance.post(`/org/${form.id}/add`, {}).then(getMemberOrgs);
     }
 
     return (

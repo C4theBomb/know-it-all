@@ -1,25 +1,17 @@
+import EditUser from './EditUser';
 import Layout from './Layout';
 import Login from './Login';
-import Register from './Register';
 import MainPage from './MainPage';
-import EditUser from './EditUser';
-import Recover from './Recover';
-import Reset from './Reset';
-import OwnedOrgs from './OwnedOrgs';
 import MemberOrgs from './MemberOrgs';
 import OrgDashboard from './OrgDashboard';
+import OwnedOrgs from './OwnedOrgs';
+import Recover from './Recover';
+import Register from './Register';
+import Reset from './Reset';
 import UpdateOrganization from './UpdateOrganization';
 
 export {
-    Layout,
-    Login,
-    Register,
-    MainPage,
-    EditUser,
-    Recover,
-    Reset,
-    OwnedOrgs,
-    MemberOrgs,
-    OrgDashboard,
-    UpdateOrganization,
+    EditUser, Layout,
+    Login, MainPage, MemberOrgs,
+    OrgDashboard, OwnedOrgs, Recover, Register, Reset, UpdateOrganization
 };

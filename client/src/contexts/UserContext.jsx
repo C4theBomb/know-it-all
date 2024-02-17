@@ -1,36 +1,43 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import Cookies from 'js-cookie';
-
-import { remember } from '../services/userServices';
-
-const initialUserData = { loading: true };
+import { createRequest } from '../utils/requests';
 
 const UserContext = createContext();
 
 export default function UserProvider({ children }) {
-    const [userData, setUserData] = useState(initialUserData);
+    const [userData, setUserData] = useState({});
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const loadUserData = async () => {
-            const { user, error } = await remember();
+    const loadUserData = useCallback(async () => {
+        if (!loading) return;
 
-            if (error) {
-                navigate('/login');
-                Cookies.remove('token');
-            } else {
-                setUserData(user || { loading: false });
-            }
-        };
+        if (!Cookies.get('token')) {
+            setLoading(() => false);
+            return;
+        }
 
-        if (userData.loading) loadUserData();
-    }, [userData.loading]);
+        try {
+            const instance = createRequest();
+            const response = await instance.post('/auth/remember');
+
+            setUserData(() => response.data.user);
+        } catch (error) {
+            Cookies.remove('token');
+            navigate('/login');
+        } finally {
+            setLoading(() => false);
+        }
+    }, [navigate, loading]);
+
+    useEffect(loadUserData, [loadUserData]);
 
     return (
         <UserContext.Provider
             value={{
+                loading,
                 userData,
                 setUserData,
             }}

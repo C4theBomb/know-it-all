@@ -7,13 +7,9 @@
         "start": "concurrently \"npm run start -w client\" \"npm run start -w server\"",
         "start:server": "npm start server",
         "build": "npm run build -w client",
-        "build:package": "tar --exclude='.env' -czf dist.tar.gz client node_modules server LICENSE package-lock.json package.json",
-        "dist": "npm run build:package",
-        "test": "npm run test -w server",
+        "test": "npm run test -ws",
         "migrate": "npm run migrate -w server",
-        "migrate:undo": "npm run migrate:undo -w server",
-        "predev": "npm run build",
-        "predist": "npm ci && npm run build"
+        "migrate:undo": "npm run migrate:undo -w server"
     },
     "author": "C4 Patino",
     "license": "ISC",
@@ -28,7 +24,9 @@
         "js-cookie": "^3.0.1"
     },
     "devDependencies": {
+        "client": "^0.1.0",
         "concurrently": "^7.6.0",
+        "remove": "^0.1.5",
         "sequelize-cli": "^6.4.1"
     }
 }

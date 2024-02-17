@@ -1,4 +1,5 @@
-import React from 'react';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {
     Accordion,
     AccordionDetails,
@@ -7,8 +8,6 @@ import {
     IconButton,
     Typography,
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 function MemberUnit({ member, onClick }) {
     const { id, firstName, lastName, nickname, pronouns, email } = member;
