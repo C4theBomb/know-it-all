@@ -3,9 +3,8 @@ version: '3.8'
 services:
     client:
         restart: unless-stopped
-        build:
-            context: ./client
-            dockerfile: Dockerfile.dev
+        build: ./client
+        image: c4thebomb/know-it-all-client
         ports:
             - 3000:3000
         volumes:
@@ -17,10 +16,14 @@ services:
             REACT_APP_API_ROOT: 'http://localhost:3001/api'
             REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
             WATCHPACK_POLLING: true
+        env_file:
+            - path: .env
+              required: false
+        command: npm start
     server:
         restart: unless-stopped
-        build:
-            context: ./server/Dockerfile
+        build: ./server
+        image: c4thebomb/know-it-all-server
         ports:
             - 3001:3000
         volumes:

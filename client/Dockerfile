@@ -12,4 +12,4 @@ COPY ["./src", "./src"]
 
 EXPOSE 3000/tcp
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "serve"]
