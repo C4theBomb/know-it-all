@@ -24,9 +24,14 @@ services:
   server:
     restart: unless-stopped
     image: c4thebomb/know-it-all-server
-    build: ./server
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
     ports:
-      - 127.0.0.1:3000:3001
+      - 127.0.0.1:3001:3000
     networks:
       - know-it-all
       - common-network
