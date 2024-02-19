@@ -31,6 +31,9 @@ jobs:
               uses: actions/checkout@v3
             - name: Build & push client image
               uses: mr-smithers-excellent/docker-build-push@v6
+              env:
+                  REACT_APP_DOMAIN_ROOT: ${ secrets.REACT_APP_DOMAIN_ROOT }
+                  REACT_APP_API_ROOT: ${ secrets.REACT_APP_API_ROOT }
               with:
                   image: c4thebomb/know-it-all-client
                   registry: docker.io
