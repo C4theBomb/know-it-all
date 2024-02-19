@@ -17,10 +17,6 @@ services:
       REACT_APP_API_ROOT: 'http://localhost:3001/api'
       REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
       WATCHPACK_POLLING: true
-    env_file:
-      - path: .env
-        required: false
-    command: npm start
   server:
     restart: unless-stopped
     build:
@@ -35,10 +31,6 @@ services:
       - know-it-all
     environment:
       NODE_ENV: development
-      MYSQL_HOST: mysqldb
-      MYSQL_USER: root
-      MYSQL_PASSWORD: passw0rd
-      MYSQL_DATABASE: dev
     depends_on:
       - mysqldb
   mysqldb:

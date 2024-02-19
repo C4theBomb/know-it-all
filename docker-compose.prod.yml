@@ -17,10 +17,6 @@ services:
       - 127.0.0.1:3000:3000
     networks:
       - know-it-all
-    environment:
-      WATCHPACK_POLLING: true
-    depends_on:
-      - server
   server:
     restart: unless-stopped
     image: c4thebomb/know-it-all-server
@@ -39,7 +35,6 @@ services:
       - path: .env
         required: true
     environment:
-      DB_CONN_STRING: 'mongodb://mongodb:27017'
       CHOKIDAR_USEPOLLING: true
 
 networks:

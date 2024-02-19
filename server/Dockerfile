@@ -10,6 +10,6 @@ COPY . .
 
 EXPOSE 3000/tcp
 
-ENV NODE_ENV=production
+ENV NODE_ENV production
 
 CMD ["node", "bin/www"]
