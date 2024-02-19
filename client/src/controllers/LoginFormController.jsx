@@ -46,7 +46,7 @@ function LoginFormController({ setToken }) {
 
         try {
             const response = await instance.post('/auth/login', { remember: form.remember });
-            const expires = form.remember ? 365 : 1;
+            const expires = form.remember ? 365 : 1; 
 
             setUserData(() => response.data.user);
             Cookies.set('token', response.data.token, { expires });

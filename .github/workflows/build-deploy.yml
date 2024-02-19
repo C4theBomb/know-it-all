@@ -32,7 +32,7 @@ jobs:
             - name: Write .env to build
               env:
                   DOTENV: '${{ secrets.DOTENV }}'
-              run: echo "$DOTENV" >> .env
+              run: echo "$DOTENV" >> ./client/.env
             - name: Build & push client image
               uses: mr-smithers-excellent/docker-build-push@v6
               with:

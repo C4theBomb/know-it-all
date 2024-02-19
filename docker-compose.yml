@@ -9,7 +9,7 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./client:/app
+      - ./client:/app1
       - /app/node_modules
     networks:
       - know-it-all
@@ -17,6 +17,7 @@ services:
       REACT_APP_API_ROOT: 'http://localhost:3001/api'
       REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
       WATCHPACK_POLLING: true
+    command: npm start
   server:
     restart: unless-stopped
     build:
