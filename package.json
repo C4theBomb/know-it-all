@@ -6,6 +6,7 @@
     "scripts": {
         "start": "concurrently \"npm run start -w client\" \"npm run start -w server\"",
         "start:server": "npm start server",
+        "start:client": "npm start client",
         "build": "npm run build -w client",
         "test": "npm run test -w server",
         "migrate": "npm run migrate -w server",

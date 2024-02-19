@@ -4,6 +4,8 @@ on:
     push:
         branches:
             - main
+        tags:
+            - v*
 
 jobs:
     test:
@@ -32,7 +34,9 @@ jobs:
               with:
                   image: c4thebomb/know-it-all-client
                   registry: docker.io
-                  tags: latest
+                  addLatest: true
+                  multiPlatform: true
+                  platform: linux/amd64,linux/arm64/v8
                   directory: ./client
                   dockerfile: ./client/Dockerfile
                   username: ${{ secrets.DOCKER_USERNAME }}
@@ -42,7 +46,9 @@ jobs:
               with:
                   image: c4thebomb/know-it-all-server
                   registry: docker.io
-                  tags: latest
+                  addLatest: true
+                  multiPlatform: true
+                  platform: linux/amd64,linux/arm64/v8
                   directory: ./server
                   dockerfile: ./server/Dockerfile
                   username: ${{ secrets.DOCKER_USERNAME }}

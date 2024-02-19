@@ -4,6 +4,7 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
+        "start:prod": "node ./bin/www",
         "test": "jest -i",
         "migrate": "sequelize db:migrate --env",
         "migrate:undo": "sequelize db:migrate:undo:all --env"

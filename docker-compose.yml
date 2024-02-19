@@ -1,62 +1,64 @@
 version: '3.8'
 
 services:
-    client:
-        restart: unless-stopped
-        build: ./client
-        image: c4thebomb/know-it-all-client
-        ports:
-            - 3000:3000
-        volumes:
-            - ./client:/app
-            - /app/node_modules
-        networks:
-            - know-it-all
-        environment:
-            REACT_APP_API_ROOT: 'http://localhost:3001/api'
-            REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
-            WATCHPACK_POLLING: true
-        env_file:
-            - path: .env
-              required: false
-        command: npm start
-    server:
-        restart: unless-stopped
-        build: ./server
-        image: c4thebomb/know-it-all-server
-        ports:
-            - 3001:3000
-        volumes:
-            - ./server:/app
-            - /app/node_modules
-        networks:
-            - know-it-all
-        environment:
-            NODE_ENV: development
-            MYSQL_HOST: mysqldb
-            MYSQL_USER: root
-            MYSQL_PASSWORD: passw0rd
-            MYSQL_DATABASE: dev
-        depends_on:
-            - mysqldb
-    mysqldb:
-        restart: unless-stopped
-        image: mysql:8.3
-        ports:
-            - 3306:3306
-        volumes:
-            - know-it-all-mysql:/var/lib/mysql
-        networks:
-            - know-it-all
-        environment:
-            MYSQL_ROOT_PASSWORD: 'passw0rd'
-            MYSQL_DATABASE: dev
-        healthcheck:
-            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-            timeout: 5s
-            retries: 10
+  client:
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    networks:
+      - know-it-all
+    environment:
+      REACT_APP_API_ROOT: 'http://localhost:3001/api'
+      REACT_APP_DOMAIN_ROOT: 'http://localhost:3000'
+      WATCHPACK_POLLING: true
+    env_file:
+      - path: .env
+        required: false
+    command: npm start
+  server:
+    restart: unless-stopped
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3001:3000
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    networks:
+      - know-it-all
+    environment:
+      NODE_ENV: development
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: passw0rd
+      MYSQL_DATABASE: dev
+    depends_on:
+      - mysqldb
+  mysqldb:
+    restart: unless-stopped
+    image: mysql:8.3
+    ports:
+      - 3306:3306
+    volumes:
+      - know-it-all-mysql:/var/lib/mysql
+    networks:
+      - know-it-all
+    environment:
+      MYSQL_ROOT_PASSWORD: 'passw0rd'
+      MYSQL_DATABASE: dev
+    healthcheck:
+      test: [ 'CMD', 'mysqladmin', 'ping', '-h', 'localhost' ]
+      timeout: 5s
+      retries: 10
 
 volumes:
-    know-it-all-mysql:
+  know-it-all-mysql:
 networks:
-    know-it-all: {}
+  know-it-all: {}

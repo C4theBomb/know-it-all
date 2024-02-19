@@ -1,34 +1,43 @@
 version: '3.8'
 
 services:
-    client:
-        restart: unless-stopped
-        image: c4thebomb/know-it-all-client
-        build: ./client
-        ports:
-            - 3000:3000
-        networks:
-            - local-network
-        env_file:
-            - path: ./.env
-              required: true
-        environment:
-            WATCHPACK_POLLING: true
-        depends_on:
-            - server
-    server:
-        restart: unless-stopped
-        image: c4thebomb/know-it-all-server
-        build: ./server
-        ports:
-            - 3000:3001
-        networks:
-            - local-network
-        env_file:
-            - path: ./.env
-              required: true
-        environment:
-            DB_CONN_STRING: 'mongodb://mongodb:27017'
-            CHOKIDAR_USEPOLLING: true
+  client:
+    restart: unless-stopped
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      platforms:
+        - linux/amd64
+        - linux/arm64/v8
+    image: c4thebomb/know-it-all-client
+    env_file:
+      - path: .env
+        required: true
+    ports:
+      - 127.0.0.1:3000:3000
+    networks:
+      - know-it-all
+    environment:
+      WATCHPACK_POLLING: true
+    depends_on:
+      - server
+  server:
+    restart: unless-stopped
+    image: c4thebomb/know-it-all-server
+    build: ./server
+    ports:
+      - 127.0.0.1:3000:3001
+    networks:
+      - know-it-all
+      - common-network
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      DB_CONN_STRING: 'mongodb://mongodb:27017'
+      CHOKIDAR_USEPOLLING: true
+
 networks:
-    local-network: {}
+  common-network:
+    external: true
+  know-it-all: {}
