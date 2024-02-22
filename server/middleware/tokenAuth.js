@@ -1,13 +1,12 @@
-const { Token } = require('../db/models/index');
-const errors = require('../config/error.json');
+const { Token } = require("../db/models/index");
+const errors = require("../config/error.json");
 
 async function tokenAuth(req, res, next) {
-    const authHeader = req.get('Authorization');
+    const authHeader = req.get("Authorization") || "";
 
-    const token = authHeader?.split(' ')[1];
+    if (!authHeader) return res.status(400).send(errors.Incomplete);
 
-    // Verify token is included in request
-    if (!token) return res.status(400).send(errors.Incomplete);
+    const token = authHeader.split(" ")[1];
 
     const result = await Token.findOne({ token });
 
@@ -15,7 +14,9 @@ async function tokenAuth(req, res, next) {
     const date = new Date();
     if (!result) {
         return res.status(401).send(errors.Unauthenticated);
-    } else if (result.expires && date.setDate(date.getDate + 1) > result.createdAt) {
+    }
+
+    if (result.expires && date.setDate(date.getDate + 1) > result.createdAt) {
         await Token.findOneAndDelete({ token });
         return res.status(401).send(errors.Unauthenticated);
     }

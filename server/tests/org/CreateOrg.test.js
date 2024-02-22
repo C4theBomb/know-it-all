@@ -1,12 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 
 const { createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Create Org', function () {
+describe('Create Org', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -17,7 +17,7 @@ describe('Create Org', function () {
     });
 
     it('[200] Organization created', async () => {
-        var user = await createTestUser('Test', 'User', 'password');
+        const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
         await supertest(app)
@@ -29,7 +29,7 @@ describe('Create Org', function () {
     });
 
     it('[400] Form missing orgName', async () => {
-        var user = await createTestUser('Test', 'User', 'password');
+        const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
         await supertest(app)
@@ -41,7 +41,7 @@ describe('Create Org', function () {
     });
 
     it('[409] Pre-existing organization with that name', async () => {
-        var user = await createTestUser('Test', 'User', 'password');
+        const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
         await user.createOwnedOrg({
             name: 'Org',

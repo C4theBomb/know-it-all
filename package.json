@@ -4,30 +4,28 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "start": "concurrently \"npm run start -w client\" \"npm run start -w server\"",
-        "start:server": "npm start server",
-        "start:client": "npm start client",
         "build": "npm run build -w client",
         "test": "npm run test -w server",
-        "migrate": "npm run migrate -w server",
-        "migrate:undo": "npm run migrate:undo -w server"
+        "eslint": "eslint . --ext .js,.jsx,.ts,.tsx",
+        "eslint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
     },
     "author": "C4 Patino",
-    "license": "ISC",
+    "license": "MIT",
     "workspaces": [
         "client",
         "server"
     ],
-    "dependencies": {
-        "create-react-app": "^5.0.0",
-        "dotenv": "^16.0.0",
-        "express-generator": "^4.2.0",
-        "js-cookie": "^3.0.1"
-    },
     "devDependencies": {
-        "client": "^0.1.0",
-        "concurrently": "^7.6.0",
-        "remove": "^0.1.5",
-        "sequelize-cli": "^6.4.1"
+        "@typescript-eslint/eslint-plugin": "^6.21.0",
+        "@typescript-eslint/parser": "^6.21.0",
+        "eslint": "^8.56.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-typescript": "^17.1.0",
+        "eslint-config-prettier": "^9.1.0",
+        "eslint-plugin-import": "^2.29.1",
+        "eslint-plugin-jsx-a11y": "^6.8.0",
+        "eslint-plugin-react": "^7.33.2",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "typescript": "^5.3.3"
     }
 }

@@ -1,37 +1,38 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
 
-const parseFormData = require('../middleware/parseFormData');
-const basicAuth = require('../middleware/basicAuth');
-const tokenAuth = require('../middleware/tokenAuth');
-const checkKnownUser = require('../middleware/checkKnownUser');
+const router = express.Router();
 
-const Register = require('./auth/Register');
-const UpdateUserDetails = require('./auth/UpdateUserDetails');
-const Login = require('./auth/Login');
-const Remember = require('./auth/Remember');
-const Logout = require('./auth/Logout');
-const RequestReset = require('./auth/RequestReset');
-const ResetPassword = require('./auth/ResetPassword');
-const SetAudio = require('./auth/SetAudio');
-const GetOwnedOrgs = require('./auth/GetOwnedOrgs');
-const GetMemberOrgs = require('./auth/GetMemberOrgs');
-const GetUserDetails = require('./auth/GetUserDetails');
+const parseFormData = require("../middleware/parseFormData");
+const basicAuth = require("../middleware/basicAuth");
+const tokenAuth = require("../middleware/tokenAuth");
+const checkKnownUser = require("../middleware/checkKnownUser");
 
-router.post('/register', Register);
-router.post('/login', basicAuth, Login);
-router.post('/logout', tokenAuth, Logout);
-router.post('/remember', tokenAuth, Remember);
+const Register = require("./auth/Register");
+const UpdateUserDetails = require("./auth/UpdateUserDetails");
+const Login = require("./auth/Login");
+const Remember = require("./auth/Remember");
+const Logout = require("./auth/Logout");
+const RequestReset = require("./auth/RequestReset");
+const ResetPassword = require("./auth/ResetPassword");
+const SetAudio = require("./auth/SetAudio");
+const GetOwnedOrgs = require("./auth/GetOwnedOrgs");
+const GetMemberOrgs = require("./auth/GetMemberOrgs");
+const GetUserDetails = require("./auth/GetUserDetails");
 
-router.patch('/update', tokenAuth, UpdateUserDetails);
-router.post('/audio', parseFormData, tokenAuth, SetAudio);
+router.post("/register", Register);
+router.post("/login", basicAuth, Login);
+router.post("/logout", tokenAuth, Logout);
+router.post("/remember", tokenAuth, Remember);
 
-router.post('/reset', RequestReset);
-router.patch('/reset/:id', ResetPassword);
+router.patch("/update", tokenAuth, UpdateUserDetails);
+router.post("/audio", tokenAuth, parseFormData, SetAudio);
 
-router.get('/orgs', tokenAuth, GetOwnedOrgs);
-router.get('/orgs/member', tokenAuth, GetMemberOrgs);
+router.post("/reset", RequestReset);
+router.patch("/reset/:id", ResetPassword);
 
-router.get('/:userID', tokenAuth, checkKnownUser, GetUserDetails);
+router.get("/orgs", tokenAuth, GetOwnedOrgs);
+router.get("/orgs/member", tokenAuth, GetMemberOrgs);
+
+router.get("/:userID", tokenAuth, checkKnownUser, GetUserDetails);
 
 module.exports = router;

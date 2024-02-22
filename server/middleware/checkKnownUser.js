@@ -1,13 +1,13 @@
-const { User } = require('../db/models/index');
+const { User } = require("../db/models/index");
 
-const errors = require('../config/error.json');
+const errors = require("../config/error.json");
 
 async function checkKnownUser(req, res, next) {
-    const user = req.user;
+    const { user } = req;
     const userID = req.params.userID || req.query.userID || req.body.userID;
 
     // Return result immediately if the user is querying themselves
-    if (user.id == userID) {
+    if (user.id === userID) {
         return next();
     }
 
@@ -15,22 +15,22 @@ async function checkKnownUser(req, res, next) {
     const result = await User.findByPk(userID, {
         include: [
             {
-                association: 'ownedOrg',
+                association: "ownedOrg",
                 include: {
-                    association: 'member',
+                    association: "member",
                     where: { id: user.id },
                 },
             },
             {
-                association: 'memberOrg',
+                association: "memberOrg",
                 include: [
                     {
-                        association: 'owner',
+                        association: "owner",
                         where: { id: user.id },
                         required: false,
                     },
                     {
-                        association: 'member',
+                        association: "member",
                         where: { id: user.id },
                         required: false,
                     },
@@ -45,10 +45,12 @@ async function checkKnownUser(req, res, next) {
     }
 
     // Filter for an organization where the user is a member or an owner
-    const filteredResult = result.memberOrg.filter((org) => org.member.length != 0 || org.owner);
+    const filteredResult = result.memberOrg.filter(
+        (org) => org.member.length !== 0 || org.owner
+    );
 
     // Error if there is not an organization that includes that user and they are not in an owned organization
-    if (filteredResult.length == 0 && result.ownedOrg.length == 0) {
+    if (filteredResult.length === 0 && result.ownedOrg.length === 0) {
         return res.status(403).send(errors.Forbidden);
     }
 

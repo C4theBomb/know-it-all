@@ -1,9 +1,9 @@
-const errors = require('../../config/error.json');
+const errors = require("../../config/error.json");
 
-async function UpdateOrgDetails(req, res, next) {
-    const user = req.user;
+async function UpdateOrgDetails(req, res) {
+    const { user } = req;
     const id = req.params.orgID;
-    const name = req.body.name;
+    const { name } = req.body;
 
     // Verify that an name and id exist on the form
     if (!name) {

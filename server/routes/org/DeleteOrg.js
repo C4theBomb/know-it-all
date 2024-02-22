@@ -1,10 +1,10 @@
-const { Organization } = require('../../db/models/index');
+const { Organization } = require("../../db/models/index");
 
-const errors = require('../../config/error.json');
+const errors = require("../../config/error.json");
 
-async function DeleteOrg(req, res, next) {
-    const user = req.user;
-    const orgID = req.params.orgID;
+async function DeleteOrg(req, res) {
+    const { user } = req;
+    const { orgID } = req.params;
 
     // Error if an organization id was not provided
     if (!orgID) {

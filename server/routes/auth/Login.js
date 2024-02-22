@@ -1,8 +1,8 @@
-const { Token } = require('../../db/models/index');
+const { Token } = require("../../db/models/index");
 
-async function Login(req, res, next) {
-    const user = req.user;
-    const remember = req.body.remember;
+async function Login(req, res) {
+    const { user } = req;
+    const { remember } = req.body;
 
     // Create token for user while setting expiry
     await Token.destroy({ where: { ownerID: user.id } });

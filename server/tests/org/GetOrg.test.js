@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Get Org', function () {
+describe('Get Org', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestToken } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Logout', function () {
+describe('Logout', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

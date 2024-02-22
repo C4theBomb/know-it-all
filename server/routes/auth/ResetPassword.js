@@ -1,11 +1,11 @@
-const forge = require('node-forge');
+const forge = require("node-forge");
 
-const { ResetRequest } = require('../../db/models/index');
-const errors = require('../../config/error.json');
+const { ResetRequest } = require("../../db/models/index");
+const errors = require("../../config/error.json");
 
-async function ResetPassword(req, res, next) {
+async function ResetPassword(req, res) {
     const reqID = req.params.id;
-    const password = req.body.password;
+    const { password } = req.body;
 
     // Verify that the form contains a new password
     if (!password) {
@@ -19,7 +19,11 @@ async function ResetPassword(req, res, next) {
     }
 
     // Hash the submitted password and update model
-    const hashedPassword = forge.md.sha512.create().update(password).digest().toHex();
+    const hashedPassword = forge.md.sha512
+        .create()
+        .update(password)
+        .digest()
+        .toHex();
 
     const user = await result.getUser();
     await user.update({ password: hashedPassword });

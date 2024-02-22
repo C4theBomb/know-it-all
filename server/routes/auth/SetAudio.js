@@ -1,7 +1,7 @@
-const fs = require('fs');
+const fs = require("fs");
 
-function SetAudio(req, res, next) {
-    const user = req.user;
+function SetAudio(req, res) {
+    const { user } = req;
 
     const oldLocation = req.files.audioFile.filepath;
 
@@ -13,9 +13,7 @@ function SetAudio(req, res, next) {
         fs.mkdirSync(uploadDir, { recursive: true });
     }
 
-    fs.copyFile(oldLocation, newLocation, (err) => {
-        if (err) console.log(err);
-    });
+    fs.copyFile(oldLocation, newLocation);
 
     res.sendStatus(200);
 }

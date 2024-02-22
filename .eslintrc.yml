@@ -1,0 +1,12 @@
+env:
+    browser: true
+    es2021: true
+extends: [airbnb, "prettier"]
+parserOptions:
+    ecmaVersion: latest
+    sourceType: module
+    project: ./tsconfig.json
+ignorePatterns: ["vite.config.js"]
+rules:
+    indent: ["error", 4]
+    comma-dangle: "off"

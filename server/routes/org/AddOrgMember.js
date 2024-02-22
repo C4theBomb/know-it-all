@@ -1,10 +1,10 @@
-const { Organization } = require('../../db/models/index');
+const { Organization } = require("../../db/models/index");
 
-const errors = require('../../config/error.json');
+const errors = require("../../config/error.json");
 
-async function AddOrgMember(req, res, next) {
-    const user = req.user;
-    const orgID = req.params.orgID;
+async function AddOrgMember(req, res) {
+    const { user } = req;
+    const { orgID } = req.params;
 
     // Verify that an organization exists with the ID provided
     const result = await Organization.findByPk(orgID);

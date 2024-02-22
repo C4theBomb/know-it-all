@@ -1,33 +1,33 @@
-const supertest = require('supertest');
+const supertest = require("supertest");
 
-const { sequelize } = require('../../db/models/index');
-const app = require('../../app');
+const { sequelize } = require("../../db/models/index");
+const app = require("../../app");
 
-const { createTestUser } = require('../utils');
-const errors = require('../../config/error.json');
+const { createTestUser } = require("../utils");
+const errors = require("../../config/error.json");
 
-describe('Get Owned Orgs', function () {
+describe("Get Owned Orgs", () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
-            await sequelize.sync({ force: 'true' });
+            await sequelize.sync({ force: "true" });
         } catch (error) {
-            console.log('[ERROR]: Database connection failed');
+            console.log("[ERROR]: Database connection failed");
         }
     });
 
-    it('[200] Retrieved owned orgs', async () => {
-        const user = await createTestUser('Test', 'User', 'password');
+    it("[200] Retrieved owned orgs", async () => {
+        const user = await createTestUser("Test", "User", "password");
         const token = await user.createToken({ expires: true });
-        const org = await user.createOwnedOrg({ name: 'Org' });
+        const org = await user.createOwnedOrg({ name: "Org" });
 
         await supertest(app)
-            .get('/api/auth/orgs')
-            .set('Authorization', `bearer ${token.id}`)
+            .get("/api/auth/orgs")
+            .set("Authorization", `bearer ${token.id}`)
             .send()
             .expect(200)
-            .set('Accept', 'application/json')
-            .expect('Content-Type', /json/)
+            .set("Accept", "application/json")
+            .expect("Content-Type", /json/)
             .then((response) => {
                 const data = {
                     id: org.id,
@@ -41,20 +41,20 @@ describe('Get Owned Orgs', function () {
             });
     });
 
-    it('[400] Request does not include token', async () => {
+    it("[400] Request does not include token", async () => {
         await supertest(app)
-            .get('/api/auth/orgs')
+            .get("/api/auth/orgs")
             .send()
-            .expect('Content-Type', /json/)
+            .expect("Content-Type", /json/)
             .expect(400, errors.Incomplete);
     });
 
-    it('[401] Token was not found', async () => {
+    it("[401] Token was not found", async () => {
         await supertest(app)
-            .get('/api/auth/orgs')
-            .set('Authorization', 'bearer randomString')
+            .get("/api/auth/orgs")
+            .set("Authorization", "bearer randomString")
             .send()
-            .expect('Content-Type', /json/)
+            .expect("Content-Type", /json/)
             .expect(401, errors.Unauthenticated);
     });
 });

@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestOrg, createTestUser, createTestToken } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Add Org Member', function () {
+describe('Add Org Member', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();
@@ -17,12 +17,12 @@ describe('Add Org Member', function () {
     });
 
     it('[200] User added to organization', async () => {
-        var org = await createTestOrg('Org', {
+        const org = await createTestOrg('Org', {
             firstName: 'New',
             lastName: 'User',
             password: 'password',
         });
-        var user = await createTestUser('Test', 'User', 'password');
+        const user = await createTestUser('Test', 'User', 'password');
         const token = await user.createToken();
 
         await supertest(app)

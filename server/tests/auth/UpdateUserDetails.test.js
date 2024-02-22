@@ -1,12 +1,12 @@
 const supertest = require('supertest');
 
-var { sequelize } = require('../../db/models/index');
+const { sequelize } = require('../../db/models/index');
 const app = require('../../app');
 
 const { createTestToken, createTestUser } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Update User Details', function () {
+describe('Update User Details', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

@@ -1,5 +1,5 @@
-async function Logout(req, res, next) {
-    const user = req.user;
+async function Logout(req, res) {
+    const { user } = req;
     const token = await user.getToken();
 
     if (token) {

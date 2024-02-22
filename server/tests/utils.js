@@ -1,5 +1,5 @@
-const forge = require('node-forge');
-const { User, Organization } = require('../db/models/index');
+const forge = require("node-forge");
+const { User } = require("../db/models/index");
 
 async function createTestUser(firstName, lastName, password) {
     const hashedPassword = forge.md.sha512
@@ -8,14 +8,14 @@ async function createTestUser(firstName, lastName, password) {
         .digest()
         .toHex();
     const userInfo = {
-        firstName: firstName,
-        lastName: lastName,
+        firstName,
+        lastName,
         email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}@test.com`,
-        pronouns: 'they/them',
+        pronouns: "they/them",
         password: hashedPassword,
     };
 
-    return await User.create(userInfo);
+    return User.create(userInfo);
 }
 
 async function createTestOrg(name, owner) {
@@ -27,7 +27,7 @@ async function createTestOrg(name, owner) {
     const userInfo = {
         ...owner,
         email: `${owner.firstName.toLowerCase()}.${owner.lastName.toLowerCase()}@test.com`,
-        pronouns: 'they/them',
+        pronouns: "they/them",
         password: hashedPassword,
     };
 
@@ -43,7 +43,7 @@ async function createTestToken(owner) {
         owner.lastName,
         owner.password
     );
-    return await user.createToken({
+    return user.createToken({
         expires: true,
     });
 }
@@ -54,7 +54,7 @@ async function createTestResetRequest(owner) {
         owner.lastName,
         owner.password
     );
-    return await user.createResetRequest();
+    return user.createResetRequest();
 }
 
 module.exports = {

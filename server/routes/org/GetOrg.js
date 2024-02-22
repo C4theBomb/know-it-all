@@ -1,23 +1,23 @@
-const { Organization } = require('../../db/models/index');
+const { Organization } = require("../../db/models/index");
 
-async function GetOrg(req, res, next) {
-    const user = req.user;
-    const orgID = req.params.orgID;
+async function GetOrg(req, res) {
+    const { user } = req;
+    const { orgID } = req.params;
 
     // Retrieve organization, owner, and members
     const org = await Organization.findByPk(orgID, {
-        attributes: { exclude: ['updatedAt'] },
+        attributes: { exclude: ["updatedAt"] },
         include: [
             {
-                association: 'owner',
+                association: "owner",
                 attributes: {
-                    exclude: ['id', 'password', 'createdAt', 'updatedAt'],
+                    exclude: ["id", "password", "createdAt", "updatedAt"],
                 },
             },
             {
-                association: 'member',
+                association: "member",
                 attributes: {
-                    exclude: ['password', 'createdAt', 'updatedAt'],
+                    exclude: ["password", "createdAt", "updatedAt"],
                 },
                 required: false,
             },
@@ -27,7 +27,7 @@ async function GetOrg(req, res, next) {
     return res.send({
         org,
         memberCount: org.member.length,
-        owner: org.ownerID == user.id,
+        owner: org.ownerID === user.id,
     });
 }
 

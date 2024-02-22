@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestResetRequest } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Reset Password', function () {
+describe('Reset Password', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

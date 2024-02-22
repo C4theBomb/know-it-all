@@ -6,7 +6,7 @@ const app = require('../../app');
 const { createTestUser, createTestOrg } = require('../utils');
 const errors = require('../../config/error.json');
 
-describe('Remove Org Member', function () {
+describe('Remove Org Member', () => {
     beforeEach(async () => {
         try {
             await sequelize.authenticate();

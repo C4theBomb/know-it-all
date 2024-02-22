@@ -1,5 +1,5 @@
 async function Remember(req, res) {
-    const user = req.user;
+    const {user} = req;
 
     return res.send({
         user,
